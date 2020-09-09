@@ -11,7 +11,7 @@
 ### Rolling Misc Notes  
 * Refresh HTML5 tags (header, section, etc)
 * Each page as a different "world" with its own aesthetic
-* Some unifying aspects
+* Tied together with certain unifying aspects
 
 ## Breakdown
 
@@ -23,4 +23,4 @@
 
 ### Home Nav
 * Navigate to different "worlds" from here
-* Interesting graphic interface 
+* Interesting graphic interface
