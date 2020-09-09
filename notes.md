@@ -2,11 +2,11 @@
 
 ## Page Structure
 1. Landing Page
-2. Home Nav
-3. Exercises
-4. Reflections
-5. Presentation
-6. Final Project
+  2. Home Nav
+    3. Exercises
+    4. Reflections
+    5. Presentation
+    6. Final Project
 
 ### Rolling Misc Notes  
 * Refresh HTML5 tags (header, section, etc)
