@@ -1,12 +1,12 @@
 # CART 351 Website Notes
 
-## Page Structure
-1. Landing Page
-  2. Home Nav
-    3. Exercises
-    4. Reflections
-    5. Presentation
-    6. Final Project
+## Site Structure
+* Landing Page
+  * Home Nav
+    * Exercises
+    * Reflections
+    * Presentation
+    * Final Project
 
 ### Rolling Misc Notes  
 * Refresh HTML5 tags (header, section, etc)
