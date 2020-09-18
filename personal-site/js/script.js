@@ -2,25 +2,56 @@
 
 window.onload = () => {
 
-  let introTitle = document.getElementById("intro-title");
-  let introTitleText = Array.from("Hello Worlds");
-  let counter = 0;
+  let introHello = document.getElementById("hello");
+  let introWorlds = document.getElementById("worlds");
+  let introLink = document.getElementById("intro-link");
+  let introCursor = document.getElementById("blinking-cursor");
+  let worldsText = Array.from("worlds");
+  let helloText = Array.from("hello ");
+  let charCount = 0;
+  let strCount = 0;
 
-  let introWrite = () => {
+  introLink.style.webkitAnimationPlayState = "paused";
 
-    console.log("called");
-    introTitle.textContent += introTitleText[counter];
-    counter++;
+  let titleA = () => setTimeout(function(){ introWrite(helloText, introHello, 166, 350); }, 4000);
+  let titleB = () => setTimeout(function(){ introWrite(worldsText, introWorlds, 166, 4000); }, 500);
+  let titles = [titleA, titleB];
 
-    if (counter < introTitleText.length-1) {
-      setTimeout(introWrite, 166);
+  titles[strCount]();
+
+  function introWrite(text, el, t1, t2) {
+
+    console.log("el: " + el);
+    console.log(el.textContent);
+    el.textContent += text[charCount];
+    charCount++;
+
+    if (charCount < text.length-1) {
+      setTimeout(function(){ introWrite(text, el, t1, t2); }, t1);
+      introCursor.style.color = "var(--intro-title-color)";
+      introCursor.style.webkitAnimationPlayState = "paused";
     }
-    else if (counter === introTitleText.length-1) {
-      setTimeout(introWrite, 3000);
+    else if (charCount === text.length-1) {
+      setTimeout(function(){ introWrite(text, el, t1, t2); }, t2);
+      if (t2 > 300) {
+        introCursor.style.webkitAnimationPlayState = "running";
+      }
     }
-
+    else if (charCount === text.length) {
+      charCount = 0;
+      strCount++;
+      if (strCount < titles.length) {
+        titles[strCount]();
+      }
+      else {
+        setTimeout(styleIntroLink, 3000);
+      }
+    }
   }
 
-  introWrite();
+  function styleIntroLink() {
+    introCursor.style.opacity = 0;
+    introLink.style.webkitAnimationPlayState = "running";
+  }
 
 }

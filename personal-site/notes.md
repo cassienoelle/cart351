@@ -35,3 +35,36 @@
 ### Home Nav
 * Navigate to different "worlds" from here
 * Need interesting graphic interface
+
+
+
+
+
+/* Intro link style animation */
+
+.link-style-in {
+  animation: 3s linkstyle ease-in 1s;
+}
+
+@-webkit-keyframes "linkstyle" {
+  0%   { color: var(--intro-title-color); }
+  100% { color: var(--intro-link-color); }
+}
+
+@-moz-keyframes "linkstyle" {
+  0%   { color: var(--intro-title-color); }
+  100% { color: var(--intro-link-color); }
+}
+
+@-o-keyframes "linkstyle" {
+  0%   { color: var(--intro-title-color); }
+  100% { color: var(--intro-link-color); }
+}
+
+@keyframes "linkstyle" {
+  0%   { color: var(--intro-title-color); }
+  100% { color: var(--intro-link-color); }
+}
+
+
+/* End intro link style */
