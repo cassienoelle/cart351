@@ -1,7 +1,72 @@
 
-h2{
+h2 {
   text-align: center;
 }
-h3{
+h3 {
   text-align: center;
-} 
+}
+
+.container {
+  width: 100%;
+  height: 97vh;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.wrapper {
+  /* border: 1px solid red;*/
+  padding: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#intro-title {
+  font-family: "Roboto", Arial, sans-serif;
+  margin: auto;
+  font-size: 5em;
+  text-align: left;
+  /* border: 1px solid blue; */
+}
+
+@media screen and (min-width: 400px)  {
+
+  #intro-title {
+    font-size: 15vw;
+    /* border: 1px solid blue; */
+  }
+
+}
+
+@media screen and (min-width: 600px)  {
+
+  #intro-title {
+    font-size: 5.6em;
+    /* border: 1px solid blue; */
+  }
+
+}
+
+@media screen and (min-width: 1000px) {
+
+
+}
+
+@media screen and (min-width: 1400px) {
+
+  #intro-title {
+    font-size: 6.5vw;
+    /* border: 1px solid blue; */
+  }
+
+}
+
+
+#welcomeTitle {
+  font-family: "Roboto", Arial, sans-serif;
+  font-size:
+}
