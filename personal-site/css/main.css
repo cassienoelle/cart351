@@ -33,11 +33,11 @@ a {
 
 #intro-title {
   font-family: "DM Mono", Arial, monospace;
-  font-size: 5em;
+  font-size: 4em;
   color: var(--intro-title-color);
   text-align: left;
-  width: 13ch;
-  border: 1px solid blue;
+  width: 7ch;
+  /* border: 1px solid blue;*/
 }
 
 .blinking-cursor {
@@ -45,12 +45,12 @@ a {
   position: relative;
 }
 
-.blinking-cursor:after {
+.blinking-cursor::after {
   background: none repeat scroll 0 0 transparent;
   top: 0;
   content: "";
   display: block;
-  height: 10px;
+  height: 0.15em;
   left: calc(100%-1ch);
   position: absolute;
   background: var(--intro-title-color);
@@ -65,19 +65,29 @@ a {
   display: inline-block;
   /* padding: 15px 20px;*/
   position: relative;
+  transition: color 500ms ease;
 }
 
-.pseudo:after {
+.pseudo::after {
   background: none repeat scroll 0 0 transparent;
-  bottom: 15.5%;
+  bottom: 13%;
   content: "";
   display: block;
-  height: 10px;
+  height: 0.15em;
   left: 84%;
   position: absolute;
   background: var(--intro-title-color);
   animation: under 1s 1 ease-in forwards 1s;
   width: 1ch;
+  transition: background 500ms ease;
+}
+
+.pseudo:hover {
+  color: var(--intro-link-color);
+}
+
+.pseudo:hover::after {
+  background: var(--intro-link-color);
 }
 
 @keyframes "under" {
@@ -108,29 +118,21 @@ a {
   }
 }
 
-
-@keyframes "linkstyle-color" {
-  0%   { color: var(--intro-title-color);}
-  100% { color: var(--intro-link-color); }
+#intro-link.active {
+  color: var(--intro-title-color);
+  transition: color 500ms ease;
 }
 
-
-@keyframes "linkstyle-line" {
-  0%   { color: var(--intro-title-color);}
-  100% { color: var(--intro-link-color); }
+#intro-link.active:hover {
+  color: var(--intro-link-color);
 }
-
-/* End intro link style */
-
-
-
 
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 400px)  {
 
   #intro-title {
-    font-size: 15vw;
+     font-size: 15vw;
     /* border: 1px solid blue; */
   }
 
@@ -139,7 +141,8 @@ a {
 @media screen and (min-width: 600px)  {
 
   #intro-title {
-    font-size: 5.6em;
+    font-size: 5em;
+    width: 13ch;
     /* border: 1px solid blue; */
   }
 

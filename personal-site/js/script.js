@@ -51,7 +51,7 @@ window.onload = () => {
 
   function styleIntroLink() {
     introLink.classList.add("pseudo");
-    blinkingCursor.style.opacity = 0.1;
+    blinkingCursor.style.opacity = 0;
     introLink.style.webkitAnimationPlayState = "running";
   }
 
