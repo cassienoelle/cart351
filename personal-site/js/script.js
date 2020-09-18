@@ -5,6 +5,7 @@ window.onload = () => {
   let introHello = document.getElementById("hello");
   let introWorlds = document.getElementById("worlds");
   let introLink = document.getElementById("intro-link");
+  let blinkingCursor = document.querySelector(".blinking-cursor");
   // let introCursor = document.getElementById("blinking-cursor");
   let worldsText = Array.from("worlds");
   let helloText = Array.from("hello ");
@@ -13,8 +14,8 @@ window.onload = () => {
 
   introLink.style.webkitAnimationPlayState = "paused";
 
-  let titleA = () => setTimeout(function(){ introWrite(helloText, introHello, 266, 450); }, 4000);
-  let titleB = () => setTimeout(function(){ introWrite(worldsText, introWorlds, 266, 4000); }, 500);
+  let titleA = () => setTimeout(function(){ introWrite(helloText, introHello, 250, 1000); }, 4000);
+  let titleB = () => setTimeout(function(){ introWrite(worldsText, introWorlds, 250, 4000); }, 500);
   let titles = [titleA, titleB];
 
   titles[strCount]();
@@ -32,7 +33,8 @@ window.onload = () => {
     }
     else if (charCount === text.length-1) {
       setTimeout(function(){ introWrite(text, el, t1, t2); }, t2);
-      if (t2 > 300) {
+      if (strCount === titles.length-1) {
+        setTimeout(styleIntroLink, t2);
       }
     }
     else if (charCount === text.length) {
@@ -42,13 +44,14 @@ window.onload = () => {
         titles[strCount]();
       }
       else {
-        styleIntroLink();
+        //setTimeout(styleIntroLink, 1000);
       }
     }
   }
 
   function styleIntroLink() {
-    // introCursor.style.opacity = 0;
+    introLink.classList.add("pseudo");
+    blinkingCursor.style.opacity = 0.1;
     introLink.style.webkitAnimationPlayState = "running";
   }
 

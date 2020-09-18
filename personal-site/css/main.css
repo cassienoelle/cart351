@@ -34,73 +34,63 @@ a {
 #intro-title {
   font-family: "DM Mono", Arial, monospace;
   font-size: 5em;
-  display: inline-block;
-  position: relative;
   color: var(--intro-title-color);
   text-align: left;
+  width: 13ch;
   border: 1px solid blue;
 }
 
-/* Blinking cursor code adapted from Artem Gordinsky:
-  https://codepen.io/ArtemGordinsky/pen/GnLBq */
-
-#blinking-cursor {
-  font-weight: 100;
-  -webkit-animation: 1s blink step-end infinite;
-  -moz-animation: 1s blink step-end infinite;
-  -ms-animation: 1s blink step-end infinite;
-  -o-animation: 1s blink step-end infinite;
-  animation: 1s blink step-end infinite;
+.blinking-cursor {
+  display: inline-block;
+  position: relative;
 }
 
+.blinking-cursor:after {
+  background: none repeat scroll 0 0 transparent;
+  top: 0;
+  content: "";
+  display: block;
+  height: 10px;
+  left: calc(100%-1ch);
+  position: absolute;
+  background: var(--intro-title-color);
+  animation: 1s blink step-end infinite;
+    -webkit-animation: 1s blink step-end infinite;
+  width: 1ch;
+}
 
-/* End blinking cursor code */
-
-/* Intro link style animation */
-
-#intro-link {
+.pseudo {
   color: var(--intro-title-color);
   text-decoration: none;
   display: inline-block;
   /* padding: 15px 20px;*/
   position: relative;
-  animation: linkstyle-color 500ms 1 ease-in forwards 2500ms;
 }
 
-#intro-title:after {
+.pseudo:after {
   background: none repeat scroll 0 0 transparent;
-  bottom: 12%;
+  bottom: 15.5%;
   content: "";
   display: block;
   height: 10px;
-  left: 100%;
+  left: 84%;
   position: absolute;
   background: var(--intro-title-color);
-  -webkit-animation: 1s blink step-end infinite;
-  -moz-animation: 1s blink step-end infinite;
-  -ms-animation: 1s blink step-end infinite;
-  -o-animation: 1s blink step-end infinite;
-  animation: 1s blink step-end infinite;
-  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  animation: under 1s 1 ease-in forwards 1s;
   width: 1ch;
 }
 
-#intro-title:hover:after {
-  width: 6ch;
-  left: 50%;
+@keyframes "under" {
+  0%   { width: 1ch; left: 84%;}
+  100% { width: 6ch; left: 0;}
 }
 
+@-webkit-keyframes "under" {
+  0%   { width: 1ch; left: 84%;}
+  100% { width: 6ch; left: 0;}
+}
 
 @keyframes "blink" {
-  from, to {
-    background: transparent;
-  }
-  50% {
-    background: var(--intro-title-color);
-  }
-}
-
-@-moz-keyframes blink {
   from, to {
     background: transparent;
   }
@@ -118,60 +108,12 @@ a {
   }
 }
 
-@-ms-keyframes "blink" {
-  from, to {
-    background: transparent;
-  }
-  50% {
-    background: var(--intro-title-color);
-  }
-}
-
-@-o-keyframes "blink" {
-  from, to {
-    background: transparent;
-  }
-  50% {
-    background: var(--intro-title-color);
-  }
-}
-
-@-webkit-keyframes "linkstyle-color" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
-
-@-moz-keyframes "linkstyle-color" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
-
-@-o-keyframes "linkstyle-color" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
 
 @keyframes "linkstyle-color" {
   0%   { color: var(--intro-title-color);}
   100% { color: var(--intro-link-color); }
 }
 
-
-
-@-webkit-keyframes "linkstyle-line" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
-
-@-moz-keyframes "linkstyle-line" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
-
-@-o-keyframes "linkstyle-line" {
-  0%   { color: var(--intro-title-color); }
-  100% { color: var(--intro-link-color); }
-}
 
 @keyframes "linkstyle-line" {
   0%   { color: var(--intro-title-color);}

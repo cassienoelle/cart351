@@ -1,0 +1,42 @@
+-webkit-animation: 1s blink step-end infinite;
+-moz-animation: 1s blink step-end infinite;
+-ms-animation: 1s blink step-end infinite;
+-o-animation: 1s blink step-end infinite;
+
+
+
+@-moz-keyframes blink {
+  from, to {
+    background: transparent;
+  }
+  50% {
+    background: var(--intro-title-color);
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    background: transparent;
+  }
+  50% {
+    background: var(--intro-title-color);
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    background: transparent;
+  }
+  50% {
+    background: var(--intro-title-color);
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    background: transparent;
+  }
+  50% {
+    background: var(--intro-title-color);
+  }
+}
