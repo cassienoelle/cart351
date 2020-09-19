@@ -1,6 +1,11 @@
 :root {
   --intro-title-color: #001628;
   --intro-link-color: #E0002E;
+  --project-hue: 44deg;
+  --exercises-hue:44deg;
+  --reflections-hue:44deg;
+  --presentation-hue:44deg;
+  --about-hue:44deg;
 }
 
 body {
@@ -137,20 +142,93 @@ a {
   height: auto;
   transition: width 300ms ease;
   margin: auto;
+  -webkit-filter: drop-shadow(1px 1px 0 black)
+                  drop-shadow(-1px 1px 0 black)
+                  drop-shadow(1px -1px 0 black)
+                  drop-shadow(-1px -1px 0 black);
+
+  filter: drop-shadow(1px 1px 0 black)
+          drop-shadow(-1px 1px 0 black)
+          drop-shadow(1px -1px 0 black)
+          drop-shadow(-1px -1px 0 black);
 }
 
 .category-icon:hover {
-  width: 65px;
+  /* width: 65px;*/
 }
 
-img#portal {
+img.portal {
   height: 80vh;
   position: absolute;
-  z-index: -1;
+  z-index:-1;
+  opacity: 0.3;
 }
 
-.color-change {
-  filter: hue-rotate(44deg);
+.homepage-grid {
+  display: grid;
+  height: 100%;
+  margin-right: 4em;
+  margin-left: 4em;
+  grid-template-columns: 30vw 30vw 30vw;
+  grid-template-rows: auto;
+  grid-template-areas:
+    ". nav ."
+    ". nav ."
+    ". nav destination"
+}
+
+nav {
+  grid-area: nav;
+  align-self: center;
+  justify-self:center;
+}
+
+.destination-display {
+  grid-area: destination;
+  border: 1px solid white;
+}
+
+.overlay {
+  height: 83vh;
+  position: absolute;
+  z-index: -2;
+  display: inline-block;
+}
+
+#exercises-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+#reflections-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+#presentation-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+#project-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+#about-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+#default-overlay {
+  display: none;
+  opacity: 0;
+  transition: all 500ms linear;
 }
 
 .rotate {
