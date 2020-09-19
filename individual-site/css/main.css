@@ -73,7 +73,7 @@ a {
   display: inline-block;
   /* padding: 15px 20px;*/
   position: relative;
-  transition: color 100ms ease;
+  transition: color 500ms ease;
 }
 
 .pseudo::after {
@@ -87,7 +87,7 @@ a {
   background: var(--intro-title-color);
   animation: under 1s 1 ease-in forwards 1s;
   width: 1ch;
-  transition: background 100ms ease;
+  transition: background 500ms ease;
 }
 
 .pseudo:hover {
@@ -127,14 +127,20 @@ a {
 }
 
 .category {
-  border: 1px solid green;
-  width: 8em;
-  padding: 0.2em;
-  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+  display: flex;
 }
 
 .category-icon {
+  width: 60px;
+  height: auto;
+  transition: width 300ms ease;
+  margin: auto;
+}
 
+.category-icon:hover {
+  width: 65px;
 }
 
 img#portal {
@@ -142,7 +148,6 @@ img#portal {
   position: absolute;
   z-index: -1;
 }
-
 
 .color-change {
   filter: hue-rotate(44deg);
