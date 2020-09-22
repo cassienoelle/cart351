@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let defaultOverlay = document.getElementById("default-overlay");
   let destination = document.getElementById("destination");
 
+  defaultOverlay.style.display = "inline-block";
+  defaultOverlay.style.opacity = 1;
+
 
   // Click events for navigation icons
   // Portal colour changes and linked page title is displayed as "destination"
