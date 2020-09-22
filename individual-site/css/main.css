@@ -366,13 +366,16 @@ img.portal {
 
   .destination-display {
     grid-area: destination;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    text-align: left;
     font-size: 2em;
     font-family: "DM Mono", Courier, monospace;
     font-weight: 400;
     color: #931BF0;
+  }
+
+  .destination-tag {
+    width: 13ch;
   }
 
 }
