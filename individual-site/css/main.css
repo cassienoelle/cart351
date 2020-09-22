@@ -3,6 +3,10 @@
   --intro-link-color: #E0002E;
 }
 
+html, body {
+  margin: 0 auto;
+}
+
 body {
   font-family:"Roboto", Arial, sans-serif;
 }
@@ -159,7 +163,7 @@ a {
 }
 
 img.portal {
-  height: 80vh;
+  height: 75vh;
   position: absolute;
   z-index:-1;
   opacity: 0.3;
@@ -167,21 +171,19 @@ img.portal {
 
 .homepage-grid {
   display: grid;
-  height: 100%;
-  margin-right: 4em;
-  margin-left: 4em;
-  grid-template-columns: calc((90vw - 80vh)/2) 80vh calc((90vw - 80vh)/2);
-  grid-template-rows: auto;
+  width: inherit;
+  height: inherit;
+  grid-template-rows: 85% 15%;
   grid-template-areas:
-    ". nav ."
-    ". nav ."
-    ". nav destination"
+    "portal"
+    "destination";
 }
 
-nav {
-  grid-area: nav;
-  align-self: center;
-  justify-self:center;
+.portal-animation {
+  grid-area: portal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .category {
@@ -216,15 +218,18 @@ nav {
 
 .destination-display {
   grid-area: destination;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  margin: auto;
   font-size: 2em;
   width: 13ch;
-  border: 1px solid white;
+  height: 100%;
+  /* border: 1px solid white;*/
   font-family: "DM Mono", Courier, monospace;
   font-weight: 400;
   color: #931BF0;
+}
+
+.destination-tag {
+  margin: 0;
 }
 
 #destination {
@@ -234,7 +239,7 @@ nav {
 }
 
 .overlay {
-  height: 83vh;
+  height: 78vh;
   position: absolute;
   z-index: -2;
   display: inline-block;
@@ -309,34 +314,6 @@ nav {
     /* border: 1px solid blue; */
   }
 
-  .homepage-grid {
-  /*  display: grid;
-    height: 100%;
-    margin-right: 4em;
-    margin-left: 4em;
-  */
-    margin:auto;
-    grid-template-columns: 90vh;
-    grid-template-rows: 25% 25% 25% 25%;
-    grid-template-areas:
-      "."
-      "nav"
-      "nav"
-      "destination"
-  }
-
-  .destination-display {
-    grid-area: destination;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: left;
-    font-size: 2em;
-    font-family: "DM Mono", Courier, monospace;
-    font-weight: 400;
-    color: #931BF0;
-  }
-
 }
 
 @media screen and (min-width: 600px)  {
@@ -362,6 +339,14 @@ nav {
     /* border: 1px solid blue; */
   }
 
+  img.portal {
+    height: 80vh;
+  }
+
+  .overlay {
+    height: 83vh;
+  }
+
   .homepage-grid {
     display: grid;
     height: 100%;
@@ -370,9 +355,13 @@ nav {
     grid-template-columns: calc((90vw - 80vh)/2) 80vh calc((90vw - 80vh)/2);
     grid-template-rows: auto;
     grid-template-areas:
-      ". nav ."
-      ". nav ."
-      ". nav destination"
+      ". portal ."
+      ". portal ."
+      ". portal destination"
+  }
+
+  .portal-animation {
+    height: 100%;
   }
 
   .destination-display {
