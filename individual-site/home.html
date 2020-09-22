@@ -9,7 +9,8 @@
   <meta name="author" content="Cassie Smith">
 
   <link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|DM+Mono|Oxygen+Mono">
+  <script src="https://kit.fontawesome.com/72c511834d.js" crossorigin="anonymous"></script>
 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -24,26 +25,26 @@
     <div class="homepage-grid">
       <nav>
         <div class="category">
-          <img id="exercises" class="category-icon" src="assets/imgs/exercises.png" />
+          <a href="exercises.html" class="homepage-link"><img id="exercises" class="category-icon" src="assets/imgs/exercises.png" /></a>
         </div>
         <div class="category">
-          <img id="reflections" class="category-icon" src="assets/imgs/reflections.png" />
+            <a href="reflections.html" class="homepage-link"><img id="reflections" class="category-icon" src="assets/imgs/reflections.png" /></a>
         </div>
         <div class="category">
-          <img id="presentation" class="category-icon" src="assets/imgs/presentation.png" />
+            <a href="presentations.html" class="homepage-link"><img id="presentation" class="category-icon" src="assets/imgs/presentation.png" /></a>
         </div>
         <div class="category">
-          <img id="project" class="category-icon" src="assets/imgs/project.png" />
+            <a href="projects.html" class="homepage-link"><img id="project" class="category-icon" src="assets/imgs/project.png" /></a>
         </div>
         <div class="category">
-          <img id="about" class="category-icon" src="assets/imgs/about.png" />
+            <a href="about.html" class="homepage-link"><img id="about" class="category-icon" src="assets/imgs/about.png" /></a>
         </div>
       </nav>
 
       <div class="destination-display">
-        <p class="destination">exercises</p>
+        <p><span>destination: </span><span id="destination">unknown</span></p>
       </div>
-  </div>
+    </div>
 
     <img id="exercises-overlay" class="overlay" src="assets/imgs/overlay-exercises.png"/>
     <img id="reflections-overlay" class="overlay" src="assets/imgs/overlay-reflections.png"/>

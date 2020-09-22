@@ -1,19 +1,10 @@
 :root {
   --intro-title-color: #001628;
   --intro-link-color: #E0002E;
-  --project-hue: 44deg;
-  --exercises-hue:44deg;
-  --reflections-hue:44deg;
-  --presentation-hue:44deg;
-  --about-hue:44deg;
 }
 
 body {
   font-family:"Roboto", Arial, sans-serif;
-}
-
-.home {
-  background: #000000;
 }
 
 h2 {
@@ -21,6 +12,30 @@ h2 {
 }
 h3 {
   text-align: center;
+}
+
+.home {
+  background: #000000;
+}
+
+.exercises {
+  background: #70F04D;
+}
+
+.presentations {
+  background: #F09D65;
+}
+
+.projects {
+  background: #752DF0;
+}
+
+.reflections {
+  background: #20B8F0;
+}
+
+.about {
+  background: #F0629A;
 }
 
 a {
@@ -43,9 +58,18 @@ a {
   padding: 8%;
 }
 
+.fas {
+  font-size: 35px;
+  transition: font-size 250ms ease-out;
+}
+
+.fas:hover {
+  font-size: 37px;
+}
+
 
 #intro-title {
-  font-family: "DM Mono", Arial, monospace;
+  font-family: "DM Mono", Courier, monospace;
   font-size: 4em;
   color: var(--intro-title-color);
   text-align: left;
@@ -113,6 +137,9 @@ a {
   100% { width: 6ch; left: 0;}
 }
 
+/* Blinking cursor effect adapted from Artem Gordinsky:
+  https://codepen.io/ArtemGordinsky/pen/GnLBq */
+
 @keyframes "blink" {
   from, to {
     background: transparent;
@@ -129,6 +156,32 @@ a {
   50% {
     background: var(--intro-title-color);
   }
+}
+
+img.portal {
+  height: 80vh;
+  position: absolute;
+  z-index:-1;
+  opacity: 0.3;
+}
+
+.homepage-grid {
+  display: grid;
+  height: 100%;
+  margin-right: 4em;
+  margin-left: 4em;
+  grid-template-columns: calc((90vw - 80vh)/2) 80vh calc((90vw - 80vh)/2);
+  grid-template-rows: auto;
+  grid-template-areas:
+    ". nav ."
+    ". nav ."
+    ". nav destination"
+}
+
+nav {
+  grid-area: nav;
+  align-self: center;
+  justify-self:center;
 }
 
 .category {
@@ -153,39 +206,29 @@ a {
           drop-shadow(-1px -1px 0 black);
 }
 
-.category-icon:hover {
-  /* width: 65px;*/
+.category-icon:active {
+   width: 55px;
 }
 
-img.portal {
-  height: 80vh;
-  position: absolute;
-  z-index:-1;
-  opacity: 0.3;
-}
-
-.homepage-grid {
-  display: grid;
-  height: 100%;
-  margin-right: 4em;
-  margin-left: 4em;
-  grid-template-columns: 30vw 30vw 30vw;
-  grid-template-rows: auto;
-  grid-template-areas:
-    ". nav ."
-    ". nav ."
-    ". nav destination"
-}
-
-nav {
-  grid-area: nav;
-  align-self: center;
-  justify-self:center;
+.homepage-link {
+  margin: auto;
 }
 
 .destination-display {
   grid-area: destination;
-  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 2em;
+  font-family: "DM Mono", Courier, monospace;
+  font-weight: 400;
+  color: #931BF0;
+}
+
+#destination {
+  color: #ebebeb;
+  opacity: 0;
+  transition: opacity 300ms ease-in;
 }
 
 .overlay {
@@ -264,6 +307,34 @@ nav {
     /* border: 1px solid blue; */
   }
 
+  .homepage-grid {
+  /*  display: grid;
+    height: 100%;
+    margin-right: 4em;
+    margin-left: 4em;
+  */
+    margin:auto;
+    grid-template-columns: 90vh;
+    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-areas:
+      "."
+      "nav"
+      "nav"
+      "destination"
+  }
+
+  .destination-display {
+    grid-area: destination;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: left;
+    font-size: 2em;
+    font-family: "DM Mono", Courier, monospace;
+    font-weight: 400;
+    color: #931BF0;
+  }
+
 }
 
 @media screen and (min-width: 600px)  {
@@ -279,6 +350,7 @@ nav {
 @media screen and (min-width: 1000px) {
 
 
+
 }
 
 @media screen and (min-width: 1400px) {
@@ -286,6 +358,30 @@ nav {
   #intro-title {
     font-size: 6.5vw;
     /* border: 1px solid blue; */
+  }
+
+  .homepage-grid {
+    display: grid;
+    height: 100%;
+    margin-right: 4em;
+    margin-left: 4em;
+    grid-template-columns: calc((90vw - 80vh)/2) 80vh calc((90vw - 80vh)/2);
+    grid-template-rows: auto;
+    grid-template-areas:
+      ". nav ."
+      ". nav ."
+      ". nav destination"
+  }
+
+  .destination-display {
+    grid-area: destination;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 2em;
+    font-family: "DM Mono", Courier, monospace;
+    font-weight: 400;
+    color: #931BF0;
   }
 
 }
