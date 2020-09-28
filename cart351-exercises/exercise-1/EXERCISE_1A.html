@@ -37,39 +37,57 @@
   }
   </style>
   <script>
+
   window.onload = function(){
     console.log("testing");
 
+    // mouse click event handler
+    //
     let handleClick = (event) => {
+      // store class and id of event target
       let targetClass = event.target.className;
       let targetId = event.target.id;
+
+      // if the target is a box
       if (targetClass === "box") {
-        targetId = targetId.toUpperCase();
+        // show display text indicating which box it is
+        targetId = targetId.toUpperCase(); //
         displayText.textContent= "This is Text For Box " + targetId;
         displayText.style.display = "inline-block";
       }
+      // if the target is the display text
       else if (targetClass === "para" && targetId === "displayText") {
+        // clear text content and hide element
         displayText.textContent = "";
         displayText.style.display = "none";
       }
     }
 
+    // mouse over event handler
+    //
     let handlemouseOver = (event) => {
+      // if the target is a box, reduce opacity
       if (event.target.className === "box"){
         event.target.style.opacity = 0.5;
       }
     }
 
+    // mouse out event handler
+    //
     let handlemouseOut = (event) => {
+      // if the target is a box, increase opacity
       if (event.target.className === "box"){
         event.target.style.opacity = 1.0;
       }
     }
 
+    // add click event listener to display text paragraph element
     let displayText = document.getElementById("displayText");
      displayText.addEventListener('click', handleClick);
 
+    // get all elements with class "box"
     let allBoxes = document.getElementsByClassName("box");
+     // iterate through each box element and add event listeners
      for (let i = 0; i < allBoxes.length; i++) {
        allBoxes[i].addEventListener('click', handleClick);
        allBoxes[i].addEventListener('mouseover', handlemouseOver);

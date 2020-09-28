@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Draw a Rect </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+console.log("we are in the console running");
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+
+//set the global fill style
+context.fillStyle = "rgba(255,0,0,255)";
+}
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>

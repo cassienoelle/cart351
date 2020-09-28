@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Ellipse </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+//would usually be black
+context.fillStyle = "#8ED6FF"; // change the color we are using
+let xPos = canvas.width/2;
+let yPos = canvas.height/2;
+let radius  = 50;
+let startAngle = 0;
+let endAngle = Math.PI * 2 //full rotation
+
+
+context.strokeStyle = "#FF0000"; // change the color we are using
+context.beginPath();
+// arc (x,y,radius, startAngle,endAngle,isCounterClockwise)
+context.arc(xPos,yPos,radius,startAngle,endAngle, true);
+context.fill(); // set the fill
+context.lineWidth=5; //change stroke weight
+context.stroke(); // set the outline
+
+context.closePath(); //close a path ...
+
+//second - is just an arc
+context.beginPath();
+// arc (x,y,radius, startAngle,endAngle,isCounterClockwise)
+context.arc(xPos+100,yPos+200,radius,startAngle,endAngle - Math.PI, true);
+context.fillStyle = "#FF0000"; // change the color we are using
+context.fill(); // set the fill
+context.lineWidth=2; //change stroke weight
+context.strokeStyle = "#8ED6FF"; // change the color we are using
+context.stroke(); // set the outline
+
+context.closePath(); //close a path ...
+}
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>
