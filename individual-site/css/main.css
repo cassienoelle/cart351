@@ -303,7 +303,7 @@ img.portal {
   }
 }
 
-.exercise1 {
+.exercise1, .proposal {
   background-color: #000;
 }
 
@@ -320,6 +320,20 @@ img.portal {
   opacity: 0.3;
 }
 
+.proposal {
+  color: #ebebeb;
+}
+
+.proposal > h2, .proposal > h3 {
+  text-align: left;
+}
+
+.proposal.wrapper {
+  border: 1px solid yellow;
+  width: 70%;
+  max-width: 1000px;
+  height: 70%;
+}
 
 
 /* MEDIA QUERIES */
