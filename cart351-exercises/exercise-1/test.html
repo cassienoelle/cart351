@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>PRACTICE</title>
+    <meta charset="UTF-8">
+
+    <style>
+      .box {
+        border: 2px solid black;
+        width: 505px;
+        height: 505px;
+      }
+
+    </style>
+
+    <script src="CustomEllipse.js"></script>
+
+    <script>
+
+      window.onload = () => {
+
+        let canvas = document.getElementById("canvas");
+        let context = canvas.getContext("2d");
+
+        context.fillStyle = "#8307F5";
+        let x = canvas.width/2; // in center of canvas
+        let y = canvas.height/2;
+        let r = 100;
+        let sAngle = 0;
+        let eAngle = Math.PI * 2 // one full rotation
+
+        context.beginPath();
+        context.arc(x,y,r,sAngle,eAngle,true); //counter-clockwise
+        context.fill();
+        context.closePath();
+
+        let custom = new CustomCircShape(x,y,r/2,209,247,27,97,10,20,context,canvas,canvas)
+
+        requestAnimationFrame(run);
+         /*MAIN ANIMATION LOOP */
+        function run(){
+
+          custom.display();
+          custom.update();
+
+          requestAnimationFrame(run);
+        }
+
+
+;      }
+
+
+    </script>
+  </head>
+
+  <body>
+
+    <div class = "box"><canvas id = "canvas" width = 500 height = 500></canvas></div>
+
+  </body>
+
+
+</html>

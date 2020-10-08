@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+    <html lang="eng">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Cart 351 - Concordia University - Simple getUserMedia DEMO</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <script src="js/UserAudio.js"></script>
+        <script src="js/UserVideo.js"></script>
+        <script src="js/VideoToCanvas.js"></script>
+        <script src="js/main.js"></script>
+
+    <body>
+      <header>
+        <h1 class="header-text">MEDIA CAPTURE AND STREAMS API DEMO</h1>
+        <h2 class="header-text">Sylvain Tran, Cassie Smith, Janet Yi Ting Sun</h2>
+          <p><a href="https://github.com/peelingSun/cart351_api_presentation" id="github"> View Code And References On Github<a/></p>
+
+        <header/>
+        <!-- Begin get audio tutorial. -->
+        <section id="audioRecordTutorial">
+          <h1>Simple Audio Logger: Get Audio</h1>
+          <h2>Uses the Media Streams API + MediaStream Recording API (closely affiliated)</h2>
+          <h3>1. Create a media stream to capture or create DATA.</h3>
+          <p>This was done when you accepted to use your microphone and/or camera, depending on constraints passed to getUserMedia().</p>
+          <div id="microphone">
+              <audio id="audio"></audio>
+              <h3>2. Use the MediaStream Recording API to record audio (click on record microphone to record audio). File automatically downloads</h3>
+              <button class="start" id="audioStartButton">Record Audio</button>
+              <button class="stop" id="audioStopButton">Stop Record</button>
+          </div>
+        </section>
+        <!-- Begin get video tutorial. -->
+        <section id="videoRecordTutorial">
+          <h1>Simple Video Recorder: Get Video</h1>
+          <h3>1. Record video to be able to use it in a canvas later. File automatically downloads.</h3>
+
+          <!-- Used to capture and store video frames. -->
+          <div id="camera">
+              <video style="display: none;" id="video">
+                  Video stream not available.
+              </video>
+
+              <video id="videoTutorial">
+                  Video stream not available.
+              </video><br>
+              <button class="start" id="videoStartButton">Record Video</button>
+              <button class="stop" id="videoStopButton">Stop Record</button>
+          </div>
+        </section>
+          <!-- Video to canvas and pixel manipulation -->
+        <section id="videoCanvasTutorial">
+          <h1>Simple Manipulation With Canvas</h1>
+          <h3>1. Draw video stream to HTML5 canvas elements</h3>
+          <h3>2. Add effects using pixel manipulation</h3>
+          <div id="canvasGrid">
+            <div class="example">
+              <h3>No effects</h3>
+              <canvas class="canvas" id="c1" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Grayscale</h3>
+              <canvas class="canvas" id="c2" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Inverted</h3>
+              <canvas class="canvas" id="c3" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Patterns</h3>
+              <canvas class="canvas" id="c4" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Noise</h3>
+              <canvas class="canvas" id="c5" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Subtract</h3>
+              <canvas id="subtractCanvas" height="300"></canvas>
+            </div>
+            <div class="example">
+              <h3>Green Screen Canvas</h3>
+              <canvas id="greenScreenCanvas" height="300"></canvas>
+            </div>
+          </div>
+          <div class="output">
+        </section>
+    </body>
+
+</html>

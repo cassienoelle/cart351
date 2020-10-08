@@ -303,6 +303,23 @@ img.portal {
   }
 }
 
+.exercise1 {
+  background-color: #000;
+}
+
+.exercise-button {
+  font-size: 4em;
+  padding: 0.27em;
+}
+
+.ex-title {
+  text-align: center;
+  text-transform: uppercase;
+  color: #ebebeb;
+  margin: auto;
+  opacity: 0.3;
+}
+
 
 
 /* MEDIA QUERIES */

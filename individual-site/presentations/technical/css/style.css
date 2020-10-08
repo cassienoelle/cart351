@@ -1,0 +1,78 @@
+body {
+  font-family: "Roboto", Arial, sans-serif;
+  background: #000;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-size: 1.8em;
+}
+
+h2 {
+  text-transform: uppercase;
+  font-size: 1.4em;
+}
+
+header {
+  padding: 2em;
+}
+
+section {
+  width: 100%;
+  max-width: 630px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 50px;
+  padding: 25px;
+  border: 4px solid #ebebeb;
+  background: #fff;
+}
+
+#github {
+  color: #5A8CE8;
+}
+
+.header-text {
+  color: #fff;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  font-size: 110%;
+}
+
+#canvasGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: auto;
+}
+
+#microphone {
+  margin: auto;
+}
+
+button {
+  border: none;
+  padding: 15px;
+  text-transform: uppercase;
+}
+
+.start {
+  color: #fff;
+  background-color: #668A75;
+}
+
+.stop {
+  color: #fff;
+  background-color: #8A6362;
+}
+
+.example > h3 {
+  text-transform: uppercase;
+}
+
+#greenScreenCanvas {
+  background-image: url(../img/green_screen_bg.jpg);
+  background-repeat: no-repeat;
+}
