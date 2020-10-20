@@ -1,0 +1,14 @@
+#divWithExtStyle
+{
+  width: 200px;
+  height: 200px;
+  margin: 2px;
+  padding: 4px;
+  border-width:2px;
+  border-style:solid;
+  border-color:#ccc;
+  background-color:rgba(149, 0, 153,0.95);
+  font-size:14px;
+  color:#ffffff;
+  font-family:arial;
+ }

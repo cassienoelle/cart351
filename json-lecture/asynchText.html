@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+   <title>JSON LOAD ASYNCH EX</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+
+  $(document).ready(function(){
+    //get FIRST instance
+    let canvas  = $("#loadCanvas")[0];
+    console.log(canvas);
+    //start...
+    let context = canvas.getContext("2d");
+    let shapesList = [];
+
+    //add an initial shape
+    shapesList.push(new customShape(10,10,20,20));
+
+
+
+
+
+    // call our loading function ...(after the initial push)
+    // does the parsing for us!
+    $.getJSON('loadFiles/shapes.json',function(data) {
+        //success
+        //step 1: assign the result to a global variable
+        //step 2 ; log the result
+        dataFromJSON = data;
+        console.log(dataFromJSON);
+        //step 3::
+        // fill the array with values from JSON...
+        for(let j = 0; j<dataFromJSON.length; j++){
+          let shape = dataFromJSON[j];
+            shapesList.push(new customShape(parseInt(shape.x),parseInt(shape.y),parseInt(shape.w),parseInt(shape.h)));
+
+        }
+
+        })
+        //fail
+        .fail(function() {
+         console.log( "error" );
+        });
+
+
+
+
+
+   // start ani
+    requestAnimationFrame(loopAni);
+
+      function loopAni(){
+      context.clearRect(0,0,canvas.width,canvas.height);
+
+      //draw ::
+      for(let i =0; i<shapesList.length; i++){
+        shapesList[i].display();
+      }
+
+      requestAnimationFrame(loopAni);
+
+    }
+
+    function customShape(x,y,w,h){
+      this.x = x;
+      this.y = y;
+      this.w =w;
+      this.h =h;
+      this.display  = function(){
+        context.fillStyle = "rgba(149, 0, 153,0.95)";
+        context.fillRect(this.x,this.y,this.w,this.h);
+      }
+    }
+  });
+
+
+  </script>
+ </head>
+  <body>
+    <div style = "background:#eeeeee;width:75%;margin-left:12%; padding:1%;">
+     <canvas style = "background:black" id = "loadCanvas" width = 500 height =500></canvas>
+   </div>
+</body>
+</html>

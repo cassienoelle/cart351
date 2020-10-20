@@ -42,7 +42,7 @@ h3 {
   background: #F0629A;
 }
 
-a {
+#intro-link {
   color: var(--intro-title-color);
   text-decoration: none;
 }
@@ -54,7 +54,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden;*/
 }
 
 .wrapper {
@@ -303,8 +303,8 @@ img.portal {
   }
 }
 
-.exercise1, .proposal {
-  background-color: #000;
+.exercise1{
+  background-color: #101010;
 }
 
 .exercise-button {
@@ -321,7 +321,9 @@ img.portal {
 }
 
 .proposal {
-  color: #ebebeb;
+  color: #101010;
+  background-color:#ebebeb;
+  line-height: 1.5em;
 }
 
 .proposal > h2, .proposal > h3 {
@@ -329,12 +331,42 @@ img.portal {
 }
 
 .proposal.wrapper {
-  border: 1px solid yellow;
+/*  border: 1px solid yellow;*/
   width: 70%;
   max-width: 1000px;
-  height: 70%;
+  height: auto;
+  margin: auto;
+
 }
 
+.intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3em;
+
+}
+
+a {
+  color: #4777F0;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #568EF5;
+}
+
+.red {
+  color: #D04FF0;
+}
+
+.storyboard {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.storyboard-wide {
+  width: 100%;
+}
 
 /* MEDIA QUERIES */
 

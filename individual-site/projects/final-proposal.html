@@ -18,16 +18,92 @@
 
 <body class="proposal">
 
-  <div class="container">
     <div class="proposal wrapper">
-      <h1>Final Project Proposal</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non orci a orci aliquet porta. Donec sed purus a justo ornare vulputate. Phasellus id velit rhoncus, auctor elit ut, eleifend justo. Suspendisse potenti. Quisque rutrum vitae enim at accumsan. Vestibulum eu vestibulum elit. Maecenas ac erat ut leo mollis lobortis sed sed neque. Donec in gravida enim, non tempus risus. Quisque ut vestibulum urna. Praesent tempor rutrum augue in posuere.
-      </p>
-      <p>
-        Nam tempus blandit tortor, sit amet porttitor dolor dapibus ut. Proin bibendum ut orci vitae interdum. Nunc ut erat quis tortor vestibulum elementum. Donec sed tincidunt nulla. In in mi aliquam, porttitor ipsum id, pellentesque nulla. Ut dictum quam at metus laoreet, porttitor fringilla diam pretium. Suspendisse accumsan scelerisque varius. Vivamus et convallis nunc, non ultricies nunc. Nam pulvinar interdum arcu, id posuere nisl. Donec vel eros ipsum. Donec nunc sem, feugiat eget laoreet ac, ultricies eu felis.
-      </p>
-    </div>
+      <h1>Final Project Proposal: <em>COLLECTIVE CATHARSIS</em></h1>
+      <p> <strong class="red">Keywords:</strong> <br/> SOUND/SONIFICATION, MOVEMENT, CATHARSIS, COMMUNITY, ACCESSIBILITY</p>
+<h2>INTRO</h2>
+<div class="intro">
+<div>
+<p>The pandemic has severely restricted our movement(s) and access to community. Its accelerationist effects have thrown into sharp relief the benefits and shortcomings of the systems and structures that shape our lives. </p>
+
+  <p>For decades we have collectively excruciated over the role of virtual networks, and whether they enhance or undermine human connection. Now, they have become even more central to daily existence. We have never been more interconnected, yet more isolated, constantly bombarded with stress, personal tragedy and political farce.  With few outlets for relief, we find ourselves physically cut off from each other and from  <strong class="red">spaces of collective catharsis and healing</strong>.</p>
+
+<p style="font-size: 1.2em;">This lead me to consider what defines such spaces? What role is played by the senses, by particular experiences of embodiment? And, to what degree, then, is physical co-presence necessary?</p>
+
+<p>In <a href="https://www.jstor.org/stable/44368905?seq=1">Liberating Movements: Sensing and Managing Emotions in the Dance of the Spider</a>, Åsa Trulsson examines the practice of the pizzica tarantata, a ritual of music and dance which was performed in ancient times to heal the bite of the tarantula. In modern times, the ritual purpose of the pizzica tarantata has become more generally curative; Trulsson describes how its <strong class="red">"deep emotional quality…is located in an intersubjectively shared space of music and movement"</strong>.  </p>
+
+  <p>The ritual generates "a collective and public outburst of emotions, [offering] a space where different experiences can be reworked and articulated, which applies both to a particular trauma and more diffuse changes in the lifeworld."</p>
+  <p>"Moreover, the ritual itself allows participants to experiment with body use, sensorial engagement with other bodies, and personal meaning-making, which can all be used consciously to orient the self to healing, spiritual experiences or other desired states.”</p>
+
+<p>I reworked this through the immediate experiences of my own life and focused on the role played by <strong class="red">shared space</strong>, <strong class="red">sound</strong> and <strong class="red">movement</strong> as pathways to collective emotional catharsis.</p>
+</div>
+<div>
+<p>In the queer community, the dance floor is an important space of ritual healing. Queer dance parties often double as community fundraisers, while at the same time remaining accessible through entry fees that are PWYC (pay what you can) or NOTAFLOF (no-one turned away for lack of funds). During the pandemic there have been efforts to revive these spaces as virtual events. However, they fall flat, lacking a tangible interactive element without the experience of shared physical space and <strong class="red">“sensorial engagement with other bodies”</strong>.</p>
+
+<p>The practice of collaborative musical creation and performance is another outlet for collective expression and the generation of shared meaning. However it has also been complicated by the pandemic. Musicians trying to play together over virtual networks face a number of technical barriers, including issues with latency and a lack of equipment. </p>
+  <p>Of course, not everyone is a musician. Many people do not have the resources, time, desire to learn how to play an instrument or use a complex digital audio workstation. Yet, I believe many people would benefit from the kind of emotional release that comes with creatively expressing oneself through sound and music.</p>
+
+<p style="font-size: 1.2em;">What about simpler virtual instruments? </p>
+<p>Many do exist, and recently - seemingly in response to the pandemic - a number of new collaborative music-making apps have been developed. However, in the absence of specialized MIDI or game controllers, they typically have interfaces that require you to repeatedly click a mouse, press a key, tap, swipe, drag your finger across a touch-screen to generate sounds. </p>
+  <p>The interaction is limited to precise, controlled movements, localized in the fingers, hands and wrists. The scale of these physical gestures is small, focused ever inward towards the screen. Such interfaces and instruments do not engage the whole body in the way more traditional physical instruments do (via more expansive combinations of movement, breath and tactile sensing).</p>
+</div>
+</div>
+<hr>
+<h2> MY PROPOSED PROJECT</h2>
+<div class="intro">
+  <div>
+<p>How then, to generate a virtual “<strong class="red">intersubjectively shared space of [sound] and movement</strong>” that can lead to a moment of collective catharsis? And how to achieve this through a two-dimensional interface that lacks the immersive qualities of VR?</p>
+
+<p>My concept grew out of a previous work I did for CART-263, called <a href="https://cassienoelle.github.io/cart263-2019/projects/project3/">Face The Music</a>. It uses PoseNet, a machine learning model for performing human pose estimation in the browser, to track the user's position in the webcam. </p>
+
+  <p>A simple beat is generated according to the distance between facial keypoints (ears, eyes, mouth). The tempo changes as the user's face gets closer to or further from the camera. I also created an organ instrument for each hand/wrist. Music is generated according to a pentatonic scale depending on the location of the user's hands on the canvas. </p>
+
+    <p>By moving around in an almost dance, it's possible to generate a relatively lush ambient soundscape. The nature of the movement-based interaction was inspired by classic works such as David Rokeby's <em>Very Nervous System</em>.</p>
+</div>
+<div>
+<p>For CART-351 I want to update and improve this very simple implementation and make a networked space for real-time, collaborative sound experimentation and music generation. Users can "jam" together, playing different virtual instruments through a webcam interface that tracks their movements with PoseNet. They would have the option to record the output and download it or share it on the site.</p>
+
+<p>My goal is not necessarily to create virtual analogs of recognizable instruments like the piano or guitar. I want the instruments to be unique, simple and intuitive to play, engaging the whole body, so that there is an element of dance or fluid, movement-based expression tied to the sound. Almost as if the body itself was the instrument.</p>
+
+<p>Ideally, users would be able to customize their own instruments using a modular set of sound "objects" or that could be moved around the canvas. For example, when the position of the users hand crosses the position of the object, a sound is generated. There would be the option to link different sounds to the objects.</p>
+
+<p>To enable this feature, the site would include a collaborative sound library. Users could choose from default sounds, upload sound files, or record their own. New sounds would be saved in the database for other users to experiment with.</p>
+</div>
+</div>
+<div class="intro">
+  <div>1. <img src="../assets/imgs/storyboard2.png" class="storyboard" /></div>
+  <div>2. <img src="../assets/imgs/storyboard3.png" class="storyboard"/></div>
+</div>
+<div class="intro">
+  <div>3. <img src="../assets/imgs/storyboard-4.png" class="storyboard" /></div>
+  <div>4. <img src="../assets/imgs/storyboard1.png" class="storyboard"/></div>
+</div>
+<div>5. <img src="../assets/imgs/storyboard5.png" class="storyboard-wide" /></div>
+
+<h2> OTHER WORKS</h2>
+
+<h3>1. <br/><a href="https://theremin.app/">Theremix</a> <br/>Richard Yee</h3>
+
+<p>Theremix is a web app designed by Richard Yee to celebrate the 100th anniversary of the theremin (invented by Léon Theremin in 1920). Users control a virtual theremin through mouse/touch inputs, or with touchless gestures using their webcam. The touchless interface mimics the experience of playing a physical theremin. Amplitude is increased by moving towards the right antenna, and frequency by moving towards the left. There is also the option to use Theremix as a MIDI controller (currently in beta).</p>
+
+<p>Webcam controls are enabled by PoseNet. PoseNet is built on TensorFlow.js and is a part of the ml5.js project, which aims to make machine learning accessible to a wide range of creators. Sound is powered by Tone.js, a Web Audio framework for creating interactive music in the browser.  Visuals are created with Pixi.js, a 2D WebGL rendering library.</p>
+
+<h3>2. <br/><a href="https://www.kagura.cc/pro/">Kagura</a><br/>Shikumi Design</h3>
+
+<p>Kagura is a desktop application billed as a “revolutionary digital instrument that lets you make music simply by gesturing”. Kagura Pro allows users to choose from one of several preset digital instruments or customize their own "sound sets" using a drag and drop interface. Elements of each sound set are controlled using different touchless gestures. The software can be used with just a webcam or paired with Intel RealSense technology. When used with a RealSense camera, a 3D interface is enabled, which supports more complex gesture controls. Kagura can also be used as a MIDI controller and paired with a full DAW.</p>
+
+<p>Kagura Pro is marketed towards DJs, musicians and dancers, and Kagura Solo for non-professional use. A recreational all-ages app called Kagura Player is also available as a simple version of the software. It has no customizable features and comes with a library of preset songs.</p>
+
+<p></p>
+
+<h3>3. <br/><a href="https://endlesss.fm/">Endlesss</a><br/>Tim Shaw</h3>
+
+<p>Endlesss is a recently released digital audio workstation for iOS. Its touch interface allows users to create and share loops (including using audio recorded on their phone). User inputs can be quantized (locked into an existing temp), allowing users to collaborate on each other's loops and jam live. Because I don't have an iPhone, I unfortunately wasn't able explore the app beyond what is on their website and a couple of articles online.</p>
+
+<h2>CONCLUSION</h2>
+
+<p>There are strong benefits to each of the examples I chose. However, they either provide a more intuitive, movement-based interface that tracks the position of the user's body, <em>or</em> they facilitate collaboration, but not both. My goal is to create something that allows for real-time collaboration between users, while also blending movement and sound into a multisensorial experience (the body as instrument). To again quote Trulsson, I aim to create <strong class="red">"an intersubjectively shared space of music and movement"</strong>. My hope is that the disembodied nature of non-immersive virtual spaces can be partially overcome by engaging the full body in a manner akin to dance, and by closely tying together the generation of movement and sound in a continuous co-creation and feedback loop with another human body. In doing so it may be possible to access something more akin to the <strong class="red">feeling</strong> of co-presence.
+
   </div>
 
 
