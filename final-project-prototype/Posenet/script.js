@@ -4,31 +4,31 @@ $(document).ready(function() {
 
   console.log("ready");
 
-  camera.init({
-  	width: 640, // default: 640
-  	height: 480, // default: 480
-  	fps: 30, // default: 30
-    mirror: true,  // default: false
+  function hasGetUserMedia() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  }
+  if (hasGetUserMedia()) {
+    // Success!
+  }
+  else {
+    alert('getUserMedia() is not supported by your browser');
+  }
 
-  	onFrame: function(canvas) {
-  		// do something with image data found in the canvas argument
-  	},
+  const constraints = {
+    video: true
+  }
 
-  	onSuccess: function() {
-      console.log("success");
-  		// stream succesfully started, yay!
-  	},
+  let video = document.querySelector('video');
+  let canvas = document.querySelector('canvas');
 
-  	onError: function(error) {
-      console.log("error");
-  		// something went wrong on initialization
-  	},
+  navigator.mediaDevices.getUserMedia(constraints).
+    then((stream) => {video.srcObject = stream});
 
-  	onNotSupported: function() {
-      console.log("not supported");
-  		// instruct the user to get a better browser
-  	}
-  });
+  let videoToCanvas = new VideoToCanvas();
+  videoToCanvas.init(video, canvas);
+  videoToCanvas.linkToVideo();
+  $('video').hide();
+
 
 /*
   //ANIMATION CODE
