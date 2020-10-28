@@ -20,6 +20,7 @@ body{
 
 .flex-container > .aCell {
   width:18%;
+  min-width: 200px;
   background-color: white;
   margin:1%;
 }
@@ -76,6 +77,49 @@ function getFlicker()
 
   let searchItem = $("#searchText").val();
   console.log(searchItem);
+  let flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+
+  $.getJSON(flickerAPI, {tags: searchItem,tagmode: "any",format: "json"},displayResults)
+      //fail
+      .fail(function() {
+        console.log( "error" );
+      });
+      // getJSON
+
+      /**** function callback to display results ***/
+      function displayResults(results){
+        //1:: results object is GIVEN automatically :)
+        console.log(results);
+      // only do the title the first time ...
+        if(firstTime){
+        $('<h1> RESULTS FROM FLICKR:::</h1>').insertBefore('#images');
+         firstTime =false;
+       }
+
+      // go through this results object -> using the favorite for loop ...
+      let maxNum = 10;//want only 10
+      if(results.items.length<10){
+        maxNum = results.items.length;
+      }
+        for(let i=0; i<maxNum; i++)
+        {
+
+            let item = results.items[i];
+
+            console.log(item.media.m);
+            // make a custom id
+            $('<div>').attr("id","container"+i).appendTo("#images");
+            // add a class
+            $("#container"+i).addClass("aCell");
+            // add title
+            $("<p>").html(item.title).appendTo("#container"+i).addClass("itemTitle");
+            //add the image
+            $('<img>').attr("src",item.media.m).appendTo("#container"+i);
+            // only show up to 10 images
+
+        }//for
+      }
+
 }//function
 
 
