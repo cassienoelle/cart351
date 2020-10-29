@@ -44,9 +44,19 @@ let VideoToCanvas = function() {
             // Draw an image using the context and the video element as source
             context.drawImage(images, 0, 0, width, height);
 
-            context.fillStyle = "rgba(255,0,0,255)";
-            context.fillRect(this.canvas.width/2,this.canvas.height/2,50,50);
-            context.clearRect(this.canvas.width/2,this.canvas.height/2,50,50);
+            context.fillStyle = "rgb(255,0,0)";
+            context.fillRect(100,100,50,50);
+
+            // Loop through poses detected
+            for (let i = 0; i < poses.length; i++)  {
+              // Select wrist keypoints, pass position to variables
+              let leftWrist = poses[i].pose.keypoints[9];
+              //let rightWrist = poses[i].pose.keypoints[10].position;
+              if (leftWrist.score > 0.2) {
+                context.fillStyle = "rgb(0,0,255)";
+                context.fillRect(leftWrist.position.x,leftWrist.position.y,25,25);
+              }
+            }
         }
 
     }
