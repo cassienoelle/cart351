@@ -1,73 +1,76 @@
 "use strict";
+// Copyright (c) 2019 ml5
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 
-// Canvas and camera variables
-let canvas;
+/* ===
+ml5 Example
+PoseNet example using p5.js
+=== */
+
 let video;
-let videoWidth, videoHeight;
-// Pose tracking variables
 let poseNet;
 let poses = [];
-let smoothing = [];
 
 function setup() {
-
-  // videoWidth = 800;
-  // videoHeight = 800;
-
-  // Setup canvas and webcam feed
-  canvas = createCanvas(800, 800);
+  createCanvas(640, 480);
   video = createCapture(VIDEO);
-  video.size(800, 800);
-  video.hide();
+  video.size(width, height);
 
-  // Initialize PoseNet
-  // Fill poses array with results every time a new pose is detected
-  poseNet = ml5.poseNet(video, {minConfidence: 0.5, scoreThreshold: 0.5, detectionType: 'single'}, modelReady);
-  poseNet.on('pose', results => {
+  // Create a new poseNet method with a single detection
+  poseNet = ml5.poseNet(video, modelReady);
+  // This sets up an event that fills the global variable "poses"
+  // with an array every time new poses are detected
+  poseNet.on('pose', function(results) {
     poses = results;
-    console.log(poses);
   });
+  // Hide the video element, and just show the canvas
+  video.hide();
+}
 
-  function modelReady() {
-    console.log('Model Loaded');
-  }
-
+function modelReady() {
+  console.log("model loaded");
 }
 
 function draw() {
+  image(video, 0, 0, width, height);
 
-  videoToCanvas();
-  trackWrist();
-
+  // We can call both functions to draw all keypoints and the skeletons
+  drawKeypoints();
+  drawSkeleton();
 }
 
-function videoToCanvas() {
-  // Display webcam video as image on canvas
-  // Flip horizontally
-  translate(width, 0);
-  scale(-1, 1);
-  image(video, 0, 0);
+// A function to draw ellipses over the detected keypoints
+function drawKeypoints()  {
+  // Loop through all the poses detected
+  for (let i = 0; i < poses.length; i++) {
+    // For each pose detected, loop through all the keypoints
+    let pose = poses[0].pose;
+    for (let j = 0; j < pose.keypoints.length; j++) {
+      // A keypoint is an object describing a body part (like rightArm or leftShoulder)
+      let keypoint = pose.keypoints[j];
+      // Only draw an ellipse is the pose probability is bigger than 0.2
+      if (keypoint.score > 0.2) {
+        fill(255, 0, 0);
+        noStroke();
+        ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+      }
+    }
+  }
 }
 
-function trackWrist() {
-  // Loop through poses detected
-  for (let i = 0; i < poses.length; i++)  {
-    // Select wrist keypoints, pass position to variables
-    let leftWrist = poses[i].pose.keypoints[9];
-    console.log(leftWrist);
-    //let rightWrist = poses[i].pose.keypoints[10];
-
-    let c = color(255, 204, 0);
-    fill(c);
-
-    if (leftWrist.score > 0.1)  {
-      circle(leftWrist.position.x,leftWrist.position.y,50);
+// A function to draw the skeletons
+function drawSkeleton() {
+  // Loop through all the skeletons detected
+  for (let i = 0; i < poses.length; i++) {
+    let skeleton = poses[0].skeleton;
+    // For every skeleton, loop through all body connections
+    for (let j = 0; j < skeleton.length; j++) {
+      let partA = skeleton[j][0];
+      let partB = skeleton[j][1];
+      stroke(255, 0, 0);
+      line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
     }
-    /*
-    if (rightWrist.score > 0.1) {
-      circle(rightWrist.x,rightWrist.y,50);
-    }
-    */
-
   }
 }
