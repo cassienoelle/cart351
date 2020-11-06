@@ -66,7 +66,10 @@ function draw() {
     console.log(trackKeypoints(leftWrist)[0]);
     console.log(trackKeypoints(leftWrist)[1]);
 
+    console.log(checkPosition(trackKeypoints(leftWrist)[0], trackKeypoints(leftWrist)[1]));
+
     if (checkPosition(trackKeypoints(leftWrist)[0], trackKeypoints(leftWrist)[1]) === true) {
+      console.log('OVERLAP');
       if (!played) {
         //play a middle 'C' for the duration of an 8th note
         synth.triggerAttackRelease("C4", "8n");
@@ -77,6 +80,7 @@ function draw() {
         played = false;
       }
     }
+
   }
 
 
@@ -88,8 +92,10 @@ function draw() {
 function checkPosition(x, y) {
   let keyX = x;
   let keyY = y;
-  if (keyX > (eX - eW/2) && mouseX < (eX + eW/2) ) {
-    if (keyY > (eY -eW/2) && mouseY < (eY + eW/2) ) {
+  fill(0,255,0);
+  ellipse(keyX, keyY, 50, 50);
+  if (keyX > (eX - eW/2) && keyX < (eX + eW/2) ) {
+    if (keyY > (eY -eW/2) && keyY < (eY + eW/2) ) {
       return true;
     }
   } else {
