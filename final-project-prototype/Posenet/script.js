@@ -12,6 +12,13 @@ PoseNet example using p5.js
 let video;
 let poseNet;
 let poses = [];
+let synth;
+
+let eX;
+let eY;
+let eW;
+
+let played = false;
 
 function setup() {
   createCanvas(640, 480);
@@ -27,6 +34,14 @@ function setup() {
   });
   // Hide the video element, and just show the canvas
   video.hide();
+
+  // Instrument setup
+  //create a synth and connect it to the main output (your speakers)
+  synth = new Tone.Synth().toDestination();
+
+  eX = width/2;
+  eY = height/2;
+  eW = 50;
 }
 
 function modelReady() {
@@ -34,11 +49,44 @@ function modelReady() {
 }
 
 function draw() {
+  translate(width, 0);
+  scale(-1, 1);
   image(video, 0, 0, width, height);
 
+  fill(255, 0, 0);
+  noStroke();
+  ellipse(eX, eY, eW, eW);
+
+  if (checkMousePosition() === true) {
+    if (!played) {
+      //play a middle 'C' for the duration of an 8th note
+      synth.triggerAttackRelease("C4", "8n");
+      played = true;
+    }
+  } else if (checkMousePosition() === false) {
+    if (played) {
+      played = false;
+    }
+  }
+
+
   // We can call both functions to draw all keypoints and the skeletons
-  drawKeypoints();
-  drawSkeleton();
+  //drawKeypoints();
+  //drawSkeleton();
+}
+
+function mouseReleased() {
+
+}
+
+function checkMousePosition() {
+  if (mouseX > (eX - eW/2) && mouseX < (eX + eW/2) ) {
+    if (mouseY > (eY -eW/2) && mouseY < (eY + eW/2) ) {
+      return true;
+    }
+  } else {
+    return false;
+  }
 }
 
 // A function to draw ellipses over the detected keypoints
