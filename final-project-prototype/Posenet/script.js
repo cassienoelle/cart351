@@ -18,8 +18,31 @@ let eX;
 let eY;
 let eW;
 
-let leftWrist = 9;
-let rightWrist = 10;
+let wrist;
+let elbow;
+let armspan;
+
+let kf;
+
+const POSENET_KEYPOINTS = {
+  nose: 0,
+	leftEye: 1,
+	rightEye: 2,
+	leftEar: 3,
+	rightEar: 4,
+	leftShoulder: 5,
+	rightShoulder: 6,
+	leftElbow: 7,
+	rightElbow: 8,
+	leftWrist: 9,
+	rightWrist: 10,
+	leftHip: 11,
+	rightHip: 12,
+	leftKnee: 13,
+	rightKnee: 14,
+	leftAnkle: 15,
+	rightAnkle: 16
+};
 
 let played = false;
 
@@ -45,6 +68,7 @@ function setup() {
   eX = width/2;
   eY = height/2;
   eW = 50;
+
 }
 
 function modelReady() {
@@ -56,19 +80,35 @@ function draw() {
   scale(-1, 1);
   image(video, 0, 0, width, height);
 
+
   fill(0, 0, 255);
   noStroke();
   ellipse(eX, eY, eW, eW);
 
+  wrist = trackKeypoint(POSENET_KEYPOINTS.leftWrist);
+  elbow = trackKeypoint(POSENET_KEYPOINTS.leftElbow);
+
+  if (wrist !== undefined && elbow !== undefined) {
+
+    armspan = getDistance(
+      trackKeypoint(POSENET_KEYPOINTS.leftWrist),
+      trackKeypoint(POSENET_KEYPOINTS.leftElbow)
+    );
+
+    console.log ("armspan: " + armspan);
+
+  }
 
 
-  if (trackKeypoints(leftWrist) !== undefined) {
-    console.log(trackKeypoints(leftWrist)[0]);
-    console.log(trackKeypoints(leftWrist)[1]);
 
-    console.log(checkPosition(trackKeypoints(leftWrist)[0], trackKeypoints(leftWrist)[1]));
+/*
+  if (trackKeypoint(POSENET_KEYPOINTS.leftWrist) !== undefined) {
+    console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x);
+    console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).y);
 
-    if (checkPosition(trackKeypoints(leftWrist)[0], trackKeypoints(leftWrist)[1]) === true) {
+    console.log(checkPosition(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x, trackKeypoint(POSENET_KEYPOINTS.leftWrist).y));
+
+    if (checkPosition(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x, trackKeypoint(POSENET_KEYPOINTS.leftWrist).y) === true) {
       console.log('OVERLAP');
       if (!played) {
         //play a middle 'C' for the duration of an 8th note
@@ -82,6 +122,7 @@ function draw() {
     }
 
   }
+  */
 
 
   // We can call both functions to draw all keypoints and the skeletons
@@ -103,21 +144,6 @@ function checkPosition(x, y) {
   }
 }
 
-function trackKeypoints(key) {
-  let currentKey = key;
-  // Loop through all the poses detected
-  for (let i = 0; i < poses.length; i++) {
-    // For each pose detected, loop through all the keypoints
-    let pose = poses[0].pose;
-    let keypoint = pose.keypoints[key];
-    if (keypoint.score > 0.1) {
-      fill(255, 0, 0);
-      noStroke();
-      ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
-      return [keypoint.position.x, keypoint.position.y];
-    }
-  }
-}
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints()  {

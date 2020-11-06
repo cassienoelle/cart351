@@ -1,0 +1,31 @@
+calibration
+determine armspan
+setTimeout for calibration
+
+reset keypoints every x seconds in case they get stuck / lost
+
+
+
+
+
+
+poseNetRes
+
+Response
+The res object represents the HTTP response that an Express app sends when it gets an HTTP request.
+
+In this documentation and by convention, the object is always referred to as res (and the HTTP request is req) but its actual name is determined by the parameters to the callback function in which you’re working.
+
+For example:
+
+app.get('/user/:id', function (req, res) {
+  res.send('user ' + req.params.id)
+})
+But you could just as well have:
+
+app.get('/user/:id', function (request, response) {
+  response.send('user ' + request.params.id)
+})
+The res object is an enhanced version of Node’s own response object and supports all built-in fields and methods.
+
+https://expressjs.com/en/api.html
