@@ -69,6 +69,11 @@ function setup() {
   eY = height/2;
   eW = 50;
 
+  kf = new KalmanFilter();
+  console.log(kf.filter(3));
+  console.log(kf.filter(2));
+  console.log(kf.filter(1));
+
 }
 
 function modelReady() {
@@ -85,6 +90,8 @@ function draw() {
   noStroke();
   ellipse(eX, eY, eW, eW);
 
+  /*
+
   wrist = trackKeypoint(POSENET_KEYPOINTS.leftWrist);
   elbow = trackKeypoint(POSENET_KEYPOINTS.leftElbow);
 
@@ -98,7 +105,7 @@ function draw() {
     console.log ("armspan: " + armspan);
 
   }
-
+*/
 
 
 /*
