@@ -18,6 +18,9 @@ let eX;
 let eY;
 let eW;
 
+let leftWrist = 9;
+let rightWrist = 10;
+
 let played = false;
 
 function setup() {
@@ -53,19 +56,26 @@ function draw() {
   scale(-1, 1);
   image(video, 0, 0, width, height);
 
-  fill(255, 0, 0);
+  fill(0, 0, 255);
   noStroke();
   ellipse(eX, eY, eW, eW);
 
-  if (checkMousePosition() === true) {
-    if (!played) {
-      //play a middle 'C' for the duration of an 8th note
-      synth.triggerAttackRelease("C4", "8n");
-      played = true;
-    }
-  } else if (checkMousePosition() === false) {
-    if (played) {
-      played = false;
+
+
+  if (trackKeypoints(leftWrist) !== undefined) {
+    console.log(trackKeypoints(leftWrist)[0]);
+    console.log(trackKeypoints(leftWrist)[1]);
+
+    if (checkPosition(trackKeypoints(leftWrist)[0], trackKeypoints(leftWrist)[1]) === true) {
+      if (!played) {
+        //play a middle 'C' for the duration of an 8th note
+        synth.triggerAttackRelease("C4", "8n");
+        played = true;
+      }
+    } else {
+      if (played) {
+        played = false;
+      }
     }
   }
 
@@ -75,17 +85,31 @@ function draw() {
   //drawSkeleton();
 }
 
-function mouseReleased() {
-
-}
-
-function checkMousePosition() {
-  if (mouseX > (eX - eW/2) && mouseX < (eX + eW/2) ) {
-    if (mouseY > (eY -eW/2) && mouseY < (eY + eW/2) ) {
+function checkPosition(x, y) {
+  let keyX = x;
+  let keyY = y;
+  if (keyX > (eX - eW/2) && mouseX < (eX + eW/2) ) {
+    if (keyY > (eY -eW/2) && mouseY < (eY + eW/2) ) {
       return true;
     }
   } else {
     return false;
+  }
+}
+
+function trackKeypoints(key) {
+  let currentKey = key;
+  // Loop through all the poses detected
+  for (let i = 0; i < poses.length; i++) {
+    // For each pose detected, loop through all the keypoints
+    let pose = poses[0].pose;
+    let keypoint = pose.keypoints[key];
+    if (keypoint.score > 0.1) {
+      fill(255, 0, 0);
+      noStroke();
+      ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+      return [keypoint.position.x, keypoint.position.y];
+    }
   }
 }
 
