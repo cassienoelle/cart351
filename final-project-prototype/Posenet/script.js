@@ -23,6 +23,9 @@ let elbow;
 let armspan;
 
 let kf;
+let testArray = [];
+let fivePositions = [];
+let currentAverage = [0, 0];
 
 const POSENET_KEYPOINTS = {
   nose: 0,
@@ -89,6 +92,24 @@ function draw() {
   fill(0, 0, 255);
   noStroke();
   ellipse(eX, eY, eW, eW);
+
+  wrist = trackKeypoint(POSENET_KEYPOINTS.leftWrist);
+  elbow = trackKeypoint(POSENET_KEYPOINTS.leftElbow);
+
+  if (wrist !== undefined) {
+    fivePositions = toArray(wrist, fivePositions);
+    if (fivePositions.length > 4) {
+      console.log("fivePositions: " + fivePositions);
+      currentAverage = averagePos(fivePositions);
+      console.log("averageX: " + currentAverage[0]);
+      console.log("averageY: " + currentAverage[1]);
+    }
+  }
+
+  fill(0, 255, 0);
+  ellipse(currentAverage[0], currentAverage[1], 100, 100);
+
+
 
   /*
 
