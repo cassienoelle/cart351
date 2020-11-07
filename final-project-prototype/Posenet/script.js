@@ -1,86 +1,176 @@
 "use strict";
-// Copyright (c) 2019 ml5
-//
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
-/* ===
-ml5 Example
-PoseNet example using p5.js
-=== */
 
 let video;
 let poseNet;
 let poses = [];
-let synth;
-
-let eX;
-let eY;
-let eW;
-
-let wrist;
-let elbow;
-let armspan;
-
-let kf;
-let testArray = [];
-let fivePositions = [];
-let currentAverage = [0, 0];
-
-const POSENET_KEYPOINTS = {
-  nose: 0,
-	leftEye: 1,
-	rightEye: 2,
-	leftEar: 3,
-	rightEar: 4,
-	leftShoulder: 5,
-	rightShoulder: 6,
-	leftElbow: 7,
-	rightElbow: 8,
-	leftWrist: 9,
-	rightWrist: 10,
-	leftHip: 11,
-	rightHip: 12,
-	leftKnee: 13,
-	rightKnee: 14,
-	leftAnkle: 15,
-	rightAnkle: 16
+let amt = 0.4; // lerp amount
+let smoothPoseKeypoints = [];
+let smoothPose = {
+  nose: {
+    i: 0,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftEye: {
+    i: 1,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightEye: {
+    i: 2,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftEar: {
+    i: 3,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightEar: {
+    i: 4,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftShoulder: {
+    i: 5,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightShoulder: {
+    i: 6,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftElbow: {
+    i: 7,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightElbow: {
+    i: 8,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftWrist: {
+    i: 9,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightWrist: {
+    i: 10,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftHip: {
+    i: 11,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightHip: {
+    i: 12,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftKnee: {
+    i: 13,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightKnee: {
+    i: 14,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  leftAnkle: {
+    i: 15,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  },
+  rightAnkle: {
+    i: 16,
+    x: 0,
+    y: 0,
+    nX: 0,
+    nY: 0
+  }
 };
 
-let played = false;
+function updateSmoothPoseKeypoints() {
+  smoothPoseKeypoints.splice(0, smoothPoseKeypoints.length);
+  smoothPoseKeypoints.push(smoothPose.nose);
+  smoothPoseKeypoints.push(smoothPose.leftEye);
+  smoothPoseKeypoints.push(smoothPose.rightEye);
+  smoothPoseKeypoints.push(smoothPose.leftEar);
+  smoothPoseKeypoints.push(smoothPose.rightEar);
+  smoothPoseKeypoints.push(smoothPose.leftShoulder);
+  smoothPoseKeypoints.push(smoothPose.rightShoulder);
+  smoothPoseKeypoints.push(smoothPose.leftElbow);
+  smoothPoseKeypoints.push(smoothPose.rightElbow);
+  smoothPoseKeypoints.push(smoothPose.leftWrist);
+  smoothPoseKeypoints.push(smoothPose.rightWrist);
+  smoothPoseKeypoints.push(smoothPose.leftHip);
+  smoothPoseKeypoints.push(smoothPose.rightHip);
+  smoothPoseKeypoints.push(smoothPose.leftKnee);
+  smoothPoseKeypoints.push(smoothPose.rightKnee);
+  smoothPoseKeypoints.push(smoothPose.leftAnkle);
+  smoothPoseKeypoints.push(smoothPose.rightAnkle);
+}
 
 function setup() {
   createCanvas(640, 480);
   video = createCapture(VIDEO);
-  video.size(width, height);
-
-  // Create a new poseNet method with a single detection
-  poseNet = ml5.poseNet(video, modelReady);
-  // This sets up an event that fills the global variable "poses"
-  // with an array every time new poses are detected
-  poseNet.on('pose', function(results) {
-    poses = results;
-  });
-  // Hide the video element, and just show the canvas
   video.hide();
+  updateSmoothPoseKeypoints();
+  poseNet = ml5.poseNet(video, modelReady);
+  poseNet.on('pose', gotPoses);
+}
 
-  // Instrument setup
-  //create a synth and connect it to the main output (your speakers)
-  synth = new Tone.Synth().toDestination();
-
-  eX = width/2;
-  eY = height/2;
-  eW = 50;
-
-  kf = new KalmanFilter();
-  console.log(kf.filter(3));
-  console.log(kf.filter(2));
-  console.log(kf.filter(1));
-
+function gotPoses(results) {
+  poses = results;
+  if (poses.length > 0) {
+    let pose = poses[0].pose;
+    for (let i = 0; i < pose.keypoints.length; i++) {
+      let k = pose.keypoints[i].position;
+      smoothPoseKeypoints[i].x = lerp(smoothPoseKeypoints[i].x, k.x, amt);
+      smoothPoseKeypoints[i].y = lerp(smoothPoseKeypoints[i].y, k.y, amt);
+    }
+  }
 }
 
 function modelReady() {
-  console.log("model loaded");
+  console.log('model ready');
 }
 
 function draw() {
@@ -88,121 +178,17 @@ function draw() {
   scale(-1, 1);
   image(video, 0, 0, width, height);
 
-
-  fill(0, 0, 255);
-  noStroke();
-  ellipse(eX, eY, eW, eW);
-
-  wrist = trackKeypoint(POSENET_KEYPOINTS.leftWrist);
-  elbow = trackKeypoint(POSENET_KEYPOINTS.leftElbow);
-
-  if (wrist !== undefined) {
-    fivePositions = toArray(wrist, fivePositions);
-    if (fivePositions.length > 4) {
-      console.log("fivePositions: " + fivePositions);
-      currentAverage = averagePos(fivePositions);
-      console.log("averageX: " + currentAverage[0]);
-      console.log("averageY: " + currentAverage[1]);
-    }
-  }
-
-  fill(0, 255, 0);
-  ellipse(currentAverage[0], currentAverage[1], 100, 100);
-
-
-
-  /*
-
-  wrist = trackKeypoint(POSENET_KEYPOINTS.leftWrist);
-  elbow = trackKeypoint(POSENET_KEYPOINTS.leftElbow);
-
-  if (wrist !== undefined && elbow !== undefined) {
-
-    armspan = getDistance(
-      trackKeypoint(POSENET_KEYPOINTS.leftWrist),
-      trackKeypoint(POSENET_KEYPOINTS.leftElbow)
-    );
-
-    console.log ("armspan: " + armspan);
-
-  }
-*/
-
-
-/*
-  if (trackKeypoint(POSENET_KEYPOINTS.leftWrist) !== undefined) {
-    console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x);
-    console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).y);
-
-    console.log(checkPosition(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x, trackKeypoint(POSENET_KEYPOINTS.leftWrist).y));
-
-    if (checkPosition(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x, trackKeypoint(POSENET_KEYPOINTS.leftWrist).y) === true) {
-      console.log('OVERLAP');
-      if (!played) {
-        //play a middle 'C' for the duration of an 8th note
-        synth.triggerAttackRelease("C4", "8n");
-        played = true;
-      }
-    } else {
-      if (played) {
-        played = false;
-      }
-    }
-
-  }
-  */
-
-
-  // We can call both functions to draw all keypoints and the skeletons
-  //drawKeypoints();
-  //drawSkeleton();
+  drawKeypoints();
 }
 
-function checkPosition(x, y) {
-  let keyX = x;
-  let keyY = y;
-  fill(0,255,0);
-  ellipse(keyX, keyY, 50, 50);
-  if (keyX > (eX - eW/2) && keyX < (eX + eW/2) ) {
-    if (keyY > (eY -eW/2) && keyY < (eY + eW/2) ) {
-      return true;
-    }
-  } else {
-    return false;
-  }
-}
-
-
-// A function to draw ellipses over the detected keypoints
-function drawKeypoints()  {
-  // Loop through all the poses detected
-  for (let i = 0; i < poses.length; i++) {
-    // For each pose detected, loop through all the keypoints
-    let pose = poses[0].pose;
-    for (let j = 0; j < pose.keypoints.length; j++) {
-      // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-      let keypoint = pose.keypoints[j];
-      // Only draw an ellipse is the pose probability is bigger than 0.2
-      if (keypoint.score > 0.2) {
-        fill(255, 0, 0);
-        noStroke();
-        ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
-      }
-    }
-  }
-}
-
-// A function to draw the skeletons
-function drawSkeleton() {
-  // Loop through all the skeletons detected
-  for (let i = 0; i < poses.length; i++) {
-    let skeleton = poses[0].skeleton;
-    // For every skeleton, loop through all body connections
-    for (let j = 0; j < skeleton.length; j++) {
-      let partA = skeleton[j][0];
-      let partB = skeleton[j][1];
-      stroke(255, 0, 0);
-      line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
+function drawKeypoints() {
+  if (poses.length > 0) {
+    for (let i = 0; i < smoothPoseKeypoints.length; i++) {
+      let x = smoothPoseKeypoints[i].x;
+      let y = smoothPoseKeypoints[i].y;
+      fill(255, 0, 0);
+      noStroke();
+      ellipse(x, y, 20, 20);
     }
   }
 }

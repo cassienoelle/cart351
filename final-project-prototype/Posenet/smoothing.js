@@ -47,6 +47,24 @@ function getDistance(a, b) {
   return Math.sqrt(distX ** 2 + distY ** 2); // ** exponentiation
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // toArray()
 //
 //
