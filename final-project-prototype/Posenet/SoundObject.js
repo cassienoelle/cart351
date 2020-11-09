@@ -11,6 +11,7 @@ class SoundObject {
     this.b = b;
     this.note = note;
     this.duration = duration;
+    this.played = false;
   }
 
   display() {
@@ -23,23 +24,20 @@ class SoundObject {
     let keyX = x;
     let keyY = y;
     if (keyX > (this.x - this.w/2) && keyX < (this.x + this.w/2) ) {
-      console.log("OVERLAP X");
       if (keyY > (this.y - this.h/2) && keyY < (this.y + this.h/2) ) {
-        console.log("OVERLAP");
-        console.log("keyX: " + keyX);
-        console.log("this.x: " + this.x);
-        console.log("keyY: " + keyY);
-        console.log("this.y: " + this.y);
         this.playSound();
-        return true;
+        this.played = true;
+        // return true;
       }
     } else {
-      //return false;
+      this.played = false;
     }
   }
 
   playSound() {
-    synth.triggerAttackRelease(this.note, this.duration);
+    if (!this.played) {
+      synth.triggerAttackRelease(this.note, this.duration);
+    }
   }
 
 }
