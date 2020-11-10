@@ -25,9 +25,10 @@ class SoundObject {
     let keyY = y;
     if (keyX > (this.x - this.w/2) && keyX < (this.x + this.w/2) ) {
       if (keyY > (this.y - this.h/2) && keyY < (this.y + this.h/2) ) {
-        this.playSound();
-        this.played = true;
-        // return true;
+        if (this.played === false) {
+          this.playSound();
+          this.played = true;
+        }
       }
     } else {
       this.played = false;
@@ -35,26 +36,6 @@ class SoundObject {
   }
 
   playSound() {
-    if (!this.played) {
-      synth.triggerAttackRelease(this.note, this.duration);
-    }
-  }
-
-}
-
-
-/*
-function checkPosition(x, y) {
-  let keyX = x;
-  let keyY = y;
-  fill(0,255,0);
-  ellipse(keyX, keyY, 50, 50);
-  if (keyX > (eX - eW/2) && keyX < (eX + eW/2) ) {
-    if (keyY > (eY -eW/2) && keyY < (eY + eW/2) ) {
-      return true;
-    }
-  } else {
-    return false;
+    synth.triggerAttackRelease(this.note, this.duration);
   }
 }
-*/

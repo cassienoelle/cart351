@@ -1,7 +1,8 @@
 "use strict";
 
 let synth;
-let soundObjectOne, soundObjectTwo, soundObjectThree, soundObjectFour, soundObjectFive, soundObjectSix, soundObjectSeven, soundObjectEight;
+let soundObjects = [];
+let octave = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
 
 /********* SETUP *********/
 
@@ -29,18 +30,19 @@ function setup() {
   Tone.start(); // Init audio context
   // Instrument setup
   //create a synth and connect it to the main audio output
-  synth = new Tone.Synth().toDestination();
+  synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-  // Setup sound objects
-  soundObjectOne = new SoundObject(1000, 200, 75, 75, 0, 0, 255, "C4", "8n");
-  soundObjectTwo = new SoundObject(900, 200, 75, 75, 0, 0, 255, "D4", "8n");
-  soundObjectThree = new SoundObject(800, 200, 75, 75, 0, 0, 255, "E4", "8n");
-  soundObjectFour = new SoundObject(700, 200, 75, 75, 0, 0, 255, "F4", "8n");
-  soundObjectFive = new SoundObject(600, 200, 75, 75, 0, 0, 255, "G4", "8n");
-  soundObjectSix = new SoundObject(500, 200, 75, 75, 0, 0, 255, "A4", "8n");
-  soundObjectSeven = new SoundObject(400, 200, 75, 75, 0, 0, 255, "B4", "8n");
-  soundObjectEight = new SoundObject(300, 200, 75, 75, 0, 0, 255, "C5", "8n");
+  // setup SoundObjects 
+  let numObjects = octave.length;
+  let cellWidth = width / numObjects;
+  let objectWidth = cellWidth / 2;
+  let objectX = cellWidth / 2;
 
+  for (let i = 0; i < octave.length; i++) {
+    let o = new SoundObject(objectX, 100, objectWidth, objectWidth, 0, 0, 255, octave[i], "8n");
+    soundObjects.push(o);
+    objectX += cellWidth;
+  }
 
 }
 
@@ -70,29 +72,12 @@ function draw() {
   image(video, 0, 0, width, height);
 
   drawKeypoints();
-  soundObjectOne.display();
-  soundObjectTwo.display();
-  soundObjectThree.display();
-  soundObjectFour.display();
-  soundObjectFive.display();
-  soundObjectSix.display();
-  soundObjectSeven.display();
-  soundObjectEight.display();
 
-  soundObjectOne.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectOne.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectTwo.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectTwo.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectThree.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectThree.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectFour.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectFour.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectFive.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectFive.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectSix.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectSix.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectSeven.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectSeven.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-  soundObjectEight.checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  soundObjectEight.checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
+  for (let i = 0; i < soundObjects.length; i++) {
+    soundObjects[i].display();
+    soundObjects[i].checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
+    soundObjects[i].checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
+  }
+
+
 }
