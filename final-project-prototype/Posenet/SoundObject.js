@@ -1,11 +1,10 @@
 "use strict";
 
 class SoundObject {
-  constructor(x, y, w, h, r, g, b, note, duration) {
+  constructor(x, y, rad, r, g, b, note, duration) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
+    this.rad = rad;
     this.r = r;
     this.g = g;
     this.b = b;
@@ -22,14 +21,15 @@ class SoundObject {
     // ellipse(this.x, this.y, this.w*2, this.h*2);
     fill(this.r,this.g,this.b);
     noStroke();
-    ellipse(this.x, this.y, this.w, this.h);
+    ellipseMode(RADIUS);
+    ellipse(this.x, this.y, this.rad, this.rad);
   }
 
   checkPosition(x, y) {
     let keyX = x;
     let keyY = y;
-    if (keyX > (this.x - this.w/2) && keyX < (this.x + this.w/2) ) {
-      if (keyY > (this.y - this.h/2) && keyY < (this.y + this.h/2) ) {
+    if (keyX > (this.x - this.rad) && keyX < (this.x + this.rad) ) {
+      if (keyY > (this.y - this.rad) && keyY < (this.y + this.rad) ) {
         if (this.played === false) {
           this.playSound();
           this.played = true;

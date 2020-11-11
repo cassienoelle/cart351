@@ -4,12 +4,13 @@ let canvas;
 let synth;
 let soundObjects = [];
 let octave = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+let stars = [];
 
 /********* SETUP *********/
 
 function setup() {
 
-  canvas = createCanvas(500, 700);
+  canvas = createCanvas(600, 700);
 
   let constraints = {
     video: {
@@ -51,14 +52,19 @@ function setup() {
   // setup SoundObjects
   let numObjects = octave.length;
   let cellWidth = width / numObjects;
-  let objectWidth = cellWidth / 2;
+  let objectRad = cellWidth / 4;
   let objectX = cellWidth / 2;
 
   for (let i = 0; i < octave.length; i++) {
-    let o = new SoundObject(objectX, 100, objectWidth, objectWidth, 0, 0, 255, octave[i], "8n");
+    let o = new SoundObject(objectX, 100, objectRad, 0, 0, 255, octave[i], "8n");
     soundObjects.push(o);
     objectX += cellWidth;
   }
+
+  // setup Stars
+  for (let i = 0; i < 1000; i++) {
+		stars[i] = new Star();
+	}
 
 }
 
@@ -89,7 +95,9 @@ function draw() {
 
   translate(video.width, 0);
   scale(-1, 1);
+  background(0);
 
+  drawStars();
   drawKeypoints();
   initSoundObjects();
 

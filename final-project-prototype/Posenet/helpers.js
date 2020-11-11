@@ -20,3 +20,9 @@ function initSoundObjects() {
     soundObjects[i].draggable();
   }
 }
+
+function drawStars() {
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].display();
+  }
+}
