@@ -3,7 +3,7 @@
 let video;
 let poseNet;
 let poses = [];
-let amt = 0.3; // lerp amount
+let amt = 0.4; // lerp amount
 let smoothPoseKeypoints = [];
 let smoothPose = {
   nose: {

@@ -11,3 +11,12 @@ function drawKeypoints() {
     }
   }
 }
+
+function initSoundObjects() {
+  for (let i = 0; i < soundObjects.length; i++) {
+    soundObjects[i].display();
+    soundObjects[i].checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
+    soundObjects[i].checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
+    soundObjects[i].draggable();
+  }
+}

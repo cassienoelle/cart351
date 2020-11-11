@@ -1,5 +1,6 @@
 "use strict";
 
+let canvas;
 let synth;
 let soundObjects = [];
 let octave = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
@@ -8,13 +9,13 @@ let octave = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
 
 function setup() {
 
-  createCanvas(1280, 720);
+  canvas = createCanvas(500, 700);
+
   let constraints = {
     video: {
-      mandatory: {
-        minWidth: 1280,
-        minHeight: 720
-      },
+      width: { ideal: width },
+      height: { ideal: height },
+      aspectRatio: { ideal: width/height }
     },
     audio: false
   };
@@ -23,16 +24,31 @@ function setup() {
   });
 
   video.hide();
-  updateSmoothPoseKeypoints();
-  poseNet = ml5.poseNet(video, modelReady);
+
+  let options = {
+   imageScaleFactor: 0.3,
+   outputStride: 16,
+   flipHorizontal: true,
+   minConfidence: 0.5,
+   maxPoseDetections: 5,
+   scoreThreshold: 0.5,
+   nmsRadius: 20,
+   detectionType: 'single',
+   multiplier: 0.75,
+  }
+
+
+  poseNet = ml5.poseNet(video, options, modelReady);
   poseNet.on('pose', gotPoses);
+
+  updateSmoothPoseKeypoints();
 
   Tone.start(); // Init audio context
   // Instrument setup
   //create a synth and connect it to the main audio output
   synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-  // setup SoundObjects 
+  // setup SoundObjects
   let numObjects = octave.length;
   let cellWidth = width / numObjects;
   let objectWidth = cellWidth / 2;
@@ -67,17 +83,16 @@ function modelReady() {
 /********* MAIN LOOP *********/
 
 function draw() {
-  translate(width, 0);
+  translate(video.width, 0);
   scale(-1, 1);
   image(video, 0, 0, width, height);
 
+  translate(video.width, 0);
+  scale(-1, 1);
+
   drawKeypoints();
+  initSoundObjects();
 
-  for (let i = 0; i < soundObjects.length; i++) {
-    soundObjects[i].display();
-    soundObjects[i].checkPosition(smoothPoseKeypoints[9].x, smoothPoseKeypoints[9].y);
-    soundObjects[i].checkPosition(smoothPoseKeypoints[10].x, smoothPoseKeypoints[10].y);
-  }
-
+  console.log(soundObjects[0].played);
 
 }

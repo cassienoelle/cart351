@@ -105,7 +105,7 @@ function draw() {
 */
 
 
-/*
+
   if (trackKeypoint(POSENET_KEYPOINTS.leftWrist) !== undefined) {
     console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).x);
     console.log(trackKeypoint(POSENET_KEYPOINTS.leftWrist).y);
@@ -126,7 +126,7 @@ function draw() {
     }
 
   }
-  */
+
 
 
   // We can call both functions to draw all keypoints and the skeletons
