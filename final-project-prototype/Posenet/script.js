@@ -3,7 +3,7 @@
 let canvas;
 let synth;
 let soundObjects = [];
-let octave = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+let octave = ["C4", "D4", "E4", "F4"/*, "G4", "A4", "B4", "C5"*/];
 let stars = [];
 
 /********* SETUP *********/
@@ -56,7 +56,7 @@ function setup() {
   let objectX = cellWidth / 2;
 
   for (let i = 0; i < octave.length; i++) {
-    let o = new SoundObject(objectX, 100, objectRad, 0, 0, 255, octave[i], "8n");
+    let o = new SoundObject(objectX, 200, objectRad, 250, 90, 90, octave[i], "8n");
     soundObjects.push(o);
     objectX += cellWidth;
   }
