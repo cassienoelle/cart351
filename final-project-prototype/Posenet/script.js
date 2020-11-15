@@ -1,9 +1,9 @@
 "use strict";
 
 let canvas;
-let canvasWidth = 700;
-let canvasHeight = 700;
-let innerBorder = canvasWidth * 0.10;
+// let canvasWidth = 700;
+// let canvasHeight = 700;
+let innerBorder;
 let synth;
 let soundObjects = [];
 let myNotes = [];
@@ -12,22 +12,17 @@ let myOctave = 4;
 let stars = [];
 let harmonizer;
 let currentNote;
-let ax1= innerBorder;
-let ay1= 200;
-let cx1= canvasWidth/3;
-let cy1= ay1 - 100;
-let cx2= (canvasWidth/3) * 2;
-let cy2= ay1 - 100;
-let ax2= canvasWidth - innerBorder;
-let ay2= 200;
+let ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2;
 let bezierCoords = [];
+let instrument;
 
 /********* SETUP *********/
 
 function setup() {
 
-  canvas = createCanvas(canvasWidth, canvasHeight);
+  canvas = createCanvas(windowWidth, windowHeight);
 
+//setupLayout();
 
   let constraints = {
     video: {
@@ -67,6 +62,12 @@ function setup() {
   //create a synth and connect it to the main audio output
   synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
+  // Setup Test Instrument
+  instrument = new Instrument(200, 200, 800, SCALES.E_FLAT_MAJOR, 4, [smoothPose.leftWrist.i, smoothPose.rightWrist.i]);
+  instrument.setScale();
+  instrument.bezierLayout();
+  /*
+
   // set primary scale
   for (let i = 0; i < myScale.length; i++) {
     let nextNote = NOTES[myScale[i]] + myOctave;
@@ -77,7 +78,10 @@ function setup() {
   }
   console.log(myNotes);
 
+  */
+
   // setup SoundObjects
+  /*
   let numObjects = myNotes.length;
 
   let cellWidth = width / numObjects;
@@ -104,6 +108,7 @@ function setup() {
       }
     }
   }
+*/
 
 /*I
   // synth
@@ -121,7 +126,7 @@ function setup() {
   }
 */
   //harmonizer
-  harmonizer = new harmonizerObject(100, 500, objectRad*3, 90, 0, 90, "C4", "8n");
+  // harmonizer = new harmonizerObject(100, 500, objectRad*3, 90, 0, 90, "C4", "8n");
 
   // setup Stars
   for (let i = 0; i < 1000; i++) {
@@ -163,22 +168,10 @@ function draw() {
   stroke(255, 0, 0);
   rect(innerBorder, innerBorder, (width - innerBorder*2), (height - innerBorder*2));
 
-  // bezier(x1, y1, x2, y2, x3, y3, x4, y4)
-  // bezier(ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
-
   drawStars();
   drawKeypoints();
-  initSoundObjects();
+  // initSoundObjects(array, keypts)
+  initSoundObjects(instrument.soundObs, instrument.keypointTriggers);
 
-  console.log(soundObjects[0].played);
 
-}
-
-function getBezierXY(t, sx, sy, cp1x, cp1y, cp2x, cp2y, ex, ey) {
-  return {
-    x: Math.pow(1-t,3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x
-      + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
-    y: Math.pow(1-t,3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y
-      + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
-  };
 }

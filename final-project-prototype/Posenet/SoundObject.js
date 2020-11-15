@@ -1,7 +1,69 @@
 "use strict";
 
+
+class Instrument {
+  constructor(x, y, w, h, scale, octave, keypointTriggers) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.scale = scale;
+    this.octave = octave;
+    this.sArray = [];
+    this.numObs = this.scale.length;
+    this.step;
+    this.soundObs = [];
+    this.keypointTriggers = keypointTriggers;
+
+    // For bezier curve layout
+    this.t = 0;
+    this.ax1 = this.x;
+    this.ay1= 200;
+    this.cx1= this.w/3;
+    this.cy1= this.ay1 - 100;
+    this.cx2= (this.w/3) * 2;
+    this.cy2= this.ay1 - 100;
+    this.ax2= this.w;
+    this.ay2= 200;
+  }
+
+  setScale() {
+      for (let i = 0; i < this.scale.length; i++) {
+        let nextNote = NOTES[this.scale[i]] + this.octave;
+        if (i === this.scale.length - 2) {
+          this.octave += 1;
+        }
+        this.sArray.push(nextNote);
+      }
+  }
+
+  bezierLayout() {
+    this.step = 1 / (this.numObs - 1);
+    let currentCoord = getBezierXY(this.t, this.ax1, this.ay1, this.cx1, this.cy1, this.cx2, this.cy2, this.ax2, this.ay2);
+    let objectRad = (this.w / this.numObs) / 4;
+    let hue = 0;
+
+    for (let i = 0; i < this.sArray.length; i++) {
+      let hueStep = 360/NOTES.length;
+      let o = new SoundObject(currentCoord.x, currentCoord.y, objectRad, hue, 90, 90, this.sArray[i], "8n", this.keypointTriggers);
+      this.soundObs.push(o);
+      this.t += this.step;
+      currentCoord = getBezierXY(this.t, this.ax1, this.ay1, this.cx1, this.cy1, this.cx2, this.cy2, this.ax2, this.ay2);
+
+      for (let n = 0; n < NOTES.length; n++) {
+        if (this.sArray[i].includes(NOTES[n])) {
+          hue += hueStep;
+        }
+      }
+    }
+  }
+
+
+
+}
+
 class SoundObject {
-  constructor(x, y, rad, h, s, b, note, duration) {
+  constructor(x, y, rad, h, s, b, note, duration, keypointTriggers) {
     this.x = x;
     this.y = y;
     this.rad = rad;
@@ -12,6 +74,7 @@ class SoundObject {
     this.duration = duration;
     this.played = false;
     this.dragging = false;
+    this.keypointTriggers = keypointTriggers;
 
   }
 
