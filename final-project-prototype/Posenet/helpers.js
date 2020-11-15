@@ -16,12 +16,13 @@ function drawKeypoints() {
 }
 
 function initSoundObjects(array, keypts) {
+  let keys = keypts;
   for (let i = 0; i < array.length; i++) {
     console.log("array[i]: " + array[i]);
     array[i].display();
     array[i].draggable();
-    for (let j = 0; j < keypoints.length; j++) {
-      array[i].checkPosition(smoothPoseKeypoints[keypts[j]].x, smoothPoseKeypoints[keypts[j]].y);
+    for (let j = 0; j < keys.length; j++) {
+      array[i].checkPosition(smoothPoseKeypoints[keys[j]].x, smoothPoseKeypoints[keys[j]].y);
     }
   }
   // harmonizer.display();

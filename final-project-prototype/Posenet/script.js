@@ -14,6 +14,7 @@ let harmonizer;
 let currentNote;
 let ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2;
 let bezierCoords = [];
+let instruments = [];
 let instrument;
 
 /********* SETUP *********/
@@ -63,70 +64,15 @@ function setup() {
   synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
   // Setup Test Instrument
-  instrument = new Instrument(200, 200, 800, SCALES.E_FLAT_MAJOR, 4, [smoothPose.leftWrist.i, smoothPose.rightWrist.i]);
+  let kpt = [9, 10];
+  console.log("kpt: " + kpt);
+  instrument = new Instrument(200, 200, 800, 250, SCALES.E_FLAT_MAJOR, 4);
+  for (let i = 0; i < kpt.length; i++) {
+    instrument.keypointTriggers.push(kpt[i]);
+  }
   instrument.setScale();
   instrument.bezierLayout();
-  /*
-
-  // set primary scale
-  for (let i = 0; i < myScale.length; i++) {
-    let nextNote = NOTES[myScale[i]] + myOctave;
-    if (i === myScale.length - 2) {
-      myOctave += 1;
-    }
-    myNotes.push(nextNote);
-  }
-  console.log(myNotes);
-
-  */
-
-  // setup SoundObjects
-  /*
-  let numObjects = myNotes.length;
-
-  let cellWidth = width / numObjects;
-  let objectRad = cellWidth / 4;
-  let objectX = cellWidth / 2;
-
-  let hue = 0;
-  let t = 0;
-  let coordStep = 1 / (myNotes.length-1);
-  let currentCoord = getBezierXY(t, ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
-  console.log("currentCoord: " + currentCoord.x + " " + currentCoord.y);
-
-  // synth
-  for (let i = 0; i < myNotes.length; i++) {
-    let hueStep = 360/NOTES.length;
-    let o = new SoundObject(currentCoord.x, currentCoord.y, objectRad, hue, 90, 90, myNotes[i], "8n");
-    soundObjects.push(o);
-    t += coordStep;
-    currentCoord = getBezierXY(t, ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
-
-    for (let n = 0; n < NOTES.length; n++) {
-      if (myNotes[i].includes(NOTES[n])) {
-        hue += hueStep;
-      }
-    }
-  }
-*/
-
-/*I
-  // synth
-  for (let i = 0; i < myNotes.length; i++) {
-    let hueStep = 360/NOTES.length;
-    let o = new SoundObject(objectX, 200, objectRad, hue, 90, 90, myNotes[i], "8n");
-    soundObjects.push(o);
-    objectX += cellWidth;
-
-    for (let n = 0; n < NOTES.length; n++) {
-      if (myNotes[i].includes(NOTES[n])) {
-        hue += hueStep;
-      }
-    }
-  }
-*/
-  //harmonizer
-  // harmonizer = new harmonizerObject(100, 500, objectRad*3, 90, 0, 90, "C4", "8n");
+  console.log("keypoint triggers: " + instrument.keypointTriggers);
 
   // setup Stars
   for (let i = 0; i < 1000; i++) {
@@ -166,12 +112,14 @@ function draw() {
 
   noFill();
   stroke(255, 0, 0);
-  rect(innerBorder, innerBorder, (width - innerBorder*2), (height - innerBorder*2));
+  //bezier(instrument.ax1, instrument.ay1, instrument.cx1, instrument.cy1, instrument.cx2, instrument.cy2, instrument.ax2, instrument.ay2);
+  //rect(instrument.x, instrument.y, instrument.w, instrument.h);
 
   drawStars();
   drawKeypoints();
   // initSoundObjects(array, keypts)
-  initSoundObjects(instrument.soundObs, instrument.keypointTriggers);
+  //console.log("kpt: " + smoothPose.leftWrist.i);
+  instrument.display();
 
 
 }
