@@ -1,16 +1,33 @@
 "use strict";
 
 let canvas;
+let canvasWidth = 700;
+let canvasHeight = 700;
+let innerBorder = canvasWidth * 0.10;
 let synth;
 let soundObjects = [];
-let octave = ["C4", "D4", "E4", "F4"/*, "G4", "A4", "B4", "C5"*/];
+let myNotes = [];
+let myScale = SCALES.F_SHARP_MAJOR;
+let myOctave = 4;
 let stars = [];
+let harmonizer;
+let currentNote;
+let ax1= innerBorder;
+let ay1= 200;
+let cx1= canvasWidth/3;
+let cy1= ay1 - 100;
+let cx2= (canvasWidth/3) * 2;
+let cy2= ay1 - 100;
+let ax2= canvasWidth - innerBorder;
+let ay2= 200;
+let bezierCoords = [];
 
 /********* SETUP *********/
 
 function setup() {
 
-  canvas = createCanvas(600, 700);
+  canvas = createCanvas(canvasWidth, canvasHeight);
+
 
   let constraints = {
     video: {
@@ -44,22 +61,67 @@ function setup() {
 
   updateSmoothPoseKeypoints();
 
+
   Tone.start(); // Init audio context
   // Instrument setup
   //create a synth and connect it to the main audio output
   synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
+  // set primary scale
+  for (let i = 0; i < myScale.length; i++) {
+    let nextNote = NOTES[myScale[i]] + myOctave;
+    if (i === myScale.length - 2) {
+      myOctave += 1;
+    }
+    myNotes.push(nextNote);
+  }
+  console.log(myNotes);
+
   // setup SoundObjects
-  let numObjects = octave.length;
+  let numObjects = myNotes.length;
+
   let cellWidth = width / numObjects;
   let objectRad = cellWidth / 4;
   let objectX = cellWidth / 2;
 
-  for (let i = 0; i < octave.length; i++) {
-    let o = new SoundObject(objectX, 200, objectRad, 250, 90, 90, octave[i], "8n");
+  let hue = 0;
+  let t = 0;
+  let coordStep = 1 / (myNotes.length-1);
+  let currentCoord = getBezierXY(t, ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
+  console.log("currentCoord: " + currentCoord.x + " " + currentCoord.y);
+
+  // synth
+  for (let i = 0; i < myNotes.length; i++) {
+    let hueStep = 360/NOTES.length;
+    let o = new SoundObject(currentCoord.x, currentCoord.y, objectRad, hue, 90, 90, myNotes[i], "8n");
+    soundObjects.push(o);
+    t += coordStep;
+    currentCoord = getBezierXY(t, ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
+
+    for (let n = 0; n < NOTES.length; n++) {
+      if (myNotes[i].includes(NOTES[n])) {
+        hue += hueStep;
+      }
+    }
+  }
+
+/*I
+  // synth
+  for (let i = 0; i < myNotes.length; i++) {
+    let hueStep = 360/NOTES.length;
+    let o = new SoundObject(objectX, 200, objectRad, hue, 90, 90, myNotes[i], "8n");
     soundObjects.push(o);
     objectX += cellWidth;
+
+    for (let n = 0; n < NOTES.length; n++) {
+      if (myNotes[i].includes(NOTES[n])) {
+        hue += hueStep;
+      }
+    }
   }
+*/
+  //harmonizer
+  harmonizer = new harmonizerObject(100, 500, objectRad*3, 90, 0, 90, "C4", "8n");
 
   // setup Stars
   for (let i = 0; i < 1000; i++) {
@@ -97,10 +159,26 @@ function draw() {
   scale(-1, 1);
   background(0);
 
+  noFill();
+  stroke(255, 0, 0);
+  rect(innerBorder, innerBorder, (width - innerBorder*2), (height - innerBorder*2));
+
+  // bezier(x1, y1, x2, y2, x3, y3, x4, y4)
+  // bezier(ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2);
+
   drawStars();
   drawKeypoints();
   initSoundObjects();
 
   console.log(soundObjects[0].played);
 
+}
+
+function getBezierXY(t, sx, sy, cp1x, cp1y, cp2x, cp2y, ex, ey) {
+  return {
+    x: Math.pow(1-t,3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x
+      + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
+    y: Math.pow(1-t,3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y
+      + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
+  };
 }
