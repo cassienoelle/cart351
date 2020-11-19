@@ -1,0 +1,34 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid yellow;
+  min-height: 97vh;
+}
+
+.instruments {
+  max-width: 900px;
+  border: 1px solid red;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.instrument-select {
+  border: 1px solid green;
+  width: 250px;
+  height: 200px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.instrument-title {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-align: center;
+  padding: 1em;
+}

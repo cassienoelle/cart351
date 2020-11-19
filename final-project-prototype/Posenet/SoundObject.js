@@ -43,6 +43,8 @@ class Instrument {
 
   bezierLayout() {
 
+    console.log("call bezier layout");
+
     this.step = 1 / (this.numObs - 1);
     let currentCoord = getBezierXY(this.t, this.ax1, this.ay1, this.cx1, this.cy1, this.cx2, this.cy2, this.ax2, this.ay2);
     let hue = 0;
@@ -61,6 +63,28 @@ class Instrument {
       }
     }
 
+  }
+
+  verticalLayout() {
+
+    console.log("call vertical layout");
+
+    this.step = (this.h - this.objectRad * 2) / (this.numObs - 1);
+    let currentCoord = [this.x + this.w/2, this.y];
+    let hue = 0;
+
+    for (let i = 0; i < this.sArray.length; i++) {
+      let hueStep = 360/NOTES.length;
+      let o = new SoundObject(currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], "8n", this.keypointTriggers);
+      this.soundObs.push(o);
+      currentCoord.y += this.step;
+
+      for (let n = 0; n < NOTES.length; n++) {
+        if (this.sArray[i].includes(NOTES[n])) {
+          hue += hueStep;
+        }
+      }
+    }
   }
 
   display() {

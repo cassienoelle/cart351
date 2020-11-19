@@ -66,12 +66,13 @@ function setup() {
   // Setup Test Instrument
   let kpt = [9, 10];
   console.log("kpt: " + kpt);
-  instrument = new Instrument(200, 200, 800, 250, SCALES.E_FLAT_MAJOR, 4);
+  instrument = new Instrument(200, 200, 100, height- 200, SCALES.E_FLAT_MAJOR, 4);
   for (let i = 0; i < kpt.length; i++) {
     instrument.keypointTriggers.push(kpt[i]);
   }
   instrument.setScale();
-  instrument.bezierLayout();
+  //instrument.bezierLayout();
+  instrument.verticalLayout();
   console.log("keypoint triggers: " + instrument.keypointTriggers);
 
   // setup Stars
