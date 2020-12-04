@@ -1,6 +1,38 @@
+:root {
+  --slider-height: 2em;
+  --slider-width: 16em;
+  --slider-value-width: 6em;
+  --chartreuse: #C8FF00;
+  --purple: #7600B3;
+  --blue: #1979FF;
+}
+
+@font-face {
+  font-family: 'MusiSync';
+  src: url('../assets/fonts/musisync.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Accordion';
+  src: url('../assets/fonts/accordion.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'TypeMyMusic';
+  src: url('../assets/fonts/typemymusicnotation.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'KidDemo';
+  src: url('../assets/fonts/kiddemo.ttf') format('truetype');
+}
+
+
 body {
   overflow: hidden;
   font-family: "Roboto", Arial, sans-serif;
+  color: #fff;
+  margin: auto;
 }
 
 .wrapper {
@@ -14,8 +46,137 @@ body {
   justify-content: center;
 }
 
+/****** CONFIG PAGE ******/
+
+.config-wrapper {
+  margin: auto;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-items: stretch;
+  grid-template-columns: 48.8% 48.8%;
+  grid-template-rows: 99%;
+  column-gap: 2%;
+  grid-template-areas:
+    "preview controls";
+
+  border: 1px solid green;
+
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  padding: 5%;
+}
+
+.config-section.preview {
+  grid-area: preview;
+  align-self: stretch;
+}
+
+.config-section.controls {
+  grid-area: controls;
+  align-self: stretch;
+}
+
 .container {
   align-self: center;
+}
+
+.slider {
+  width: var(--slider-width);
+}
+
+.slider-wrapper {
+  width: calc(var(--slider-width) + 8em);
+  border: 1px solid blue;
+  display: flex;
+}
+
+.slider-value {
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1.5em;
+  width: var(--slider-value-width);
+  height: calc(var(--slider-height) + 0.5em);
+  margin-left: 2em;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+/****** JQUERY UI ******/
+
+.ui-slider-horizontal {
+  height: var(--slider-height);
+  background: var(--chartreuse);
+}
+
+.ui-slider .ui-slider-handle {
+  height: calc(var(--slider-height) + 0.5em);
+  width: calc(var(--slider-height) + 0.5em);
+  background: var(--blue);
+  border: none;
+}
+
+/***** KEYBOARD *****/
+
+.keyboard {
+  width: 45em;
+  height: 7em;
+  background-color: #FF3319;
+  position: relative;
+  padding: 1em;
+  margin-top: 3em;
+}
+
+.key:active {
+  background-color: #CF57FF;
+}
+
+.white-keys {
+  display: flex;
+  margin: 0px;
+  position: absolute;
+  z-index: 1;
+  top: 0.4rem;
+  left: 0.4rem;
+}
+
+.black-keys {
+  display: flex;
+  position: relative;
+  z-index: 2;
+  top: -0.6rem;
+  left: 0.27rem;
+  padding-left: 0.2rem;
+  /* border: 1px solid yellow; */
+
+}
+
+.white {
+  height: 4.6rem;
+  width: 1.5rem;
+  font-size: 0.2em;
+  text-align: center;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+}
+
+.black {
+  height: 3.2rem;
+  width: 1rem;
+  margin: 0 0.625rem 0 0;
+  background-color: black;
+/*  display: none; */
+}
+
+.black.placeholder {
+  opacity: 0.0;
 }
 
 .bg {

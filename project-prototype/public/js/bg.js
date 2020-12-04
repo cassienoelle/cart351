@@ -8,7 +8,7 @@
         let bgStars = [];
 
         b.setup = function() {
-          b.createCanvas(b.windowWidth, b.windowHeight);
+          b.createCanvas(b.windowWidth + 100, b.windowHeight + 100);
 
           // setup Stars
           for (let i = 0; i < 1000; i++) {
@@ -33,4 +33,5 @@
       for (let i = 0; i < window.document.getElementsByClassName('bg').length; i++) {
         window.document.getElementsByClassName('bg')[i].appendChild(bgNode);
       }
+
   });

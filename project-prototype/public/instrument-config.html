@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Instrument Config</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Cassie Smith">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|DM+Mono|Oxygen+Mono">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Monofett&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Shadow&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Peer.js -->
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- jQuery UI-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- p5.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <!-- Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.68/Tone.js"></script>
+
+    <!-- Native script files -->
+    <script src="js/Stars.js"></script>
+    <script src="js/bg.js"></script>
+    <script src="js/instrument-config.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="bg"></div>
+
+    <div class="config-wrapper">
+
+      <div class="config-section preview">
+
+      </div>
+
+      <div class="config-section controls">
+
+        <!-- <h1 class = "page-title">instrument configuration</h1> -->
+        <div class="slider-wrapper">
+          <div id="notes-slider" class="container slider" style="border: 1px solid yellow;"></div>
+          <input type="text" id="num-notes" class="slider-value" readonly>
+        </div>
+
+        <div class="keyboard">
+          <div class="white-keys">
+            <div class="white key" data-key="C3">C3</div>
+             <div class="white key" data-key="D3">D3</div>
+             <div class="white key" data-key="E3">E3</div>
+             <div class="white key" data-key="F3">F3</div>
+             <div class="white key" data-key="G3">G3</div>
+             <div class="white key" data-key="A3">A3</div>
+             <div class="white key" data-key="B3">B3</div>
+           </div>
+
+           <div class="black-keys">
+             <div class="black key" data-key="C#3"></div>
+             <div class="black key" data-key="D#3"></div>
+             <div class="black placeholder" data-key=" "></div>
+             <div class="black key" data-key="F#3"></div>
+             <div class="black key" data-key="G#3"></div>
+             <div class="black key" data-key="A#3"></div>
+           </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+<!--
+    <fieldset>
+      <label for="radius">Circle radius</label>
+      <select name="radius" id="radius">
+        <option value="50">50px</option>
+        <option value="100">100px</option>
+        <option value="150" selected="selected">150px</option>
+        <option value="200">200px</option>
+        <option value="250">250px</option>
+      </select>
+
+      <label for="color">Circle color</label>
+      <select name="color" id="color">
+        <option value="black">Black</option>
+        <option value="red">Red</option>
+        <option value="yellow" selected="selected">Yellow</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+      </select>
+    </fieldset>
+  -->
+
+
+
+
+  </body>
+</html>
