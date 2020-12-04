@@ -26,37 +26,7 @@ const STATE = {
 let currentState;
 let calibrated = false;
 
-$(document).ready( function() {
-
-  /**************************/
-  /******** BG SKETCH **********/
-
-  let bgSketch = function(b) {
-
-    let bgStars = [];
-
-    b.setup = function() {
-      b.createCanvas(b.windowWidth, b.windowHeight);
-
-      // setup Stars
-      for (let i = 0; i < 1000; i++) {
-        bgStars[i] = new Star(b, 0.3, 2.6);
-      }
-    }
-
-    b.draw = function() {
-
-      b.background(0);
-
-      // Draw stars
-      for (let i = 0; i < bgStars.length; i++) {
-        bgStars[i].display(b);
-      }
-
-    }
-
-  }
-
+  $(document).ready( function() {
   /**************************/
   /******** SKETCH **********/
 
@@ -233,10 +203,6 @@ $(document).ready( function() {
     }
 
     }
-
-    let bgNode = document.createElement('div');
-    new p5(bgSketch, bgNode);
-    window.document.getElementById('bg').appendChild(bgNode);
 
     let userNodeOne = document.createElement('div');
     new p5(sketch, userNodeOne);

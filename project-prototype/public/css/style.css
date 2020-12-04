@@ -1,5 +1,6 @@
 body {
   overflow: hidden;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 .wrapper {
@@ -17,11 +18,61 @@ body {
   align-self: center;
 }
 
-#bg {
+.bg {
   width: 100vw;
   height: 100vh;
   position: absolute;
   left: 0px;
   top: 0px;
   z-index: -1;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* INSTRUMENT SELECTION */
+
+.page-title {
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  text-align: center;
+  color: #fff;
+  padding: 1em;
+  margin-top: 4em;
+}
+
+.instruments {
+  max-width: 1200px;
+  /* border: 1px solid black; */
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.instrument-select {
+  border: 2px solid white;
+  width: 250px;
+  height: 250px;
+  margin: 20px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* background-color: #fbfbfb; */
+}
+
+.instrument-select:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.instrument-title {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.3em;
+  text-align: center;
+  padding: 1em;
 }
