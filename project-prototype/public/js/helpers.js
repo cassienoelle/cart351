@@ -1,16 +1,17 @@
 
 "use strict";
 
+/*
 function windowResized() {
 
     resizeCanvas(windowWidth, windowHeight);
     video.size(windowWidth, windowHeight);
     updateStars();
 }
+*/
 
 
-
-function drawKeypoints() {
+function drawKeypoints(p) {
   let r = 10;
   if (poses.length > 0) {
     for (let i = 0; i < smoothPoseKeypoints.length; i++) {
@@ -23,29 +24,29 @@ function drawKeypoints() {
         else {
           r = 10;
         }
-        fill(255);
-        noStroke();
-        ellipse(x, y, r, r);
+        p.fill(255);
+        p.noStroke();
+        p.ellipse(x, y, r, r);
       }
     }
   }
 }
 
-function drawSkeletonPart(a, b) {
+function drawSkeletonPart(p, a, b) {
   let pointA = a;
   let pointB = b;
 
-  stroke(255);
-  line(pointA.x, pointA.y, pointB.x, pointB.y);
+  p.stroke(255);
+  p.line(pointA.x, pointA.y, pointB.x, pointB.y);
 }
 
-function drawSkeleton() {
+function drawSkeleton(p) {
 
   for (let i = 0; i < smoothPoseSkeleton.length; i ++) {
     let a = smoothPoseSkeleton[i][0];
     let b = smoothPoseSkeleton[i][1];
     if (smoothPoseKeypoints[a].pass === true && smoothPoseKeypoints[b].pass === true) {
-      drawSkeletonPart(smoothPoseKeypoints[a], smoothPoseKeypoints[b]);
+      drawSkeletonPart(p, smoothPoseKeypoints[a], smoothPoseKeypoints[b]);
     }
 
   }

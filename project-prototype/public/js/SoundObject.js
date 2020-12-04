@@ -2,7 +2,8 @@
 
 
 class Instrument {
-  constructor(x, y, w, h, scale, octave, layout) {
+  constructor(p, x, y, w, h, scale, octave, layout) {
+    this.p = p;
     this.x = x;
     this.y = y;
     this.w = w;
@@ -66,7 +67,7 @@ class Instrument {
 
     for (let i = 0; i < this.sArray.length; i++) {
       let hueStep = 360/NOTES.length;
-      let o = new SoundObject(currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
+      let o = new SoundObject(this.p, currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
       this.soundObs.push(o);
       this.t += this.step;
       currentCoord = getBezierXY(this.t, this.ax1, this.ay1, this.cx1, this.cy1, this.cx2, this.cy2, this.ax2, this.ay2);
@@ -94,10 +95,10 @@ class Instrument {
 
     for (let i = 0; i < this.sArray.length; i++) {
       let hueStep = 360/NOTES.length;
-      let o = new SoundObject(currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
+      let o = new SoundObject(this.p, currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
       this.soundObs.push(o);
       currentCoord.y += this.step;
-      this.objectRad = random(initRad / 2, initRad * 1.5);
+      this.objectRad = this.p.random(initRad / 2, initRad * 1.5);
 
       console.log("currentCoord x,y: " + currentCoord.x + " " + currentCoord.y);
 
@@ -123,7 +124,7 @@ class Instrument {
 
     for (let i = 0; i < this.sArray.length; i++) {
       let hueStep = 360/NOTES.length;
-      let o = new SoundObject(currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
+      let o = new SoundObject(this.p, currentCoord.x, currentCoord.y, this.objectRad, hue, 90, 90, this.sArray[i], 4, this.keypointTriggers);
       this.soundObs.push(o);
       currentCoord.x += this.step;
       //this.objectRad = random(initRad / 2, initRad * 1.5);
@@ -161,7 +162,8 @@ class Instrument {
 }
 
 class SoundObject {
-  constructor(x, y, rad, h, s, b, note, duration) {
+  constructor(p, x, y, rad, h, s, b, note, duration) {
+    this.p = p;
     this.x = x;
     this.y = y;
     this.rad = rad;
@@ -176,21 +178,21 @@ class SoundObject {
   }
 
   display() {
-    noStroke();
-    colorMode(HSB);
-    ellipseMode(RADIUS);
+    this.p.noStroke();
+    this.p.colorMode(this.p.HSB);
+    this.p.ellipseMode(this.p.RADIUS);
 
     let radius = this.rad;
     let hue = this.h;
     let step = (360 / this.rad) * 3;
 
     for (let r = radius; r > 0; --r) {
-      fill(hue, this.s, this.b);
-      ellipse(this.x, this.y, r, r);
+      this.p.fill(hue, this.s, this.b);
+      this.p.ellipse(this.x, this.y, r, r);
       hue += 1;
     }
 
-    colorMode(RGB);
+    this.p.colorMode(this.p.RGB);
   } // display
 
   checkPosition(x, y) {
@@ -230,16 +232,16 @@ class SoundObject {
   }
 
   draggable() {
-    if (mouseX > (this.x - this.rad) && mouseX < (this.x + this.rad) ) {
-      if (mouseY > (this.y - this.rad) && mouseY < (this.y + this.rad) ) {
+    if (this.p.mouseX > (this.x - this.rad) && this.p.mouseX < (this.x + this.rad) ) {
+      if (this.p.mouseY > (this.y - this.rad) && this.p.mouseY < (this.y + this.rad) ) {
         this.dragging = true;
       }
     }
 
-    if (mouseIsPressed && this.dragging === true) {
-      this.x = mouseX;
-      this.y = mouseY;
-    } else if (!mouseIsPressed) {
+    if (this.p.mouseIsPressed && this.dragging === true) {
+      this.x = this.p.mouseX;
+      this.y = this.p.mouseY;
+    } else if (!this.p.mouseIsPressed) {
       this.dragging = false;
     }
 

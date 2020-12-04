@@ -72,6 +72,10 @@ h3 {
   padding: 8%;
 }
 
+.prototype-bg {
+  background-color: #650BDE;
+}
+
 .fas {
   font-size: 35px;
   transition: font-size 250ms ease-out;
@@ -79,6 +83,12 @@ h3 {
 
 .fas:hover {
   font-size: 37px;
+}
+
+.about-desc {
+  text-decoration: none;
+  font-size: 2em;
+  color: black;
 }
 
 
@@ -314,12 +324,54 @@ img.portal {
 }
 
 .exercise1{
-  background-color: #101010;
+  background-color: #DEF500;
 }
 
-.exercise-button {
+.exercise-button{
   font-size: 4em;
   padding: 0.27em;
+}
+
+.prototype {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.prototype-button{
+  font-size: 2em;
+  padding: 0.27em;
+  width: 18em;
+  height: 4em;
+  margin-top: 0.5em;
+}
+
+.calibration-instructions {
+  width: 575px;
+  text-align: center;
+}
+
+#calibration {
+  width: 575px;
+  margin: auto;
+}
+
+.wireframes-wrapper {
+  margin: auto;
+}
+
+.next {
+  color: black;
+  text-align: right;
+}
+
+#wireframe-thumbnail {
+  max-width: 1200px;
+}
+
+#wireframe-instruments {
+  max-width: 1200px;
 }
 
 .ex-title {
