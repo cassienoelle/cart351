@@ -9,13 +9,11 @@ let soundObjects = [];
 let myNotes = [];
 let myScale = SCALES.F_SHARP_MAJOR;
 let myOctave = 4;
-let stars = [];
 let harmonizer;
 let currentNote;
 let ax1, ay1, cx1, cy1, cx2, cy2, ax2, ay2;
 let bezierCoords = [];
 let instruments = [];
-let instrument;
 let layouts = {
   bezier: "bezier",
   vertical: "vertical",
@@ -31,14 +29,48 @@ let calibrated = false;
 $(document).ready( function() {
 
   /**************************/
+  /******** BG SKETCH **********/
+
+  let bgSketch = function(b) {
+
+    let bgStars = [];
+
+    b.setup = function() {
+      b.createCanvas(b.windowWidth, b.windowHeight);
+
+      // setup Stars
+      for (let i = 0; i < 1000; i++) {
+        bgStars[i] = new Star(b, 0.3, 2.6);
+      }
+    }
+
+    b.draw = function() {
+
+      b.background(0);
+
+      // Draw stars
+      for (let i = 0; i < bgStars.length; i++) {
+        bgStars[i].display(b);
+      }
+
+    }
+
+  }
+
+  /**************************/
   /******** SKETCH **********/
 
   let sketch = function(p) {
+
+      let instrument;
+      let margin = 10;
+      let stars = [];
+
       p.setup = function() {
 
       currentState = STATE.calibrate;
 
-      let setWidth = p.windowWidth/2;
+      let setWidth = (p.windowWidth/2) - 10;
       let setHeight = (setWidth * 3) / 4;
       canvas = p.createCanvas( setWidth, setHeight );
 
@@ -93,7 +125,7 @@ $(document).ready( function() {
       let kpt = [9, 10];
       //console.log("kpt: " + kpt);
       // Instrument(x, y, w, h, scale, octave)
-      instrument = new Instrument(p, (p.width * 0.1) / 2, (p.height * 0.1) / 2, (p.width * 0.9), 200, SCALES.E_FLAT_MAJOR, 4, layouts.horizontal);
+      instrument = new Instrument(p, (p.width * 0.15) / 2, (p.height * 0.15) / 2, (p.width * 0.85), 200, SCALES.E_FLAT_MAJOR, 4, layouts.horizontal);
       for (let i = 0; i < kpt.length; i++) {
         instrument.keypointTriggers.push(kpt[i]);
       }
@@ -103,8 +135,8 @@ $(document).ready( function() {
       //console.log("keypoint triggers: " + instrument.keypointTriggers);
 
       // setup Stars
-      for (let i = 0; i < 1000; i++) {
-    		stars[i] = new Star(p);
+      for (let i = 0; i < 200; i++) {
+    		stars[i] = new Star(p, 0.03, 0.3);
     	}
 
       //console.log("soundObs: " + instrument.soundObs);
@@ -175,17 +207,22 @@ $(document).ready( function() {
     function drawMainInterface() {
       p.translate(video.width, 0);
       p.scale(-1, 1);
-    //  background(0);
+      p.background(0);
 
       p.noFill();
       p.stroke(255, 0, 0);
     //  bezier(instrument.ax1, instrument.ay1, instrument.cx1, instrument.cy1, instrument.cx2, instrument.cy2, instrument.ax2, instrument.ay2);
     //  rect(instrument.x, instrument.y, instrument.w, instrument.h);
 
-    //  drawStars();
+      // Draw stars
+      for (let i = 0; i < stars.length; i++) {
+        stars[i].display();
+      }
+
+      // Draw keypoints and skeleton
       drawKeypoints(p);
       drawSkeleton(p);
-      //console.log("kpt: " + smoothPose.leftWrist.i);
+
       instrument.display();
     }
 
@@ -197,8 +234,16 @@ $(document).ready( function() {
 
     }
 
-  let container = $('<div>');
-  $(container).appendTo(document.body);
-  let myp5 = new p5(sketch);
+    let bgNode = document.createElement('div');
+    new p5(bgSketch, bgNode);
+    window.document.getElementById('bg').appendChild(bgNode);
+
+    let userNodeOne = document.createElement('div');
+    new p5(sketch, userNodeOne);
+    window.document.getElementById('user1').appendChild(userNodeOne);
+
+    let userNodeTwo = document.createElement('div');
+    new p5(sketch, userNodeTwo);
+    window.document.getElementById('user2').appendChild(userNodeTwo);
 
 } );

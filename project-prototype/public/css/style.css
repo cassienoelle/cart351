@@ -1,9 +1,27 @@
 body {
+  overflow: hidden;
+}
+
+.wrapper {
+  margin: auto;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
-div {
-  align-items: center;
+.container {
+  align-self: center;
+}
+
+#bg {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
 }

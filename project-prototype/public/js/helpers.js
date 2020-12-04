@@ -19,10 +19,10 @@ function drawKeypoints(p) {
         let x = smoothPoseKeypoints[i].x;
         let y = smoothPoseKeypoints[i].y;
         if (i <= 4) {
-          r = 5;
+          r = 3;
         }
         else {
-          r = 10;
+          r = 7;
         }
         p.fill(255);
         p.noStroke();
@@ -70,17 +70,22 @@ function initSoundObjects(array, keypts) {
   //console.log("harmonizer: " + harmonizer.harmonizeNextNote);
 }
 
-function drawStars() {
-  for (let i = 0; i < stars.length; i++) {
-    stars[i].display();
+/*
+
+function drawStars(array) {
+  for (let i = 0; i < array.length; i++) {
+    array[i].display();
   }
 }
 
-function updateStars() {
-  for (let i = 0; i < stars.length; i++) {
-    stars[i].update();
+
+
+function updateStars(array) {
+  for (let i = 0; i < array.length; i++) {
+    array[i].update();
   }
 }
+*/
 
 // getBezierXY()
 //
