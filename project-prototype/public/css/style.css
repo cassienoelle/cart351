@@ -2,9 +2,10 @@
   --slider-height: 2em;
   --slider-width: 16em;
   --slider-value-width: 6em;
-  --chartreuse: #C8FF00;
-  --purple: #7600B3;
-  --blue: #1979FF;
+  --chartreuse: rgba(200, 255, 0, 1);
+  --purple: rgba(118, 0, 179, 0.7);
+  --blue: rgba(25, 121, 255, 1);
+  --blue-semi-opaque: rgba(25, 121, 255, 0.7);
 
   --octave-width: 15rem;
   --octave-height: 10rem;
@@ -40,6 +41,7 @@ body {
   font-family: "Roboto", Arial, sans-serif;
   color: #fff;
   margin: auto;
+  background-color: #000;
 }
 
 .wrapper {
@@ -138,17 +140,29 @@ body {
 }
 
 .button {
-  background-color: var(--purple);
   padding: 0.5em 1em 0.5em 1em;
   font-size: 1em;
   margin-left: 0.5em;
   text-transform: uppercase;
   border-radius: 5px;
   border: 2px solid white;
+  color: #fff;
 }
 
-.button:active {
-  background: rgba(76, 175, 80, 0)
+#clear-notes {
+  background-color: var(--purple);
+}
+
+#clear-notes:active {
+  background-color: rgba(76, 175, 80, 0);
+}
+
+#save-notes {
+  background-color: var(--blue-semi-opaque);
+}
+
+#save-notes:active {
+  background-color: var(--blue);
 }
 
 
@@ -182,7 +196,7 @@ body {
 .ui-slider .ui-slider-handle {
   height: calc(var(--slider-height) + 0.5em);
   width: 0.8em;
-  background: var(--blue);
+  background-color: var(--blue);
   border: none;
 }
 
