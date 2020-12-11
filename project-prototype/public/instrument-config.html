@@ -45,33 +45,50 @@
 
       <div class="config-section controls">
 
+
         <!-- <h1 class = "page-title">instrument configuration</h1> -->
+        <h3 class="config-title">total number of notes</h3>
         <div class="slider-wrapper">
-          <div id="notes-slider" class="container slider" style="border: 1px solid yellow;"></div>
+          <div id="notes-slider" class="container slider"></div>
           <input type="text" id="num-notes" class="slider-value" readonly>
         </div>
 
-        <div class="keyboard">
-          <div class="white-keys">
-            <div class="white key" data-key="C3">C3</div>
-             <div class="white key" data-key="D3">D3</div>
-             <div class="white key" data-key="E3">E3</div>
-             <div class="white key" data-key="F3">F3</div>
-             <div class="white key" data-key="G3">G3</div>
-             <div class="white key" data-key="A3">A3</div>
-             <div class="white key" data-key="B3">B3</div>
-           </div>
+        <div class="nst">
 
-           <div class="black-keys">
-             <div class="black key" data-key="C#3"></div>
-             <div class="black key" data-key="D#3"></div>
-             <div class="black placeholder" data-key=" "></div>
-             <div class="black key" data-key="F#3"></div>
-             <div class="black key" data-key="G#3"></div>
-             <div class="black key" data-key="A#3"></div>
-           </div>
+          <div id="nstc1">
+            <h3 class="config-title">select notes</h3>
+              <div class="keyboard">
+                <div class="white-keys">
+                   <div class="white key" data-key="C"></div>
+                   <div class="white key" data-key="D"></div>
+                   <div class="white key" data-key="E"></div>
+                   <div class="white key" data-key="F"></div>
+                   <div class="white key" data-key="G"></div>
+                   <div class="white key" data-key="A"></div>
+                   <div class="white key" data-key="B"></div>
+                 </div>
 
-        </div>
+                 <div class="black-keys">
+                   <div class="black key" data-key="C#"></div>
+                   <div class="black key" data-key="D#"></div>
+                   <div class="black placeholder" data-key=" "></div>
+                   <div class="black key" data-key="F#"></div>
+                   <div class="black key" data-key="G#"></div>
+                   <div class="black key" data-key="A#"></div>
+                 </div>
+               </div>
+             </div>
+
+             <div id="nstc2">
+               <h3 class="config-title">set octave</h3>
+               <input id="octave-spinner" class="spinner" name="value">
+             </div>
+
+         </div>
+         <!-- <h3 class="config-title">selected:</h3>-->
+         <div id="notes-selected"> </div>
+         <div><span id="clear-notes" class="button">clear</span></div>
+
 
       </div>
 
