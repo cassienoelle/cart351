@@ -146,8 +146,8 @@ let calibrated = false;
             smoothPoseKeypoints[i].score = pose.keypoints[i].score;
             if (smoothPoseKeypoints[i].score > 0.1) {
                 let k = pose.keypoints[i].position;
-                smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
-                smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, 0.7);
+                smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, 0.7);
             }
           }
         }
