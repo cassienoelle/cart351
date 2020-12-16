@@ -23,13 +23,19 @@
     "inst":
           [
               {
-                "id": "piano",
+                "id": "casio",
                 "urls" : {
-                          "C2" : "piano.mp3"
+                          "C2" : "casio.mp3"
                          },
                 "octaveRange" : ["1", "7"]
               },
-              
+              {
+                "id": "marimba",
+                "urls" : {
+                          "C4" : "marimba.mp3"
+                         },
+                "octaveRange" : ["3", "7"]
+              },
               {
                 "id": "xylophone",
                 "urls" : {

@@ -532,3 +532,24 @@ a {
   margin-bottom: 1em;
   /* border: 1px solid pink; */
 }
+
+.continue {
+  font-family: 'Extradition', Arial, sans-serif;
+  font-size: 1.8em;
+  width: 78vw;
+  text-align: right;
+  padding: 1em 1em;
+  cursor: default;
+}
+
+#go {
+  color: var(--chartreuse);
+}
+
+#go:hover {
+  color: #fff;
+}
+
+#go:active {
+  color: var(--chartreuse);
+}

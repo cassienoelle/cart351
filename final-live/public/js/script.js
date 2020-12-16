@@ -3,25 +3,15 @@
 let myInstrument; // user's custom insrument
 let activeCat; // which category is selected by user
 let activeInst;
-let notes = [];
 let my = {
   sketch: null,
-  tInst: null // Tone instrument instance
+  sampler: null, // Tone instrument instance
+  stream: null
 };
 let arrayOfSamplers = [];
 let activeIndex;
 
 $(document).ready(function() {
-
-  /***********************************
-    SETUP
-  ************************************/
-
-  // setupTone()
-  //
-  // inits new Tone instrument instance with null properties
-  // class set according to user-selected category
-
 
   /***********************************
     GLOBAL STATE CONTROL (APP)
@@ -51,6 +41,9 @@ $(document).ready(function() {
     case "landing_page":
       landingPage();
       break;
+    case "main_app":
+      mainApp();
+      break;
     default:
       break;
   };
@@ -59,132 +52,162 @@ $(document).ready(function() {
   /***********************************
     MAIN P5 SKETCH
   ************************************/
-  my.sketch = function(p) {
-    let canvas;
-    let setWidth, setHeight;
-    let video;
-    let poseNet;
-    let poses = [];
-    let amt = 0.4; // lerp amount for smoothing pose tracking
-    p.setup = function() {
-
-      switch (currentState) {
-        case STATE.wait:
-          setupCanvas();
-          break;
-        case STATE.init:
-          setupVidToCanvas();
-          setupPoseTracking();
-      }
-
-    } // END setup()
-
-    p.draw = function() {
 
 
-    } // END draw()
+  function mainApp() {
+    activeCat = sessionStorage.getItem('activeCat');
+    activeInst = JSON.parse(sessionStorage.getItem('activeInst'));
+    currentState = STATE.init;
 
-    function setupCanvas() {
-      setWidth = (p.windowWidth/2) - 10;
-      setHeight = (setWidth * 3) / 4;
-      canvas = p.createCanvas(setWidth, setHeight);
-    }
-
-    function setupVidToCanvas() {
-      let constraints = {
-        video: {
-          width: { ideal: setWidth },
-          height: { ideal: setHeight },
-          aspectRatio: 4/3
-        },
-        audio: false
-      };
-      video = p.createCapture(constraints, function(stream) {
-        //console.log(stream);
-      });
-      video.hide();
-    }
-
-    function setupPoseTracking() {
-      let options = {
-       imageScaleFactor: 0.3,
-       outputStride: 16,
-       flipHorizontal: true,
-       minConfidence: 0.5,
-       maxPoseDetections: 5,
-       scoreThreshold: 0.5,
-       nmsRadius: 20,
-       detectionType: 'single',
-       multiplier: 0.75,
-      }
+    my.sampler = new Tone.Sampler({
+                    urls: activeInst.urls,
+                    baseUrl: activeInst.baseUrl,
+                    debug: true,
+                    release: 1
+                  }).toDestination();
 
 
-      poseNet = ml5.poseNet(video, options, modelReady);
-      poseNet.on('pose', gotPoses);
+    my.sketch = function(p) {
+                  let canvas;
+                  let setWidth, setHeight;
+                  let video;
+                  let poseNet;
+                  let poses = [];
+                  let amt = 0.4; // lerp amount for smoothing pose tracking
+                  p.setup = function() {
 
-      updateSmoothPoseKeypoints();
-    }
+                    switch (currentState) {
+                      case STATE.wait:
+                        setupCanvas();
+                        break;
+                      case STATE.init:
+                        setupVidToCanvas();
+                        setupPoseTracking();
+                    }
 
-    /****************************
-            POSE TRACKING
-    *****************************/
+                  } // END setup()
 
-    function gotPoses(results) {
-      //console.log("call gotPoses");
-      //console.log(results);
-      poses = results;
-      if (poses.length > 0) {
-        let pose = poses[0].pose;
+                  p.draw = function() {
+                    p.background(0);
 
-        if (currentState === STATE.calibrate) {
-          for (let i = 0; i < pose.keypoints.length; i++) {
-            if (!calibrated) {
-              smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
-              smoothPoseKeypoints[i].t ++;
-            }
-            else if (calibrated) {
-              console.log("total " + smoothPoseKeypoints[i].i + ": " + smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t);
-              if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
-                smoothPoseKeypoints[i].pass = true;
-              } else {
-                smoothPoseKeypoints[i].pass = false;
-              }
-              console.log("pass: " + smoothPoseKeypoints[i].pass);
-            }
-          }
-          if (calibrated) {
-            currentState = STATE.run;
-          }
-        }
+                  } // END draw()
 
-        if (currentState === STATE.run) {
-          for (let i = 0; i < pose.keypoints.length; i++) {
-            smoothPoseKeypoints[i].score = pose.keypoints[i].score;
-            if (smoothPoseKeypoints[i].score > 0.1) {
-                let k = pose.keypoints[i].position;
-                smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
-                smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
-            }
-          }
-        }
-      }
-      updateSmoothPoseKeypoints();
-    }
+                  function setupCanvas() {
+                    setWidth = (p.windowWidth/2) - 10;
+                    setHeight = (setWidth * 3) / 4;
+                    canvas = p.createCanvas(setWidth, setHeight);
+                  }
 
-    function modelReady() {
-      console.log('model ready');
-      calibratePoses();
-    }
+                  function setupVidToCanvas() {
+                    let constraints = {
+                      video: {
+                        width: { ideal: setWidth },
+                        height: { ideal: setHeight },
+                        aspectRatio: 4/3
+                      },
+                      audio: false
+                    };
+                    video = p.createCapture(constraints, function(stream) {
+                      //console.log(stream);
+                    });
+                    video.hide();
+                  }
 
-    /****************************/
+                  function setupPoseTracking() {
+                    let options = {
+                     imageScaleFactor: 0.3,
+                     outputStride: 16,
+                     flipHorizontal: true,
+                     minConfidence: 0.5,
+                     maxPoseDetections: 5,
+                     scoreThreshold: 0.5,
+                     nmsRadius: 20,
+                     detectionType: 'single',
+                     multiplier: 0.75,
+                    }
 
-  } // END sketch
 
+                    poseNet = ml5.poseNet(video, options, modelReady);
+                    poseNet.on('pose', gotPoses);
+
+                    updateSmoothPoseKeypoints();
+                  }
+
+                  /****************************
+                          POSE TRACKING
+                  *****************************/
+
+                  function gotPoses(results) {
+                    //console.log("call gotPoses");
+                    //console.log(results);
+                    poses = results;
+                    if (poses.length > 0) {
+                      let pose = poses[0].pose;
+
+                      if (currentState === STATE.calibrate) {
+                        for (let i = 0; i < pose.keypoints.length; i++) {
+                          if (!calibrated) {
+                            smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
+                            smoothPoseKeypoints[i].t ++;
+                          }
+                          else if (calibrated) {
+                            console.log("total " + smoothPoseKeypoints[i].i + ": " + smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t);
+                            if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
+                              smoothPoseKeypoints[i].pass = true;
+                            } else {
+                              smoothPoseKeypoints[i].pass = false;
+                            }
+                            console.log("pass: " + smoothPoseKeypoints[i].pass);
+                          }
+                        }
+                        if (calibrated) {
+                          currentState = STATE.run;
+                        }
+                      }
+
+                      if (currentState === STATE.run) {
+                        for (let i = 0; i < pose.keypoints.length; i++) {
+                          smoothPoseKeypoints[i].score = pose.keypoints[i].score;
+                          if (smoothPoseKeypoints[i].score > 0.1) {
+                              let k = pose.keypoints[i].position;
+                              smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
+                              smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                          }
+                        }
+                      }
+                    }
+                    updateSmoothPoseKeypoints();
+                  }
+
+                  function modelReady() {
+                    console.log('model ready');
+                    calibratePoses();
+                  }
+
+                  /****************************/
+
+                } // END sketch
+
+
+
+    // APPEND P5 SKETCH TO DOM, CAPTURE STREAM FROM CANVAS
+
+    let userNodeOne = document.getElementById('user-one');
+    new p5(my.sketch, userNodeOne);
+    let video = document.getElementsByTagName('video')[0];
+    let userCanvas = document.getElementsByTagName('canvas')[0];
+    console.log(userCanvas);
+    //my.stream = canvas.captureStream();
+
+    // INIT MAIN APP (code continue directly above)
+    //currentState = STATE.init;
+  }
 
 
   /***********************************
     HTML PAGE SPECIFIC FUNCTIONS
   ************************************/
+
   // landingPage()
   //
   // handles landing page
@@ -257,108 +280,14 @@ $(document).ready(function() {
     });
   }
 
-  // instrumentConfig()
+
+  // instrumentSelect()
   //
   // handles instrument config page
-  function instrumentConfig(min, max) {
-
-    console.log("instrument config ready!");
-    let maxNotes = 8;
-    let nSlider = $('#notes-slider');
-    let totalNotes = 1;
-    let currentNote;
-    let currentNoteIndex = 0;
-    let octaveVal = min;
-
-    // Num Notes Slider
-    $(function() {
-      nSlider.slider({
-        value: 1,
-        min: 1,
-        max: maxNotes,
-        step: 1,
-        slide: function(event, ui) {
-          $('#num-notes').val(ui.value);
-          totalNotes = ui.value;
-          console.log('total notes: ' + totalNotes);
-          notesToSelect();
-          currentNoteIndex = 0;
-        }
-      });
-      $('#num-notes').val( $(nSlider).slider('value') );
-    });
-
-    // reset display div for new notes selection
-    function notesToSelect() {
-      console.log("call notesToSelect");
-      $('#notes-selected').empty();
-      notes = []; // clear global notes array
-      for (let i = 0; i < totalNotes; i++) {
-        $('<span class="sel-note">').appendTo('#notes-selected');
-      }
-    }
-
-    // add selected note to display div
-    // push note to global notes array
-    function addNote() {
-      $( '.sel-note' ).each(function(index) {
-        if (index === currentNoteIndex) {
-          let txt = currentNote + octaveVal;
-          $(this).text(txt);
-          notes.push[txt];
-        }
-      });
-    }
-
-    // Piano Note selector (key click events)
-    $('.key').click(function(e) {
-      e.preventDefault();
-      currentNote = $(this).attr('data-key');
-      console.log('currentNote = ' + currentNote + octaveVal);
-
-      console.log('loaded');
-      console.log(arrayOfSamplers[activeIndex].loaded);
-      let n = currentNote + octaveVal;
-      console.log(typeof(n));
-      arrayOfSamplers[activeIndex].triggerAttackRelease(n, 0.5);
-      if (currentNoteIndex < totalNotes) {
-        addNote();
-        currentNoteIndex++;
-      }
-    });
-
-    // CLEAR button click event handler
-    $('#clear-notes').click(function(e) {
-      e.preventDefault();
-      $( '.sel-note' ).each(function(index) {
-        $(this).empty();
-      });
-      currentNoteIndex = 0;
-      notes = []; // clear global notes array
-    });
-
-    //  Octave Spinner
-    $( function() {
-      $('#octave-spinner').spinner({
-        spin: function(event, ui) {
-          octaveVal = ui.value;
-          if (ui.value > max) {
-            $(this).spinner( "value", min );
-            return false;
-          }
-          else if ( ui.value < 1 ) {
-            $(this).spinner( "value", max );
-            return false;
-          }
-        }
-      }).val(octaveVal);
-    });
-
-  };
-
   function instrumentSelect() {
-    let min = " ";
-    let max = " ";
+    let octaveMin = " ";
+    let octaveMax = " ";
+
     // get glossary.JSON file and parse out the instrument titles that are part of
     // the active category, then create a titled div for each instrument so user can select their choice
     $.getJSON( "data/glossary.json", function( data ) {
@@ -385,14 +314,14 @@ $(document).ready(function() {
               // if instrument has an octave range
               // include as data attribute
                if (inst.octaveRange) {
-                 min = inst.octaveRange[0];
-                 max = inst.octaveRange[1];
+                 octaveMin = inst.octaveRange[0];
+                 octaveMax = inst.octaveRange[1];
                }
               innerDiv = $("<div/>", {
                 'class' : 'instrument-select',
                 'data-key' : inst.id, // so we know which instrument the user selects
-                'data-octave-min' : min,
-                'data-octave-max' : max
+                'data-octave-min' : octaveMin,
+                'data-octave-max' : octaveMax
               });
               innerDiv.appendTo(outerDiv);
               // add title to div
@@ -405,15 +334,16 @@ $(document).ready(function() {
             })();
 
             // init a Tone.Sampler according to instrument object properties
-            arrayOfSamplers[j + offset] = inst.id;
-            offset++;
-            arrayOfSamplers[j + offset] = new Tone.Sampler({
+            let s = new Tone.Sampler({
                       urls: inst.urls,
                       baseUrl: cat.baseUrl,
                       debug: true,
                       release: 1
                     }).toDestination();
+            arrayOfSamplers.push(inst.id);
+            arrayOfSamplers.push(s);
             console.log(arrayOfSamplers);
+
 
               // }
 
@@ -426,10 +356,11 @@ $(document).ready(function() {
                 name: inst.id,
                 urls: inst.urls,
                 baseUrl: cat.baseUrl,
-                debug: true
+                notes: [],
+                min: $(this).data('octave-min'),
+                max: $(this).data('octave-max')
               };
               sessionStorage.setItem('activeInst', JSON.stringify(activeInst));
-
 
               // toggle div styles according to active selection
               (() => {
@@ -441,19 +372,133 @@ $(document).ready(function() {
                 });
               })();
 
+
+
               activeIndex = findSampler();
-              console.log(activeIndex);
-              console.log(arrayOfSamplers[activeIndex].get());
-
             });
-
-            instrumentConfig(min, max);
-
           } // END inner for loop
+
         }
+
       } // END outer for loop
     });
-  }
+
+    instrumentConfig();
+
+    // instrumentConfig()
+    //
+    // config instrument once selected
+    function instrumentConfig() {
+      let maxNotes = 8;
+      let nSlider = $('#notes-slider');
+      let totalNotes = 1;
+      let currentNote;
+      let currentNoteIndex = 0;
+      let octaveVal = 3;
+
+      console.log('octave val: ' + octaveVal);
+
+      // Num Notes Slider
+      $(function() {
+        nSlider.slider({
+          value: 1,
+          min: 1,
+          max: maxNotes,
+          step: 1,
+          slide: function(event, ui) {
+            $('#num-notes').val(ui.value);
+            totalNotes = ui.value;
+            console.log('total notes: ' + totalNotes);
+            notesToSelect();
+            currentNoteIndex = 0;
+          }
+        });
+        $('#num-notes').val( $(nSlider).slider('value') );
+      });
+
+      //  Octave Spinner
+      $( function() {
+        $('#octave-spinner').spinner({
+          spin: function(event, ui) {
+            octaveVal = ui.value;
+            octaveMin = activeInst.min;
+            octaveMax = activeInst.max;
+            console.log('octaveMin:' + octaveMin);
+            if (ui.value > octaveMax) {
+              $(this).spinner( "value", octaveMin );
+              return false;
+            }
+            else if ( ui.value < octaveMin ) {
+              $(this).spinner( "value", octaveMax );
+              return false;
+            }
+          }
+        }).val(octaveVal);
+      });
+
+      // Piano Note selector (key click events)
+      $('.key').click(function(e) {
+        console.log('click');
+        e.preventDefault();
+        currentNote = $(this).attr('data-key');
+
+        console.log(arrayOfSamplers[activeIndex].loaded);
+        let n = currentNote + octaveVal;
+        console.log('n: ' + n);
+        arrayOfSamplers[activeIndex].triggerAttackRelease(n, 0.5);
+        if (currentNoteIndex < totalNotes) {
+          addNote();
+          currentNoteIndex++;
+        }
+      });
+
+      // reset display div for new notes selection
+      function notesToSelect() {
+        console.log("call notesToSelect");
+        $('#notes-selected').empty();
+        activeInst.notes = []; // clear global notes array
+        for (let i = 0; i < totalNotes; i++) {
+          $('<span class="sel-note">').appendTo('#notes-selected');
+        }
+      }
+
+      // add selected note to display div
+      // push note to global notes array
+      function addNote() {
+        $( '.sel-note' ).each(function(index) {
+          if (index === currentNoteIndex) {
+            let txt = currentNote + octaveVal;
+            $(this).text(txt);
+            activeInst.notes.push(txt);
+          }
+        });
+      }
+
+      // CLEAR button click event handler
+      $('#clear-notes').click(function(e) {
+        e.preventDefault();
+        $( '.sel-note' ).each(function(index) {
+          $(this).empty();
+        });
+        currentNoteIndex = 0;
+        activeInst.notes = []; // clear global notes array
+      });
+
+      // SAVE button click event handler
+      $('#save-notes').click(function(e) {
+        e.preventDefault();
+        console.dir(activeInst);
+        sessionStorage.setItem('activeInst', JSON.stringify(activeInst));
+      });
+
+      // GO button click event handler
+      $('#gos').click(function(e) {
+
+      });
+
+    } // END instrumentConfig
+
+  } // END instrumentSelect
 
 
   /***********************************
