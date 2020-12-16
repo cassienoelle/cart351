@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Instrument Config</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Cassie Smith">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|DM+Mono|Oxygen+Mono">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Peer.js -->
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- jQuery UI-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!-- p5.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <!-- Tone.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.68/Tone.js"></script>
+
+    <!-- Native script files -->
+    <script src="js/smoothPose.js"></script>
+    <script src="js/Star.js"></script>
+    <script src="js/bg.js"></script>
+    <script src="js/SoundObject.js"></script>
+    <script src="js/Instrument.js"></script>
+    <script src="js/script.js"></script>
+
+  </head>
+
+  <body data-title="instrument_config">
+
+    <div class="bg"></div>
+
+    <div class="config-wrapper">
+      <h1 class="page-title config">instruments</h1>
+
+      <section class="config-section preselect">
+        <h2 class="section-title">select instrument</h2>
+
+      </section>
+
+      <section class="config-section controls">
+
+        <h2 class="section-title">configure</h2>
+        <h3 class="config-title">total number of notes</h3>
+        <div class="slider-wrapper">
+          <div id="notes-slider" class="container slider"></div>
+          <input type="text" id="num-notes" class="slider-value" readonly>
+        </div>
+
+        <div class="nst">
+
+          <div id="nstc1">
+            <h3 class="config-title">select notes</h3>
+              <div class="keyboard">
+                <div class="white-keys">
+                   <div class="white key" data-key="C"></div>
+                   <div class="white key" data-key="D"></div>
+                   <div class="white key" data-key="E"></div>
+                   <div class="white key" data-key="F"></div>
+                   <div class="white key" data-key="G"></div>
+                   <div class="white key" data-key="A"></div>
+                   <div class="white key" data-key="B"></div>
+                 </div>
+
+                 <div class="black-keys">
+                   <div class="black key" data-key="C#"></div>
+                   <div class="black key" data-key="D#"></div>
+                   <div class="black placeholder" data-key=" "></div>
+                   <div class="black key" data-key="F#"></div>
+                   <div class="black key" data-key="G#"></div>
+                   <div class="black key" data-key="A#"></div>
+                 </div>
+               </div>
+             </div>
+
+             <div id="nstc2">
+               <h3 class="config-title">octave</h3>
+               <input id="octave-spinner" class="spinner" name="value">
+             </div>
+
+         </div>
+         <div id="notes-selected"> </div>
+         <div>
+           <span id="save-notes" class="button">save</span>
+           <span id="clear-notes" class="button">clear</span>
+         </div>
+
+
+      </section>
+
+      <!--
+      <section class="config-section alt">
+      </section>
+      <section class="config-section preview">
+        <h2 class="section-title">preview</h2>
+
+        <div id="display">
+            COMING SOON
+        </div>
+
+      </section>
+    -->
+
+
+
+    </div>
+  </body>
+</html>

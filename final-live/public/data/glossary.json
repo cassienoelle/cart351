@@ -1,0 +1,115 @@
+[
+  {
+    "class":"drums",
+    "toneClass":"sampler",
+    "baseUrl":"/public/assets/samples/keys/",
+    "inst":
+          [
+              {
+                "id" : "acoustic kit",
+                "urls" : {
+                          "C3" : "bass.mp3",
+                          "C4" : "kick.mp3",
+                          "C5" : "tom.mp3",
+                          "C6" : "snare.mp3"
+                         }
+              }
+          ]
+  },
+  {
+    "class":"keys",
+    "toneClass":"sampler",
+    "baseUrl":"/public/assets/samples/keys/",
+    "inst":
+          [
+              {
+                "id": "piano",
+                "urls" : {
+                          "C2" : "piano.mp3"
+                         },
+                "octaveRange" : ["1", "7"]
+              },
+              
+              {
+                "id": "xylophone",
+                "urls" : {
+                          "C4" : "xylophone.mp3"
+                         },
+                "octaveRange" : ["4", "7"]
+              }
+          ]
+
+  },
+  {
+    "class":"strings",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  },
+  {
+    "class":"brass",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  },
+  {
+    "class":"oscillators",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  },
+  {
+    "class":"placeholder",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  },
+  {
+    "class":"placeholder",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  },
+  {
+    "class":"placeholder",
+    "toneClass":"sampler",
+    "baseUrl":"#",
+    "inst":
+          [
+                {
+                  "id": "placeholder",
+                  "url": "placeholder"
+                }
+          ]
+  }
+]
