@@ -371,6 +371,9 @@ $(document).ready(function() {
         PEER-TO-PEER
       ************************************/
 
+      callStartBtn = $('#connect-start-btn');
+      callJoinBtn = $('#connect-join-btn');
+
       $(callStartBtn).click(function(e) {
         e.preventDefault();
         start();
