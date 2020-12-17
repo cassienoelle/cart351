@@ -85,14 +85,14 @@ $(document).ready(function() {
                   }).toDestination();
 
 
-    let myVideo = document.getElementsByTagName('video')[0];
+    let streamToVideo = document.getElementsByTagName('video')[0];
     let userCanvas;
     let instructions = $('.instructions');
     let calibrateInstructions = $('#calibrate');
     let connectInstructions = $('#connect');
     let waitingToCalibrate = $('#calibrating');
 
-    $(myVideo).hide();
+    $(streamToVideo).hide();
     $(connectInstructions).hide();
     $(waitingToCalibrate).hide();
 
@@ -352,7 +352,7 @@ $(document).ready(function() {
               } // END sketch
 
               /*
-              $(myVideo).hide();
+              $(streamToVideo).hide();
               $(connectInstructions).hide();
               $(waitingToCalibrate).hide();*/
 
@@ -466,7 +466,7 @@ $(document).ready(function() {
          peer = null;
          call = null;
          conn = null;
-         $(video).hide();
+         $(streamToVideo).hide();
          document.getElementById('user-two-name').innerHTML = " ";
        }
 
@@ -475,8 +475,8 @@ $(document).ready(function() {
         call.on('stream', function(stream) {
           friend.stream = stream;
           // $('#status').text(status.connected);
-          $(video).show();
-          video.srcObject = friend.stream;
+          $(streamToVideo).show();
+          streamToVideo.srcObject = friend.stream;
         });
 
         conn.on('open', function() {
