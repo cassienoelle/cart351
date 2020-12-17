@@ -1,13 +1,28 @@
 "use strict";
 
 let myInstrument; // user's custom insrument
-let activeCat; // which category is selected by user
-let activeInst;
 let my = {
   sketch: null,
+  stream: null,
+  peerId: null,
   sampler: null, // Tone instrument instance
-  stream: null
+  activeCat: null, // selected instrument category
+  activeInst: null, // instrument properties
 };
+var friend = {
+  peerID: null,
+  stream: null,
+  activeCat: null,
+  activeInst: null,
+  sampler: null
+};
+let peer = null;
+let conn = null;
+let call = null;
+let callStartBtn;
+let callJoinBtn;
+let callEndBtn;
+
 let arrayOfSamplers = [];
 let activeIndex;
 let calibrated = false;
@@ -56,23 +71,30 @@ $(document).ready(function() {
 
   function mainApp() {
     // get saved instrument data from session storage
-    activeCat = sessionStorage.getItem('activeCat');
-    activeInst = JSON.parse(sessionStorage.getItem('activeInst'));
+    my.activeCat = sessionStorage.getItem('my.activeCat');
+    my.activeInst = JSON.parse(sessionStorage.getItem('my.activeInst'));
 
     // START APP
     // currentState = STATE.init;
     // Re-init sampler with saved data
     my.sampler = new Tone.Sampler({
-                    urls: activeInst.urls,
-                    baseUrl: activeInst.baseUrl,
+                    urls: my.activeInst.urls,
+                    baseUrl: my.activeInst.baseUrl,
                     debug: true,
                     release: 1
                   }).toDestination();
 
 
     let myVideo = document.getElementsByTagName('video')[0];
-    $(myVideo).hide();
     let userCanvas;
+    let instructions = $('.instructions');
+    let calibrateInstructions = $('#calibrate');
+    let connectInstructions = $('#connect');
+    let waitingToCalibrate = $('#calibrating');
+
+    $(myVideo).hide();
+    $(connectInstructions).hide();
+    $(waitingToCalibrate).hide();
 
 
     /******** Main P5 Sketch ********/
@@ -124,9 +146,6 @@ $(document).ready(function() {
                       }
 
                       drawStars();
-
-
-
                   } // END draw()
 
                   function setupCanvas() {
@@ -218,8 +237,15 @@ $(document).ready(function() {
 
                     function calibratePoses() {
                         setTimeout(function(){
+                          $(waitingToCalibrate).fadeOut(500, function() {
+                            $(waitingToCalibrate).hide();
+                            $(connectInstructions).fadeIn(800, function(){});
+                          });
                           calibrated = true;
-                        }, 5000);
+                          setTimeout(function(){
+                            $(userCanvas).removeClass('grayscale');
+                          }, 500);
+                        }, 7000);
                       }
 
                     function gotPoses(results) {
@@ -273,13 +299,6 @@ $(document).ready(function() {
                       MAIN APP HELPER FUNCTIONS
                     ************************************/
 
-                    let appStart = $('#app-start-btn');
-                    $(appStart).one( "click", function() {
-                      currentState = STATE.calibrate;
-                      setupPoseTracking();
-                    });
-
-
                     function drawKeypoints(p) {
                       let r = 10;
                       if (poses.length > 0) {
@@ -319,19 +338,157 @@ $(document).ready(function() {
                       }
                     }
 
+                    let appStart = $('#app-start-btn');
+                    $(appStart).one( "click", function() {
+                      $(calibrateInstructions).fadeOut(500, function(){
+                        $(waitingToCalibrate).fadeIn(800, function(){
+                          setupPoseTracking();
+                          currentState = STATE.calibrate;
+                        });
+                      });
+
+                    });
 
               } // END sketch
 
-    let userNodeOne = document.getElementById('user-one');
-    new p5(my.sketch, userNodeOne);
-    // APPEND P5 SKETCH TO DOM, CAPTURE STREAM FROM CANVAS
-    setTimeout(()=>{
-      userCanvas = document.getElementsByTagName('canvas')[1];
-      $(userCanvas).addClass('grayscale');
-    }, 500);
+              /*
+              $(myVideo).hide();
+              $(connectInstructions).hide();
+              $(waitingToCalibrate).hide();*/
 
-    //my.stream = canvas.captureStream();
-  }
+      // APPEND P5 SKETCH TO DOM, CAPTURE STREAM FROM CANVAS
+      let userNodeOne = document.getElementById('user-one');
+      new p5(my.sketch, userNodeOne);
+
+
+      setTimeout(()=>{
+        userCanvas = document.getElementsByTagName('canvas')[1];
+        $(userCanvas).addClass('grayscale');
+        my.stream = userCanvas.captureStream();
+      }, 500);
+
+      /***********************************
+        PEER-TO-PEER
+      ************************************/
+
+      $(callStartBtn).click(function(e) {
+        e.preventDefault();
+        start();
+      });
+
+      $(callJoinBtn).click(function(e) {
+        e.preventDefault();
+        join();
+      });
+
+      $(callEndBtn).click(function(e) {
+        e.preventDefault();
+        end();
+      });
+
+
+      function initialize() {
+        peer = new Peer(null, {
+          debug: 2
+        });
+
+        peer.on('open', function(id) {
+          my.peerID = id;
+        });
+
+        peer.on('error', function(err) {
+          alert('' + err);
+        });
+
+        peer.on('disconnect', function() {
+
+        });
+      }
+
+      function start() {
+        initialize();
+        peer.on('open', function() {
+          alert('Ask your friend to join using your peer ID: ' + my.peerID);
+          // $('#status').text(status.waiting);
+        });
+        peer.on('connection', function(c) {
+          if (conn) {
+            c.close();
+            return;
+          }
+          conn = c;
+          console.log('conn connection');
+        });
+        peer.on('call', function(c) {
+          if (call) {
+            c.close();
+            return;
+          }
+          call = c;
+          call.answer(my.stream);
+          // $('#status').text(status.connected);
+          begin();
+        });
+      }
+
+      function join() {
+        initialize();
+        peer.on('open', function() {
+          var destId = prompt("Friend's peer ID:");
+          conn = peer.connect(destId, {
+            // options
+          });
+          conn.on('open', function() {
+            console.log('conn open');
+          });
+          call = peer.call(destId, my.stream, {
+            // options
+          });
+          friend.peerID = destId;
+          begin();
+        });
+      }
+
+      function end() {
+       console.log('call end');
+       call.close();
+       conn.close();
+       reset();
+     }
+
+      function reset() {
+         $('#status').text(status.closed);
+         my.peerID = null;
+         friend.peerID = null;
+         peer = null;
+         call = null;
+         conn = null;
+         $(video).hide();
+         document.getElementById('user-two-name').innerHTML = " ";
+       }
+
+       function begin() {
+
+        call.on('stream', function(stream) {
+          friend.stream = stream;
+          // $('#status').text(status.connected);
+          $(video).show();
+          video.srcObject = friend.stream;
+        });
+
+        conn.on('open', function() {
+          console.log('conn open');
+        });
+
+        conn.on('close', function() {
+          peer.destroy();
+          reset();
+        });
+
+      }
+
+
+  }// end MAIN APP
 
 
   /***********************************
@@ -388,9 +545,9 @@ $(document).ready(function() {
         // click event listener for category div
         $(innerDiv).click(function(e) {
           e.preventDefault();
-          activeCat = $(this).data('key'); // set active category to this category
-          // save activeCat to session storage so it persists across page loads
-          sessionStorage.setItem('activeCat', activeCat);
+          my.activeCat = $(this).data('key'); // set active category to this category
+          // save my.activeCat to session storage so it persists across page loads
+          sessionStorage.setItem('my.activeCat', my.activeCat);
           // navigate to instrument-config page if category is drums or keys
           // other categories are disabled while under development
           if ($(this).data('key') === 'drums' || $(this).data('key') === 'keys') {
@@ -423,7 +580,7 @@ $(document).ready(function() {
     $.getJSON( "data/glossary.json", function( data ) {
 
       // retrieve active category from session storage
-      activeCat = sessionStorage.getItem('activeCat');
+      my.activeCat = sessionStorage.getItem('my.activeCat');
       // create an array hold all the instrument Samplers
       // the first value is the category class
       let outerDiv = $(".preselect");
@@ -431,7 +588,7 @@ $(document).ready(function() {
       for (let i = 0; i < data.length; i++) {
         // if this category is the one the user selected
         // let's customize the config page and setup the related instruments
-        if (data[i].class === activeCat) {
+        if (data[i].class === my.activeCat) {
           let offset = 0;
           // iterate through instrument objects
           for (let j = 0; j < data[i].inst.length; j++) {
@@ -482,7 +639,7 @@ $(document).ready(function() {
               e.preventDefault();
               // create 'active' object with instrument properties
               // and save to session storage
-              activeInst = {
+              my.activeInst = {
                 name: inst.id,
                 urls: inst.urls,
                 baseUrl: cat.baseUrl,
@@ -490,13 +647,13 @@ $(document).ready(function() {
                 min: $(this).data('octave-min'),
                 max: $(this).data('octave-max')
               };
-              sessionStorage.setItem('activeInst', JSON.stringify(activeInst));
+              sessionStorage.setItem('my.activeInst', JSON.stringify(my.activeInst));
 
               // toggle div styles according to active selection
               (() => {
                 $(this).toggleClass( 'inst-active' );
                 $('.instrument-select').each(function() {
-                  if ($(this).data('key') != activeInst.name) {
+                  if ($(this).data('key') != my.activeInst.name) {
                     $(this).removeClass('inst-active');
                   }
                 });
@@ -551,8 +708,8 @@ $(document).ready(function() {
         $('#octave-spinner').spinner({
           spin: function(event, ui) {
             octaveVal = ui.value;
-            octaveMin = activeInst.min;
-            octaveMax = activeInst.max;
+            octaveMin = my.activeInst.min;
+            octaveMax = my.activeInst.max;
             console.log('octaveMin:' + octaveMin);
             if (ui.value > octaveMax) {
               $(this).spinner( "value", octaveMin );
@@ -586,7 +743,7 @@ $(document).ready(function() {
       function notesToSelect() {
         console.log("call notesToSelect");
         $('#notes-selected').empty();
-        activeInst.notes = []; // clear global notes array
+        my.activeInst.notes = []; // clear global notes array
         for (let i = 0; i < totalNotes; i++) {
           $('<span class="sel-note">').appendTo('#notes-selected');
         }
@@ -599,7 +756,7 @@ $(document).ready(function() {
           if (index === currentNoteIndex) {
             let txt = currentNote + octaveVal;
             $(this).text(txt);
-            activeInst.notes.push(txt);
+            my.activeInst.notes.push(txt);
           }
         });
       }
@@ -611,14 +768,14 @@ $(document).ready(function() {
           $(this).empty();
         });
         currentNoteIndex = 0;
-        activeInst.notes = []; // clear global notes array
+        my.activeInst.notes = []; // clear global notes array
       });
 
       // SAVE button click event handler
       $('#save-notes').click(function(e) {
         e.preventDefault();
-        console.dir(activeInst);
-        sessionStorage.setItem('activeInst', JSON.stringify(activeInst));
+        console.dir(my.activeInst);
+        sessionStorage.setItem('my.activeInst', JSON.stringify(my.activeInst));
       });
 
       // GO button click event handler
@@ -636,9 +793,9 @@ $(document).ready(function() {
   ************************************/
 
   function findSampler() {
-    activeInst = JSON.parse(sessionStorage.getItem('activeInst'));
+    my.activeInst = JSON.parse(sessionStorage.getItem('my.activeInst'));
     for (let i = 0; i < arrayOfSamplers.length; i++) {
-      if (arrayOfSamplers[i] === activeInst.name) {
+      if (arrayOfSamplers[i] === my.activeInst.name) {
         return i+1;
       }
     }

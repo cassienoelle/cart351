@@ -40,19 +40,35 @@
     <div class="wrapper">
       <div class="user-container" id="user-one"></div>
       <div class="user-container" id="user-two">
-        <div id="instructions">
+        <div class="instructions" id="calibrate">
           <h2 class="instructions-title">instructions</h2>
           <ul>
             <li><span class="b">SPACE.JAM</span> is meant to be played standing.</li>
             <li>After you hit <span class="b">START</span>, please stand up and take two large steps back. Your upper <span class="b">TORSO</span> and <span class="b">HIPS</span> should be in the frame.</li>
             <li>Try it now to make sure your webcam is angled correctly. Then click the button whenever you're ready.</li>
-            <li>Follow the instructions to <span class="b">CALIBRATE</span> the app.</li>
-            <li><span class="b">SPACE.JAM</span> will start automatically. <br/>No mouse or keyboard needed.</li>
-            <div class="init-btns">
-              <div id="app-start-btn" class="button">start</div>
-              <div id="app-join-btn" class="button">join</div>
-          </div>
+            <li>Follow the instructions to <span class="b">CALIBRATE</span> the app.<br />It will start automatically.</li>
+            <li> You can <span class="b">JAM SOLO</span> or <span class="b">JAM WITH A FRIEND</span>.</li>
+
+            <div id="app-start-btn" class="button">start</div>
         </ul>
+        </div>
+        <div class="instructions" id="calibrating">
+            <p id="calib">CALIBRATING<br/>PLEASE WAIT</p>
+          <div class="animation">
+
+            <div class="planet">
+            </div>
+            <div class="orbit">
+              <div class="moon"></div>
+            </div>
+          </div>
+        </div>
+        <div class="instructions" id="connect">
+          <h2 id="connect-title" class="instructions-title">JAM <br/> WITH A FRIEND</h2>
+          <div class="init-btns">
+            <div id="connect-start-btn" class="button">start</div>
+            <div id="connect-join-btn" class="button">join</div>
+          </div>
         </div>
         <video id="myVideo" playsinline autoplay muted>
       </div>

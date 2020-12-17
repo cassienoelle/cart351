@@ -232,7 +232,7 @@ canvas {
   cursor: default;
 }
 
-#jam-btn, #about-btn, #app-start-btn, #app-join-btn{
+#jam-btn, #about-btn, #app-start-btn, #connect-start-btn, #connect-join-btn{
   width: 6rem;
   padding: 1.5rem;
   text-align: center;
@@ -242,32 +242,32 @@ canvas {
   font-weight: 400;
 }
 
-#app-start-btn, #app-join-btn {
+#app-start-btn, #connect-start-btn, #connect-join-btn {
   margin-left: 0;
   margin-top: 2em;
 }
 
-#jam-btn, #app-start-btn{
+#jam-btn, #app-start-btn, #connect-start-btn{
   background-color: var(--blue);
 }
 
-#jam-btn:hover, #app-start-btn:hover{
+#jam-btn:hover, #app-start-btn:hover, #connect-start-btn:hover{
   background-color: var(--blue-semi-opaque);
 }
 
-#jam-btn:active, #app-start-btn:active{
+#jam-btn:active, #app-start-btn:active, #connect-start-btn:active{
   background-color: var(--blue);
 }
 
-#about-btn {
+#about-btn, #connect-join-btn {
   background-color: rgba(255, 255, 255, 0);
 }
 
-#about-btn:hover {
+#about-btn:hover, #connect-join-btn:hover  {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-#about-btn:active {
+#about-btn:active, #connect-join-btn:active  {
   background-color: rgba(255, 255, 255, 0);
 }
 
@@ -479,40 +479,6 @@ a {
   /* background-color: #fbfbfb; */
 }
 
-  @keyframes rotate {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-.animation {
-  align-self: center;
-}
-
-.planet {
-  height: 300px;
-  width: 300px;
-  background: #FAE433;
-  border-radius: 50%;
-  animation: rotate 10s linear infinite;
-  box-shadow:
-  0px 0px 80px 0px rgba(250, 242, 175, 0.96),
-  inset 0px 5px 150px 0px rgba(250, 77, 18, 0.96);
-}
-
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.moon {
-  border-radius: 50%;
-  margin: -60px;
-  width: 25px;
-  height: 25px;
-  background: #fff;
-}
 
 
 .category-select:hover, .instrument-select:hover {
@@ -579,7 +545,7 @@ a {
 
 }
 
-#instructions {
+.instructions {
   font-weight: 300;
   font-size: 1.5em;
   padding-right: 1em;
@@ -594,6 +560,76 @@ a {
   font-size: 2em;
   padding-left: 0.9em;
   margin-bottom: 1.5em;
+  line-height: 1.3em;
+}
+
+#connect-title {
+  margin-bottom: 0;
+}
+
+#connect {
+
+}
+
+#calibrating {
+  display: flex;
+  justify-content:  center;
+}
+
+.orbit{
+  position: relative;
+  height: 300px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.0);
+  border-radius: 50%;
+  animation: rotate 4s linear infinite;
+  border:  1px solid white;
+  margin: 0;
+}
+
+
+.planet {
+  position: relative;
+  top: 50%;
+  left: 25%;
+  z-index: -1;
+  height: 150px;
+  width: 150px;
+  background: #fff;
+  border-radius: 50%;
+  /*box-shadow:
+  0px 0px 40px 0px rgba(250, 242, 175, 0.96),
+  inset 0px 5px 35px 0px rgba(50, 50, 50, 0.75);*/
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.moon {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  margin: 25px;
+  background: #fff;
+  /*box-shadow:
+  0px 0px 40px 0px rgba(250, 242, 175, 0.96),
+  inset 0px 3px 5px 0px rgba(50, 50, 50, 0.55);*/
+}
+
+.animation {
+  margin-top: -200px;
+
+}
+
+#calib {
+  padding-top: 60px;
+  padding-right: 50px;
+  font-weight: 400;
+  font-size: 0.8em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 li {
@@ -608,4 +644,6 @@ li {
 
 .init-btns {
   display: flex;
+  margin-left: 2em;
+  margin-top: 0;
 }
