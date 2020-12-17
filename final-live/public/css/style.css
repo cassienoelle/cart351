@@ -67,6 +67,10 @@ canvas {
   visibility: visible !important;
 }
 
+video, canvas {
+  border: 1px solid red;
+}
+
 .grayscale {
   filter: grayscale(100%);
   margin-left: 3em;

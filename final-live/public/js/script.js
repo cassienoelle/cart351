@@ -85,7 +85,7 @@ $(document).ready(function() {
                   }).toDestination();
 
 
-    let streamToVideo = document.getElementsByTagName('video')[0];
+    let streamToVideo = document.getElementById('myVideo');
     let userCanvas;
     let instructions = $('.instructions');
     let calibrateInstructions = $('#calibrate');
@@ -440,9 +440,6 @@ $(document).ready(function() {
           var destId = prompt("Friend's peer ID:");
           conn = peer.connect(destId, {
             // options
-          });
-          conn.on('open', function() {
-            console.log('conn open');
           });
           call = peer.call(destId, my.stream, {
             // options
