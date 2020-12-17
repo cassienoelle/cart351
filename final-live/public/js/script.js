@@ -471,6 +471,11 @@ $(document).ready(function() {
        }
 
        function begin() {
+         $(connectInstructions).fadeOut(500, function(){
+           $(streamToVideo).fadeIn(500, function(){
+           });
+         });
+
 
         call.on('stream', function(stream) {
           friend.stream = stream;
