@@ -10,7 +10,7 @@ function windowResized() {
 }
 */
 
-
+/*
 function drawKeypoints(p) {
   let r = 10;
   if (poses.length > 0) {
@@ -48,9 +48,9 @@ function drawSkeleton(p) {
     if (smoothPoseKeypoints[a].pass === true && smoothPoseKeypoints[b].pass === true) {
       drawSkeletonPart(p, smoothPoseKeypoints[a], smoothPoseKeypoints[b]);
     }
-
   }
 }
+/*
 
 function initSoundObjects(array, keypts) {
   let keys = keypts;

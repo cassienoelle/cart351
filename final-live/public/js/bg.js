@@ -2,7 +2,6 @@
 
   $(document).ready( function() {
 
-
       let bgSketch = function(b) {
 
         let bgStars = [];

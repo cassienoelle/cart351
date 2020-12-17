@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Cassie Smith">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|DM+Mono|Oxygen+Mono">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -35,10 +36,27 @@
 
   <body data-title="main_app">
 
-    <!-- <div class="bg"></div>-->
+   <div class="bg"></div>
     <div class="wrapper">
-      <div class="container" id="user-one"></div>
-      <div class="container" id="user-two"><video id="myVideo" playsinline autoplay muted></div>
+      <div class="user-container" id="user-one"></div>
+      <div class="user-container" id="user-two">
+        <div id="instructions">
+          <h2 class="instructions-title">instructions</h2>
+          <ul>
+            <li><span class="b">SPACE.JAM</span> is meant to be played standing.</li>
+            <li>After you hit <span class="b">START</span>, please stand up and take two large steps back. Your upper <span class="b">TORSO</span> and <span class="b">HIPS</span> should be in the frame.</li>
+            <li>Try it now to make sure your webcam is angled correctly. Then click the button whenever you're ready.</li>
+            <li>Follow the instructions to <span class="b">CALIBRATE</span> the app.</li>
+            <li><span class="b">SPACE.JAM</span> will start automatically. <br/>No mouse or keyboard needed.</li>
+            <div class="init-btns">
+              <div id="app-start-btn" class="button">start</div>
+              <div id="app-join-btn" class="button">join</div>
+          </div>
+        </ul>
+        </div>
+        <video id="myVideo" playsinline autoplay muted>
+      </div>
+
     </div>
 
 

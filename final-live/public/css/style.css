@@ -67,6 +67,11 @@ canvas {
   visibility: visible !important;
 }
 
+.grayscale {
+  filter: grayscale(100%);
+  margin-left: 3em;
+}
+
 #site-title {
   font-size: 9em;
   padding: 0.3em;
@@ -159,6 +164,16 @@ canvas {
   align-self: center;
 }
 
+.user-container {
+  align-self: center;
+  width: 48vw;
+  margin: 1%;
+}
+
+.hide {
+  display: none;
+}
+
 .config-title {
   color: #fff;
   font-family: "Roboto", Arial, sans-serif;
@@ -217,24 +232,30 @@ canvas {
   cursor: default;
 }
 
-#jam-btn, #about-btn {
-  width: 4em;
-  padding: 1em;
+#jam-btn, #about-btn, #app-start-btn, #app-join-btn{
+  width: 6rem;
+  padding: 1.5rem;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   align-self: center;
-  margin: 1em 0.5em;
+  margin: 2rem 1rem;
+  font-weight: 400;
 }
 
-#jam-btn {
+#app-start-btn, #app-join-btn {
+  margin-left: 0;
+  margin-top: 2em;
+}
+
+#jam-btn, #app-start-btn{
   background-color: var(--blue);
 }
 
-#jam-btn:hover {
+#jam-btn:hover, #app-start-btn:hover{
   background-color: var(--blue-semi-opaque);
 }
 
-#jam-btn:active {
+#jam-btn:active, #app-start-btn:active{
   background-color: var(--blue);
 }
 
@@ -552,4 +573,39 @@ a {
 
 #go:active {
   color: var(--chartreuse);
+}
+
+#user-two {
+
+}
+
+#instructions {
+  font-weight: 300;
+  font-size: 1.5em;
+  padding-right: 1em;
+  letter-spacing: 0.05em;
+  line-height: 1.2em;
+  max-width: 600px;
+  margin: auto;
+}
+
+.instructions-title {
+  font-family: 'Extradition', Arial, sans-serif;
+  font-size: 2em;
+  padding-left: 0.9em;
+  margin-bottom: 1.5em;
+}
+
+li {
+  margin: 0 0 1em 0;
+  list-style-type: none;
+}
+
+.b {
+  font-weight: 500;
+  color: var(--chartreuse);
+}
+
+.init-btns {
+  display: flex;
 }

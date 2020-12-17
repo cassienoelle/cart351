@@ -10,6 +10,7 @@ let my = {
 };
 let arrayOfSamplers = [];
 let activeIndex;
+let calibrated = false;
 
 $(document).ready(function() {
 
@@ -48,17 +49,19 @@ $(document).ready(function() {
       break;
   };
 
-
   /***********************************
-    MAIN P5 SKETCH
+    MAIN APP
   ************************************/
 
 
   function mainApp() {
+    // get saved instrument data from session storage
     activeCat = sessionStorage.getItem('activeCat');
     activeInst = JSON.parse(sessionStorage.getItem('activeInst'));
-    currentState = STATE.init;
 
+    // START APP
+    // currentState = STATE.init;
+    // Re-init sampler with saved data
     my.sampler = new Tone.Sampler({
                     urls: activeInst.urls,
                     baseUrl: activeInst.baseUrl,
@@ -67,38 +70,80 @@ $(document).ready(function() {
                   }).toDestination();
 
 
+    let myVideo = document.getElementsByTagName('video')[0];
+    $(myVideo).hide();
+    let userCanvas;
+
+
+    /******** Main P5 Sketch ********/
+
     my.sketch = function(p) {
                   let canvas;
                   let setWidth, setHeight;
                   let video;
+                  let stars = [];
                   let poseNet;
                   let poses = [];
                   let amt = 0.4; // lerp amount for smoothing pose tracking
+                  let ex = 0;
+                  let ey = 0;
+
+                  p.keyPressed = function() {
+                    currentState = STATE.init;
+                    console.log('pressed');
+                  }
+
+
                   p.setup = function() {
 
-                    switch (currentState) {
-                      case STATE.wait:
-                        setupCanvas();
-                        break;
-                      case STATE.init:
-                        setupVidToCanvas();
-                        setupPoseTracking();
-                    }
+                    setupCanvas();
+                    setupStarsBg();
+                    setupVidToCanvas();
+                        //currentState = STATE.calibrate;
 
                   } // END setup()
 
                   p.draw = function() {
                     p.background(0);
+                    displayWebcam();
+                    switch (currentState) {
+                      case STATE.wait:
+
+                        break;
+                      case STATE.init:
+
+                        break;
+                      case STATE.calibrate:
+
+                        break;
+                      case STATE.run:
+                        drawMainInterface();
+                        break;
+                      default:
+                        break;
+                      }
+
+                      drawStars();
+
+
 
                   } // END draw()
 
                   function setupCanvas() {
-                    setWidth = (p.windowWidth/2) - 10;
+                    console.log('call setup canvas');
+                    setWidth = (p.windowWidth/2) - p.windowWidth*.02;
                     setHeight = (setWidth * 3) / 4;
                     canvas = p.createCanvas(setWidth, setHeight);
                   }
 
+                  function setupStarsBg() {
+                    for (let i = 0; i < 200; i++) {
+                  		stars[i] = new Star(p, 0.3, 2.6);
+                  	}
+                  }
+
                   function setupVidToCanvas() {
+                    console.log('call vid to canvas');
                     let constraints = {
                       video: {
                         width: { ideal: setWidth },
@@ -113,94 +158,179 @@ $(document).ready(function() {
                     video.hide();
                   }
 
-                  function setupPoseTracking() {
-                    let options = {
-                     imageScaleFactor: 0.3,
-                     outputStride: 16,
-                     flipHorizontal: true,
-                     minConfidence: 0.5,
-                     maxPoseDetections: 5,
-                     scoreThreshold: 0.5,
-                     nmsRadius: 20,
-                     detectionType: 'single',
-                     multiplier: 0.75,
+
+
+                  function drawStars() {
+                    for (let i = 0; i < stars.length; i++) {
+                      stars[i].display(p);
+                    }
+                  }
+
+                  function displayWebcam() {
+                    p.translate(video.width, 0);
+                    p.scale(-1, 1);
+                    p.image(video, 0, 0, p.width, p.height);
+                  }
+
+                  function drawMainInterface() {
+                    p.translate(video.width, 0);
+                    p.scale(-1, 1);
+                    p.background(0);
+
+                    p.noFill();
+                    p.stroke(255, 0, 0);
+                  //  bezier(instrument.ax1, instrument.ay1, instrument.cx1, instrument.cy1, instrument.cx2, instrument.cy2, instrument.ax2, instrument.ay2);
+                  //  rect(instrument.x, instrument.y, instrument.w, instrument.h);
+
+                    // Draw keypoints and skeleton
+                    drawKeypoints(p);
+                    drawSkeleton(p);
+
+                    // instrument.display();
+                  }
+
+
+                    /****************************
+                            POSE TRACKING
+                    *****************************/
+
+                    function setupPoseTracking() {
+                      console.log('setup pose tracking');
+                      let options = {
+                       imageScaleFactor: 0.3,
+                       outputStride: 16,
+                       flipHorizontal: true,
+                       minConfidence: 0.5,
+                       maxPoseDetections: 5,
+                       scoreThreshold: 0.5,
+                       nmsRadius: 20,
+                       detectionType: 'single',
+                       multiplier: 0.75,
+                      }
+
+
+                      poseNet = ml5.poseNet(video, options, modelReady);
+                      poseNet.on('pose', gotPoses);
+
+                      updateSmoothPoseKeypoints();
                     }
 
 
-                    poseNet = ml5.poseNet(video, options, modelReady);
-                    poseNet.on('pose', gotPoses);
+                    function calibratePoses() {
+                        setTimeout(function(){
+                          calibrated = true;
+                        }, 5000);
+                      }
 
-                    updateSmoothPoseKeypoints();
-                  }
+                    function gotPoses(results) {
+                      //console.log("call gotPoses");
+                      //console.log(results);
+                      poses = results;
+                      if (poses.length > 0) {
+                        let pose = poses[0].pose;
 
-                  /****************************
-                          POSE TRACKING
-                  *****************************/
-
-                  function gotPoses(results) {
-                    //console.log("call gotPoses");
-                    //console.log(results);
-                    poses = results;
-                    if (poses.length > 0) {
-                      let pose = poses[0].pose;
-
-                      if (currentState === STATE.calibrate) {
-                        for (let i = 0; i < pose.keypoints.length; i++) {
-                          if (!calibrated) {
-                            smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
-                            smoothPoseKeypoints[i].t ++;
-                          }
-                          else if (calibrated) {
-                            console.log("total " + smoothPoseKeypoints[i].i + ": " + smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t);
-                            if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
-                              smoothPoseKeypoints[i].pass = true;
-                            } else {
-                              smoothPoseKeypoints[i].pass = false;
+                        if (currentState === STATE.calibrate) {
+                          for (let i = 0; i < pose.keypoints.length; i++) {
+                            if (!calibrated) {
+                              smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
+                              smoothPoseKeypoints[i].t ++;
                             }
-                            console.log("pass: " + smoothPoseKeypoints[i].pass);
+                            else if (calibrated) {
+                              //console.log("total " + smoothPoseKeypoints[i].i + ": " + smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t);
+                              if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
+                                smoothPoseKeypoints[i].pass = true;
+                              } else {
+                                smoothPoseKeypoints[i].pass = false;
+                              }
+                              //console.log("pass: " + smoothPoseKeypoints[i].pass);
+                            }
+                          }
+                          if (calibrated) {
+                            currentState = STATE.run;
                           }
                         }
-                        if (calibrated) {
-                          currentState = STATE.run;
+
+                        if (currentState === STATE.run) {
+                          for (let i = 0; i < pose.keypoints.length; i++) {
+                            smoothPoseKeypoints[i].score = pose.keypoints[i].score;
+                            if (smoothPoseKeypoints[i].score > 0.1) {
+                                let k = pose.keypoints[i].position;
+                                smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
+                                smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                            }
+                          }
                         }
                       }
+                      updateSmoothPoseKeypoints();
+                    }
 
-                      if (currentState === STATE.run) {
-                        for (let i = 0; i < pose.keypoints.length; i++) {
-                          smoothPoseKeypoints[i].score = pose.keypoints[i].score;
-                          if (smoothPoseKeypoints[i].score > 0.1) {
-                              let k = pose.keypoints[i].position;
-                              smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
-                              smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                    function modelReady() {
+                      console.log('model ready');
+                      calibratePoses();
+                    }
+
+                    /***********************************
+                      MAIN APP HELPER FUNCTIONS
+                    ************************************/
+
+                    let appStart = $('#app-start-btn');
+                    $(appStart).one( "click", function() {
+                      currentState = STATE.calibrate;
+                      setupPoseTracking();
+                    });
+
+
+                    function drawKeypoints(p) {
+                      let r = 10;
+                      if (poses.length > 0) {
+                        for (let i = 0; i < smoothPoseKeypoints.length; i++) {
+                          if (smoothPoseKeypoints[i].pass === true) {
+                            let x = smoothPoseKeypoints[i].x;
+                            let y = smoothPoseKeypoints[i].y;
+                            if (i <= 4) {
+                              r = 3;
+                            }
+                            else {
+                              r = 7;
+                            }
+                            p.fill(255);
+                            p.noStroke();
+                            p.ellipse(x, y, r, r);
                           }
                         }
                       }
                     }
-                    updateSmoothPoseKeypoints();
-                  }
 
-                  function modelReady() {
-                    console.log('model ready');
-                    calibratePoses();
-                  }
+                    function drawSkeletonPart(p, a, b) {
+                      let pointA = a;
+                      let pointB = b;
 
-                  /****************************/
+                      p.stroke(255);
+                      p.line(pointA.x, pointA.y, pointB.x, pointB.y);
+                    }
 
-                } // END sketch
+                    function drawSkeleton(p) {
+                      for (let i = 0; i < smoothPoseSkeleton.length; i ++) {
+                        let a = smoothPoseSkeleton[i][0];
+                        let b = smoothPoseSkeleton[i][1];
+                        if (smoothPoseKeypoints[a].pass === true && smoothPoseKeypoints[b].pass === true) {
+                          drawSkeletonPart(p, smoothPoseKeypoints[a], smoothPoseKeypoints[b]);
+                        }
+                      }
+                    }
 
 
-
-    // APPEND P5 SKETCH TO DOM, CAPTURE STREAM FROM CANVAS
+              } // END sketch
 
     let userNodeOne = document.getElementById('user-one');
     new p5(my.sketch, userNodeOne);
-    let video = document.getElementsByTagName('video')[0];
-    let userCanvas = document.getElementsByTagName('canvas')[0];
-    console.log(userCanvas);
-    //my.stream = canvas.captureStream();
+    // APPEND P5 SKETCH TO DOM, CAPTURE STREAM FROM CANVAS
+    setTimeout(()=>{
+      userCanvas = document.getElementsByTagName('canvas')[1];
+      $(userCanvas).addClass('grayscale');
+    }, 500);
 
-    // INIT MAIN APP (code continue directly above)
-    //currentState = STATE.init;
+    //my.stream = canvas.captureStream();
   }
 
 
@@ -492,7 +622,7 @@ $(document).ready(function() {
       });
 
       // GO button click event handler
-      $('#gos').click(function(e) {
+      $('#go-btn').click(function(e) {
 
       });
 
