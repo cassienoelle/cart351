@@ -69,6 +69,7 @@ canvas {
 
 video, canvas {
   border: 1px solid red;
+  object-fit: scale-down;
 }
 
 .grayscale {
@@ -84,21 +85,33 @@ video, canvas {
 
 .wrapper {
   margin: auto;
-  overflow: hidden;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
+  display: grid:
+  grid-template-columns: 50% 50%;
+  grid-template-areas:
+  "user-canvas peer-vid";
 }
+
+#user-one {
+  grid-area: user-canvas;
+}
+
+#user-two {
+  grid-area: peer-vid;
+}
+
+#myVideo {
+  max-width: 48vw;
+}
+
 
 /****** LANDING PAGE ******/
 
 .landing-wrapper {
-  margin:auto;
-  width: 96vw;
-  height: 96vh;
+  margin: auto;
+  width: 97vw;
+  height: 97vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -543,10 +556,6 @@ a {
 
 #go:active {
   color: var(--chartreuse);
-}
-
-#user-two {
-
 }
 
 .instructions {
