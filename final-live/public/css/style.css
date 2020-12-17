@@ -106,7 +106,7 @@ canvas {
 
 .config-wrapper {
   margin: auto;
-  overflow: auto;
+  overflow: scroll;
   padding-left: 10%;
   padding-right: 10%;
   width: 100vw;
