@@ -85,26 +85,17 @@ video, canvas {
 
 .wrapper {
   margin: auto;
-  width: 100vw;
-  height: 100vh;
-  display: grid:
-  grid-template-columns: 50% 50%;
-  grid-template-areas:
-  "user-canvas peer-vid";
-}
-
-#user-one {
-  grid-area: user-canvas;
-}
-
-#user-two {
-  grid-area: peer-vid;
+  width: 98vw;
+  height: 98vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 #myVideo {
   max-width: 48vw;
 }
-
 
 /****** LANDING PAGE ******/
 
@@ -556,6 +547,10 @@ a {
 
 #go:active {
   color: var(--chartreuse);
+}
+
+#user-two {
+
 }
 
 .instructions {
