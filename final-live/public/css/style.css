@@ -42,7 +42,7 @@
 
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: "Roboto", Arial, sans-serif;
   color: #fff;
   margin: auto;
@@ -106,7 +106,7 @@ canvas {
 
 .config-wrapper {
   margin: auto;
-  overflow: scroll;
+  height: auto;
   padding-left: 10%;
   padding-right: 10%;
   width: 100vw;
