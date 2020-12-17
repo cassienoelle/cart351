@@ -2,7 +2,7 @@
   {
     "class":"drums",
     "toneClass":"sampler",
-    "baseUrl":"../public/assets/samples/keys/",
+    "baseUrl":"../assets/samples/keys/",
     "inst":
           [
               {
