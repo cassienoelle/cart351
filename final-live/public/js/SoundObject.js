@@ -75,10 +75,9 @@ class SoundObject {
     return {
       flag: FLAG.update,
       note: this.note,
-      dur: this.dur,
+      dur: this.dur
     }
   }
-
 
   showActive() {
     let prevS = this.s;

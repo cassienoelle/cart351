@@ -55,17 +55,12 @@ class Instrument {
   } // END layout
 
   display() {
-    console.log('instrument display');
-    console.log(this.objs.length);
     for (let i = 0; i < this.objs.length; i++) {
       let sObj = this.objs[i];
-      console.log('for loop');
       console.log('x: ' + sObj.x);
       sObj.display();
       sObj.draggable();
     }
-    console.log('past for loop');
-
   } // END display
 
   update() {
@@ -80,7 +75,6 @@ class Instrument {
             console.log("send " + sObj.note + " to peer");
             sObj.showActive();
             sObj.playNote();
-
           }
           sObj.play = sObj.collision;
         }
@@ -90,13 +84,12 @@ class Instrument {
   } // END update
 
   controlCompare(c, p) {
-      if (c && p != c) {
-        return true;
-      } else {
-        return false;
-      }
+    if (c && p != c) {
+      return true;
+    } else {
+      return false;
     }
-
+  }
 }
 
 
