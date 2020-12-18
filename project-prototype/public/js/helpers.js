@@ -10,7 +10,6 @@ function windowResized() {
 }
 */
 
-/*
 function drawKeypoints(p) {
   let r = 10;
   if (poses.length > 0) {
@@ -50,27 +49,21 @@ function drawSkeleton(p) {
     }
   }
 }
-/*
 
-function initSoundObjects(array, keypts) {
-  let keys = keypts;
+
+function initSoundObjects(array, kpts) {
   for (let i = 0; i < array.length; i++) {
     //console.log("array[i]: " + array[i]);
     array[i].display();
     array[i].draggable();
-    for (let j = 0; j < keys.length; j++) {
-      if (smoothPoseKeypoints[keys[j]].score > 0.1) {
-        array[i].checkPosition(smoothPoseKeypoints[keys[j]].x, smoothPoseKeypoints[keys[j]].y);
+    for (let j = 0; j < kpts.length; j++) {
+      if (smoothPoseKeypoints[kpts[j]].score > 0.1) {
+        array[i].checkPosition(smoothPoseKeypoints[kpts[j]].x, smoothPoseKeypoints[kpts[j]].y);
       }
     }
   }
-  // harmonizer.display();
-  // harmonizer.checkPosition(smoothPoseKeypoints[13].x, smoothPoseKeypoints[13].y);
-  // harmonizer.draggable();
-  //console.log("harmonizer: " + harmonizer.harmonizeNextNote);
 }
 
-/*
 
 function drawStars(array) {
   for (let i = 0; i < array.length; i++) {
@@ -85,7 +78,7 @@ function updateStars(array) {
     array[i].update();
   }
 }
-*/
+
 
 // getBezierXY()
 //

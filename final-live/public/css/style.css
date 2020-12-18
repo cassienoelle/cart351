@@ -65,15 +65,17 @@ nav {
 
 canvas {
   visibility: visible !important;
+  border: 1px solid red;
 }
 
-video, canvas {
-  border: 1px solid red;
+video {
   object-fit: scale-down;
+  border: 2px solid green;
+  max-width: 48vw;
 }
 
 .grayscale {
-  filter: grayscale(100%);
+  /* filter: grayscale(100%);*/
   margin-left: 3em;
 }
 

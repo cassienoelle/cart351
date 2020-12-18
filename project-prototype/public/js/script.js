@@ -26,6 +26,7 @@ const STATE = {
 let currentState;
 let calibrated = false;
 
+
   $(document).ready( function() {
   /**************************/
   /******** SKETCH **********/

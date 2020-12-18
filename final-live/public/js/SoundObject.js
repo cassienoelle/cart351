@@ -3,15 +3,16 @@
 //test class
 
 class SoundObject {
-  constructor(p, cat, note, dur, x, y, w, h, hue, s, b, img=" ") {
+  constructor(p, cat, note, dur, x, y, w, h, hue, s, b, id, img=" ") {
     this.p = p; // p5 instance
     this.cat = cat; // category
     this.note = note; // note
     this.dur = dur; // duration of note
     this.x = x;
     this.y = y;
-    thix.w = w;
+    this.w = w;
     this.h = h;
+    this.id = id;
 
     this.hue = hue;
     this.s = s;
@@ -25,35 +26,35 @@ class SoundObject {
   }
 
   display() {
-
+    console.log('display objs');
+    console.log(this.x);
+    console.log(this.y);
     switch(this.cat) {
       case "keys":
         this.p.noStroke();
         this.p.colorMode(this.p.HSB);
         this.p.ellipseMode(this.p.RADIUS);
 
-        let radius = this.w;
+        let radius = this.w/2;
         let hue = this.hue;
         let step = (360 / this.w) * 3;
 
         for (let r = radius; r > 0; --r) {
-          this.p.fill(hue, this.s, this.b);
-          this.p.ellipse(this.x, this.y, r, r);
+          this.p.fill(this.hue, this.s, this.b);
+          this.p.ellipse(this.x, this.y, this.w, this.h);
           hue += 1;
-        }
+         }
+        this.p.colorMode(this.p.RGB);
+        this.p.ellipseMode(this.p.CENTER);
         break;
       default:
         break;
     }
   } // display
 
-  update() {
-
-  } // update
-
   checkCollision(x, y) {
     let kX = x;
-    let ky = y;
+    let kY = y;
     if (kX > (this.x - this.w/2) && kX < (this.x + this.w/2) ) {
       if (kY > (this.y - this.h/2) && kY < (this.y + this.h/2) ) {
         return true;
@@ -65,9 +66,19 @@ class SoundObject {
     }
   }
 
-  playSound() {
+  playNote() {
+    my.sampler.triggerAttackRelease(this.note, this.dur);
 
   } // playSound
+
+  getDataPack() {
+    return {
+      flag: FLAG.update,
+      note: this.note,
+      dur: this.dur,
+    }
+  }
+
 
   showActive() {
     let prevS = this.s;
@@ -81,8 +92,8 @@ class SoundObject {
       // this.played = false;
       this.s = prevS;
       this.b = prevB;
-      this.h = prevH;
-    }, 500);
+      this.hue = prevH;
+    }, 250);
   }
 
   draggable() {

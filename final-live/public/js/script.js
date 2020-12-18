@@ -1,21 +1,32 @@
 "use strict";
 
-let myInstrument; // user's custom insrument
-let my = {
-  sketch: null,
-  stream: null,
-  peerId: null,
-  sampler: null, // Tone instrument instance
-  activeCat: null, // selected instrument category
-  activeInst: null, // instrument properties
-};
-var friend = {
-  peerID: null,
-  stream: null,
-  activeCat: null,
-  activeInst: null,
-  sampler: null
-};
+const FLAG = {
+  init: "init",
+  update: "update"
+}
+
+// Player class
+class Player {
+  constructor(){
+    this.sketch = null; // p5 instance
+    this.peerId = null; //
+    this.stream = null; // media stream
+    this.sampler = null; // Tone sampler instance
+    this.activeCat = null; // user selected instrument category
+    this.activeInst = null; // instrument properties
+    this.instrument = null; // virtual instrument from native Instrument constructor
+
+  }
+
+  getDataPack() {
+    return {
+      flag: FLAG.init,
+      activeCat: this.activeCat,
+      activeInst: this.activeInst
+    }
+  }
+}
+
 let peer = null;
 let conn = null;
 let call = null;
@@ -26,6 +37,8 @@ let callEndBtn;
 let arrayOfSamplers = [];
 let activeIndex;
 let calibrated = false;
+let my = new Player();
+let friend = new Player();
 
 $(document).ready(function() {
 
@@ -67,7 +80,6 @@ $(document).ready(function() {
   /***********************************
     MAIN APP
   ************************************/
-
 
   function mainApp() {
     // get saved instrument data from session storage
@@ -121,6 +133,7 @@ $(document).ready(function() {
                     setupCanvas();
                     setupStarsBg();
                     setupVidToCanvas();
+                    setupInstrument();
                         //currentState = STATE.calibrate;
 
                   } // END setup()
@@ -128,6 +141,7 @@ $(document).ready(function() {
                   p.draw = function() {
                     p.background(0);
                     displayWebcam();
+                    //p.ellipse(p.width/2, p.height/2, 50, 50);
                     switch (currentState) {
                       case STATE.wait:
 
@@ -146,11 +160,12 @@ $(document).ready(function() {
                       }
 
                       drawStars();
+
                   } // END draw()
 
                   function setupCanvas() {
                     console.log('call setup canvas');
-                    setWidth = (p.windowWidth/2) - p.windowWidth*.02;
+                    setWidth = (p.windowWidth/2) - (p.windowWidth*.02);
                     setHeight = (setWidth * 3) / 4;
                     canvas = p.createCanvas(setWidth, setHeight);
                   }
@@ -177,7 +192,22 @@ $(document).ready(function() {
                     video.hide();
                   }
 
+                  function setupInstrument() {
+                    let w = p.width * 0.8;
+                    let h = 100;
+                    let x = p.width * 0.1;
+                    let y = p.height * 0.1;
+                    let kpts = [
+                      smoothPose.leftWrist.i,
+                      smoothPose.rightWrist.i
+                    ];
+                    console.log('call setup instrument');
+                    console.log(my.activeInst);
+                    console.log(my.sampler);
+                    my.instrument = new Instrument(p, my.activeCat, my.activeInst.notes, x, y, w, h, kpts);
 
+                    my.instrument.layout();
+                  }
 
                   function drawStars() {
                     for (let i = 0; i < stars.length; i++) {
@@ -192,20 +222,17 @@ $(document).ready(function() {
                   }
 
                   function drawMainInterface() {
+                    console.log('draw main interface');
                     p.translate(video.width, 0);
                     p.scale(-1, 1);
-                    p.background(0);
-
-                    p.noFill();
-                    p.stroke(255, 0, 0);
-                  //  bezier(instrument.ax1, instrument.ay1, instrument.cx1, instrument.cy1, instrument.cx2, instrument.cy2, instrument.ax2, instrument.ay2);
-                  //  rect(instrument.x, instrument.y, instrument.w, instrument.h);
+                    //p.background(0);
 
                     // Draw keypoints and skeleton
                     drawKeypoints(p);
                     drawSkeleton(p);
 
-                    // instrument.display();
+                    my.instrument.display();
+                    my.instrument.update();
                   }
 
 
@@ -248,47 +275,45 @@ $(document).ready(function() {
                         }, 7000);
                       }
 
-                    function gotPoses(results) {
-                      //console.log("call gotPoses");
-                      //console.log(results);
-                      poses = results;
-                      if (poses.length > 0) {
-                        let pose = poses[0].pose;
+      function gotPoses(results) {
+          //console.log("call gotPoses");
+          //console.log(results);
+          poses = results;
+          if (poses.length > 0) {
+            let pose = poses[0].pose;
 
-                        if (currentState === STATE.calibrate) {
-                          for (let i = 0; i < pose.keypoints.length; i++) {
-                            if (!calibrated) {
-                              smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
-                              smoothPoseKeypoints[i].t ++;
-                            }
-                            else if (calibrated) {
-                              //console.log("total " + smoothPoseKeypoints[i].i + ": " + smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t);
-                              if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
-                                smoothPoseKeypoints[i].pass = true;
-                              } else {
-                                smoothPoseKeypoints[i].pass = false;
-                              }
-                              //console.log("pass: " + smoothPoseKeypoints[i].pass);
-                            }
-                          }
-                          if (calibrated) {
-                            currentState = STATE.run;
-                          }
-                        }
+            if (currentState === STATE.calibrate) {
+              for (let i = 0; i < pose.keypoints.length; i++) {
+                if (!calibrated) {
+                  smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
+                  smoothPoseKeypoints[i].t ++;
+                }
+                else if (calibrated) {
+                  if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
+                    smoothPoseKeypoints[i].pass = true;
+                  } else {
+                    smoothPoseKeypoints[i].pass = false;
+                  }
+                }
+              }
+              if (calibrated) {
+                currentState = STATE.run;
+              }
+            }
 
-                        if (currentState === STATE.run) {
-                          for (let i = 0; i < pose.keypoints.length; i++) {
-                            smoothPoseKeypoints[i].score = pose.keypoints[i].score;
-                            if (smoothPoseKeypoints[i].score > 0.1) {
-                                let k = pose.keypoints[i].position;
-                                smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
-                                smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
-                            }
-                          }
-                        }
-                      }
-                      updateSmoothPoseKeypoints();
-                    }
+            if (currentState === STATE.run) {
+              for (let i = 0; i < pose.keypoints.length; i++) {
+                smoothPoseKeypoints[i].score = pose.keypoints[i].score;
+                if (smoothPoseKeypoints[i].score > 0.1) {
+                    let k = pose.keypoints[i].position;
+                    smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
+                    smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                }
+              }
+            }
+          }
+          updateSmoothPoseKeypoints();
+        }
 
                     function modelReady() {
                       console.log('model ready');
@@ -298,6 +323,25 @@ $(document).ready(function() {
                     /***********************************
                       MAIN APP HELPER FUNCTIONS
                     ************************************/
+                    //
+                    // function initSoundObjects(array, kpts) {
+                    //   for (let i = 0; i < array.length; i++) {
+                    //     let sObj = array[i];
+                    //     sObj.display();
+                    //     sObj.draggable();
+                    //     for (let j = 0; j < kpts.length; j++) {
+                    //       if (smoothPoseKeypoints[kpts[j]].score > 0.1) {
+                    //         sObj.checkCollision(smoothPoseKeypoints[kpts[j]].x, smoothPoseKeypoints[kpts[j]].y);
+                    //         /* if (sObj.checkCollision) {
+                    //           sObj.showActive();
+                    //           sObj.playNote();
+                    //
+                    //           console.log("send " + sObj.note + " to peer");
+                    //         }*/
+                    //       }
+                    //     }
+                    //   }
+                    // }
 
                     function drawKeypoints(p) {
                       let r = 10;
@@ -362,7 +406,7 @@ $(document).ready(function() {
 
 
       setTimeout(()=>{
-        userCanvas = document.getElementsByTagName('canvas')[1];
+        userCanvas = document.getElementsByTagName('canvas')[0];
         $(userCanvas).addClass('grayscale');
         my.stream = userCanvas.captureStream();
       }, 500);
