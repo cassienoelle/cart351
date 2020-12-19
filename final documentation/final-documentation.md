@@ -32,7 +32,7 @@ NOTE: It was not always practical to take screenshots, especially for sound test
 #### INITIAL POSENET AND TONE.JS TESTS
 
 1. Basic tests with the HTML5 CANVAS API, P5.JS, PIXI.JS and PAPER.JS for graphics. Decide on P5.JS for ease of use and prototyping.
-2. Get pose tracking working (integrate POSENET with P5). The [ML5 POSENET documentation](https://ml5js.org/reference/api-PoseNet/) was very helpful for this.
+2. Get pose tracking working integrate POSENET with P5). The [ML5 POSENET documentation](https://ml5js.org/reference/api-PoseNet/) was very helpful for this.
 
 - TEST 1 - TRACKING WRIST KEYPOINT
 
@@ -80,14 +80,38 @@ sampler.triggerAttackRelease(["C3", "E3", "G3"], "8n");
 
 #### PEER.JS TESTS
 
-I ran a few tests, which can be viewed at the links below. For some reason the **PeerJS Combined Test** is not running properly in CodePen, even though it worked yesterday and the code causing the error is identical to the working code in the **PeerJS Media Test**. I have been having trouble with weird glitches in CodePen, unfortunately.
+I ran a few tests, which can be viewed at the links below.
 
-1. First, I worked on successfully opening a peer connection and sending messages over a data channel. Each user had a simple P5 canvas with an ellipse (of random size and colour) drawn at their mouse position.
+1. [Peer JS Data Test ](https://codepen.io/cass_27/pen/GRjNYvz)
+First, I worked on successfully opening a peer connection and sending messages over a data channel. Each user had a simple P5 canvas with an ellipse (of random size and colour) drawn at their mouse position.
 - User One starts by generating a PeerID and sending it (outside of the test app) to User Two.
 - User Two joins by entering the PeerID of User One, opening the session.
 - Data is transmitted bi-directionally and used to recreate the canvas of the second user
 - There is no media stream, only a data channel.
 
-2. Second, I ran a test sending a media stream (canvas to remote video element).
+2. [Peer JS Media Test](https://codepen.io/cass_27/pen/OJRWmPo)
+Second, I ran a test sending a media stream (canvas to remote video element). I recorded a screen-share (of both users) but didn't have time to edit the videos together. Here are a few screenshot:
 
-3. Third, I tested a combination of media and data connections. Visuals are handled by the media stream: each user sees the other's canvas represented in a video element. Sound is handled via a data connection: messages trigger local audio events.
+![](assets/final-documentation-95b888d0.png)
+
+3. [Peer JS Combined Test](https://codepen.io/cass_27/pen/BaLpJjd)
+Third, I tested a combination of media and data connections, including audio events. Visuals are handled by the media stream: each user sees the other's canvas represented in a video element. Sound is handled via a data connection: messages trigger local audio events.
+
+- NOTE For some reason the **PeerJS Combined Test** is not running properly in CodePen, even though it worked yesterday. The console logs that the canvas element defined at line 172 doesn't exist, even though it clearly does. The portion of the code that deals with the canvas element is also identical to the **PeerJS Media Test**, which works. I have been having weird glitched in CodePen. It was just ideal for testing, but I should have written it in an editor and uploaded to GitHub.
+
+- REFERENCES:
+1. https://peerjs.com/docs.html
+2. https://github.com/jmcker/Peer-to-Peer-Cue-System
+3. https://www.toptal.com/webrtc/taming-webrtc-with-peerjs
+   (https://github.com/mahmud-ridwan/arteegee)
+4. https://editor.p5js.org/creativecoding/sketches/4rXzrCrBX
+
+
+### FUTURE DEVELOPMENT
+
+- Implement database
+- Finish designing virtual instruments and add more options
+- Finish implementing P2P networking
+- Fix CSS for different screen sizes (right now layout works best on 15inch laptop)
+- Finish 'About' page
+- Draw guide on canvas for calibration
