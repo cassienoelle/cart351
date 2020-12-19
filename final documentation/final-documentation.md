@@ -7,6 +7,7 @@
 ![](assets/final-documentation-58f52e4d.png)
 ![](assets/final-documentation-4dc7f4f5.png)
 ![](assets/final-documentation-09a57328.png)
+![](assets/final-documentation-eeb5f33d.png)
 
 ## COMPONENTS
 
