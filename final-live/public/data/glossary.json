@@ -2,7 +2,7 @@
   {
     "class":"drums",
     "toneClass":"sampler",
-    "baseUrl":"/assets/samples/keys/",
+    "baseUrl":"cart351/final-live/public/assets/samples/keys/",
     "inst":
           [
               {
@@ -19,7 +19,7 @@
   {
     "class":"keys",
     "toneClass":"sampler",
-    "baseUrl":"/assets/samples/keys/",
+    "baseUrl":"cart351/final-live/public/assets/samples/keys/",
     "inst":
           [
               {
