@@ -1,5 +1,9 @@
 # Final Documentation: SPACE.JAM
 
+## SCREENSHOTS
+
+![](assets/final-documentation-98278d79.png)![](assets/final-documentation-4dc7f4f5.png)![](assets/final-documentation-f53d6b29.png)![](assets/final-documentation-58f52e4d.png)![](assets/final-documentation-09a57328.png)![](assets/final-documentation-93a8d60b.png)
+
 ## COMPONENTS
 
 1. INTERACTION - POSE TRACKING WITH POSENET
