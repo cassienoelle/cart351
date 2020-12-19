@@ -23,7 +23,7 @@ I started building my own back-end, integrating a PeerServer with an Express App
 
 [SOME TESTS HERE (CODEPEN)](https://codepen.io/collection/nWWwry?cursor=ZD0xJm89MSZwPTEmdj0z)
 
-[SOME TESTS HERE (GITHUB)](https://github.com/cassienoelle/cart351/tree/master/final-documentation)
+[SOME TESTS HERE (GITHUB)](https://github.com/cassienoelle/cart351/tree/master/final%20documentation/tests)
 
 This is the basic progression, with details below.
 
