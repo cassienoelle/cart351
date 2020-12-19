@@ -30,7 +30,6 @@ class Instrument {
   }
 
   layout() {
-    console.log('layout');
     let numNotes = this.notes.length;
     let objectRad = (this.w / numNotes) / 3;
     let objectW = objectRad * 2;
@@ -45,8 +44,7 @@ class Instrument {
     for (let i = 0; i < numNotes; i++) {
 
       // construct new sound object
-      let o = new SoundObject(this.p, this.cat, this.notes[i], 0.5, currentCoord.x, currentCoord.y, objectRad, objectRad, currentHue, 90, 90, i);
-
+      let o = new SoundObject(this.p, this.cat, this.notes[i], 0.5, currentCoord.x, currentCoord.y, objectRad, objectRad, currentHue, 90, 90, this.kpts);
       this.objs.push(o);
       currentCoord.x += step;
       currentHue += hueStep;
@@ -57,39 +55,41 @@ class Instrument {
   display() {
     for (let i = 0; i < this.objs.length; i++) {
       let sObj = this.objs[i];
-      console.log('x: ' + sObj.x);
       sObj.display();
       sObj.draggable();
     }
+
   } // END display
 
-  update() {
+  update(k) {
 
     for (let i = 0; i < this.objs.length; i++) {
       let sObj = this.objs[i];
-      for (let j = 0; j < this.kpts.length; j++) {
-        sObj.collision = sObj.checkCollision(smoothPoseKeypoints[this.kpts[j]].x, smoothPoseKeypoints[this.kpts[j]].y);
-        if (smoothPoseKeypoints[this.kpts[j]].score > 0.1) {
-          let p = this.controlCompare(sObj.collision, sObj.play);
+      for (let k = 0; k < this.kpts.length; k++) {
+        sObj.collision[k] = sObj.checkCollision(smoothPoseKeypoints[this.kpts[k]].x, smoothPoseKeypoints[this.kpts[k]].y); // true //
+        if (smoothPoseKeypoints[k].score > 0.1) { // true //
+          let p = this.controlCompare(sObj.collision[k], sObj.play[k]);
           if (p) {
             console.log("send " + sObj.note + " to peer");
             sObj.showActive();
             sObj.playNote();
           }
-          sObj.play = sObj.collision;
-        }
+          sObj.play[k] = sObj.collision[k];
+        } // end outer if
       }
-    }
+    } // end outer for
+
 
   } // END update
 
   controlCompare(c, p) {
-    if (c && p != c) {
-      return true;
-    } else {
-      return false;
+      if (c && p != c) {
+        return true;
+      } else {
+        return false;
+      }
     }
-  }
+
 }
 
 

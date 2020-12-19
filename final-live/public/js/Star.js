@@ -1,5 +1,8 @@
 "use strict";
 
+// Based on code by wvnl
+// https://editor.p5js.org/wvnl/sketches/5wnuHAXKd
+
 class Star {
 	constructor(p, min, max) {
 		this.p = p;

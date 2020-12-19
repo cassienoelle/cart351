@@ -1,7 +1,6 @@
   "use strict";
 
   $(document).ready( function() {
-/*
       let bgSketch = function(b) {
 
         let bgStars = [];
@@ -32,5 +31,4 @@
       for (let i = 0; i < window.document.getElementsByClassName('bg').length; i++) {
         window.document.getElementsByClassName('bg')[i].appendChild(bgNode);
       }
-*/
   });

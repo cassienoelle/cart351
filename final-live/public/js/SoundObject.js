@@ -3,7 +3,7 @@
 //test class
 
 class SoundObject {
-  constructor(p, cat, note, dur, x, y, w, h, hue, s, b, id, img=" ") {
+  constructor(p, cat, note, dur, x, y, w, h, hue, s, b, kpts, img=" ") {
     this.p = p; // p5 instance
     this.cat = cat; // category
     this.note = note; // note
@@ -12,7 +12,7 @@ class SoundObject {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.id = id;
+    this.kpts = kpts;
 
     this.hue = hue;
     this.s = s;
@@ -20,15 +20,11 @@ class SoundObject {
 
     this.img = img; // for instruments displayed using an image, optional
 
-    this.collision = false; // track collision with keypoint
-    this.play = false; // trigger play note
-
+    this.collision = [false, false]; // track collision with keypoint
+    this.play = [false, false]; // trigger play note
   }
 
   display() {
-    console.log('display objs');
-    console.log(this.x);
-    console.log(this.y);
     switch(this.cat) {
       case "keys":
         this.p.noStroke();
@@ -55,8 +51,8 @@ class SoundObject {
   checkCollision(x, y) {
     let kX = x;
     let kY = y;
-    if (kX > (this.x - this.w/2) && kX < (this.x + this.w/2) ) {
-      if (kY > (this.y - this.h/2) && kY < (this.y + this.h/2) ) {
+    if (kX > (this.x - this.w) && kX < (this.x + this.w) ) {
+      if (kY > (this.y - this.h) && kY < (this.y + this.h) ) {
         return true;
       } else {
         return false;
@@ -68,6 +64,7 @@ class SoundObject {
 
   playNote() {
     my.sampler.triggerAttackRelease(this.note, this.dur);
+    console.log('PLAY');
 
   } // playSound
 

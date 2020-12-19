@@ -165,9 +165,12 @@ $(document).ready(function() {
 
                   function setupCanvas() {
                     console.log('call setup canvas');
-                    setWidth = (p.windowWidth/2) - (p.windowWidth*.02);
+                    setWidth = (p.windowWidth/2) - (p.windowWidth*.04);
                     setHeight = (setWidth * 3) / 4;
                     canvas = p.createCanvas(setWidth, setHeight);
+                    console.log('canvas');
+                    console.log(setWidth);
+                    console.log(setHeight);
                   }
 
                   function setupStarsBg() {
@@ -180,8 +183,8 @@ $(document).ready(function() {
                     console.log('call vid to canvas');
                     let constraints = {
                       video: {
-                        width: { ideal: setWidth },
-                        height: { ideal: setHeight },
+                        width: {ideal: setWidth },
+                        height: {ideal: setHeight },
                         aspectRatio: 4/3
                       },
                       audio: false
@@ -190,6 +193,12 @@ $(document).ready(function() {
                       //console.log(stream);
                     });
                     video.hide();
+
+                    console.log('video');
+                    console.log(video.width);
+                    console.log(video.height);
+                    console.log(setWidth);
+                    console.log(setHeight);
                   }
 
                   function setupInstrument() {
@@ -222,10 +231,9 @@ $(document).ready(function() {
                   }
 
                   function drawMainInterface() {
-                    console.log('draw main interface');
                     p.translate(video.width, 0);
                     p.scale(-1, 1);
-                    //p.background(0);
+                    p.background(0);
 
                     // Draw keypoints and skeleton
                     drawKeypoints(p);
@@ -272,48 +280,48 @@ $(document).ready(function() {
                           setTimeout(function(){
                             $(userCanvas).removeClass('grayscale');
                           }, 500);
-                        }, 7000);
+                        }, 5000);
                       }
 
-      function gotPoses(results) {
-          //console.log("call gotPoses");
-          //console.log(results);
-          poses = results;
-          if (poses.length > 0) {
-            let pose = poses[0].pose;
+                    function gotPoses(results) {
+                        //console.log("call gotPoses");
+                        //console.log(results);
+                        poses = results;
+                        if (poses.length > 0) {
+                          let pose = poses[0].pose;
 
-            if (currentState === STATE.calibrate) {
-              for (let i = 0; i < pose.keypoints.length; i++) {
-                if (!calibrated) {
-                  smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
-                  smoothPoseKeypoints[i].t ++;
-                }
-                else if (calibrated) {
-                  if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
-                    smoothPoseKeypoints[i].pass = true;
-                  } else {
-                    smoothPoseKeypoints[i].pass = false;
-                  }
-                }
-              }
-              if (calibrated) {
-                currentState = STATE.run;
-              }
-            }
+                          if (currentState === STATE.calibrate) {
+                            for (let i = 0; i < pose.keypoints.length; i++) {
+                              if (!calibrated) {
+                                smoothPoseKeypoints[i].cal += pose.keypoints[i].score;
+                                smoothPoseKeypoints[i].t ++;
+                              }
+                              else if (calibrated) {
+                                if (smoothPoseKeypoints[i].cal / smoothPoseKeypoints[i].t > 0.1) {
+                                  smoothPoseKeypoints[i].pass = true;
+                                } else {
+                                  smoothPoseKeypoints[i].pass = false;
+                                }
+                              }
+                            }
+                            if (calibrated) {
+                              currentState = STATE.run;
+                            }
+                          }
 
-            if (currentState === STATE.run) {
-              for (let i = 0; i < pose.keypoints.length; i++) {
-                smoothPoseKeypoints[i].score = pose.keypoints[i].score;
-                if (smoothPoseKeypoints[i].score > 0.1) {
-                    let k = pose.keypoints[i].position;
-                    smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
-                    smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
-                }
-              }
-            }
-          }
-          updateSmoothPoseKeypoints();
-        }
+                          if (currentState === STATE.run) {
+                            for (let i = 0; i < pose.keypoints.length; i++) {
+                              smoothPoseKeypoints[i].score = pose.keypoints[i].score;
+                              if (smoothPoseKeypoints[i].score > 0.1) {
+                                  let k = pose.keypoints[i].position;
+                                  smoothPoseKeypoints[i].x = p.lerp(smoothPoseKeypoints[i].x, k.x, amt);
+                                  smoothPoseKeypoints[i].y = p.lerp(smoothPoseKeypoints[i].y, k.y, amt);
+                              }
+                            }
+                          }
+                        }
+                        updateSmoothPoseKeypoints();
+                      }
 
                     function modelReady() {
                       console.log('model ready');
@@ -406,10 +414,10 @@ $(document).ready(function() {
 
 
       setTimeout(()=>{
-        userCanvas = document.getElementsByTagName('canvas')[0];
+        userCanvas = document.getElementsByTagName('canvas')[1];
         $(userCanvas).addClass('grayscale');
         my.stream = userCanvas.captureStream();
-      }, 500);
+      }, 250);
 
       /***********************************
         PEER-TO-PEER

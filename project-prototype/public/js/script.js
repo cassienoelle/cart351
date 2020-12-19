@@ -86,7 +86,7 @@ let calibrated = false;
       //synth = new Tone.PolySynth(Tone.Synth).toDestination();
       sampler = new Tone.Sampler({
         urls: {
-        "C4": "C4.mp3"
+        "G4": "G4.mp3"
       },
       release: 1,
       baseUrl: "../samples/marimba/",
@@ -96,7 +96,7 @@ let calibrated = false;
       let kpt = [9, 10];
       //console.log("kpt: " + kpt);
       // Instrument(x, y, w, h, scale, octave)
-      instrument = new Instrument(p, (p.width * 0.15) / 2, (p.height * 0.15) / 2, (p.width * 0.85), 200, SCALES.E_FLAT_MAJOR, 4, layouts.horizontal);
+      instrument = new Instrument(p, (p.width * 0.15) / 2, (p.height * 0.15) / 2, (p.width * 0.85), 200, SCALES.E_FLAT_MAJOR, 4, layouts.bezier);
       for (let i = 0; i < kpt.length; i++) {
         instrument.keypointTriggers.push(kpt[i]);
       }
