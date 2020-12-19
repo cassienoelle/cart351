@@ -122,12 +122,6 @@ $(document).ready(function() {
                   let ex = 0;
                   let ey = 0;
 
-                  p.keyPressed = function() {
-                    currentState = STATE.init;
-                    console.log('pressed');
-                  }
-
-
                   p.setup = function() {
 
                     setupCanvas();
